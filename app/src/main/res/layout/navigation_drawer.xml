@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="280dp"
+    android:layout_height="match_parent"
+    android:layout_gravity="end"
+    android:id="@+id/drawerView"
+    android:background="#AEDDEF">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:background="#AEDDEF">
+
+        <ImageView
+            android:id="@+id/weight_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="75dp"
+            android:src="@drawable/weight"></ImageView>
+
+        <TextView
+            android:id="@+id/drawer_weight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="60dp"
+            android:layout_marginTop="80dp"
+            android:textSize="25dp"
+            android:text="무게 재기"
+            android:fontFamily="@font/maplestory"
+            android:textColor="#ffffff"
+            android:onClick="menuOnClick">
+        </TextView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#80ffffff"
+            android:layout_marginTop="120dp">
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/graph_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="140dp"
+            android:src="@drawable/graph"></ImageView>
+
+        <TextView
+            android:id="@+id/drawer_graph"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="60dp"
+            android:layout_marginTop="145dp"
+            android:textSize="25dp"
+            android:text="그래프 보기"
+            android:fontFamily="@font/maplestory"
+            android:textColor="#ffffff"
+            android:onClick="menuOnClick">
+        </TextView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#80ffffff"
+            android:layout_marginTop="185dp">
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/donate_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="205dp"
+            android:src="@drawable/donate"></ImageView>
+
+        <TextView
+            android:id="@+id/drawer_donate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="60dp"
+            android:layout_marginTop="210dp"
+            android:textSize="25dp"
+            android:text="기부 하기"
+            android:fontFamily="@font/maplestory"
+            android:textColor="#ffffff"
+            android:onClick="menuOnClick">
+        </TextView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#80ffffff"
+            android:layout_marginTop="250dp">
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/ranking_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="270dp"
+            android:src="@drawable/ranking"></ImageView>
+
+        <TextView
+            android:id="@+id/drawer_ranking"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="60dp"
+            android:layout_marginTop="275dp"
+            android:textSize="25dp"
+            android:text="랭킹 보기"
+            android:fontFamily="@font/maplestory"
+            android:textColor="#ffffff"
+            android:onClick="menuOnClick">
+        </TextView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#80ffffff"
+            android:layout_marginTop="315dp">
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/shop_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="335dp"
+            android:src="@drawable/shop"></ImageView>
+
+        <TextView
+            android:id="@+id/drawer_shop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="60dp"
+            android:layout_marginTop="340dp"
+            android:textSize="25dp"
+            android:text="상점"
+            android:fontFamily="@font/maplestory"
+            android:textColor="#ffffff"
+            android:onClick="menuOnClick">
+        </TextView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#80ffffff"
+            android:layout_marginTop="380dp">
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/mypage_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="400dp"
+            android:src="@drawable/mypage"></ImageView>
+
+        <TextView
+            android:id="@+id/drawer_mypage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="60dp"
+            android:layout_marginTop="405dp"
+            android:textSize="25dp"
+            android:text="마이페이지"
+            android:fontFamily="@font/maplestory"
+            android:textColor="#ffffff"
+            android:onClick="menuOnClick">
+        </TextView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#80ffffff"
+            android:layout_marginTop="445dp">
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>
