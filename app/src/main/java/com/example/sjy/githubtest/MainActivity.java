@@ -17,7 +17,6 @@ public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private View drawerView;
-    public static Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +60,10 @@ public class MainActivity extends AppCompatActivity {
             case R.id.drawer_mypage:
                 Intent mypage = new Intent(MainActivity.this, MypageActivity.class);
                 startActivity(mypage);
+                break;
+            case R.id.drawer_main:
+                Intent main = new Intent(MainActivity.this, MainActivity.class);
+                startActivity(main);
                 break;
 
         }

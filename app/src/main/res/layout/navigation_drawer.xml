@@ -180,5 +180,34 @@
             android:background="#80ffffff"
             android:layout_marginTop="445dp">
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/main_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="465dp"
+            android:src="@drawable/home"></ImageView>
+
+        <TextView
+            android:id="@+id/drawer_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="60dp"
+            android:layout_marginTop="470dp"
+            android:textSize="25dp"
+            android:text="메인"
+            android:fontFamily="@font/maplestory"
+            android:textColor="#ffffff"
+            android:onClick="menuOnClick">
+        </TextView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#80ffffff"
+            android:layout_marginTop="510dp">
+        </LinearLayout>
+
     </RelativeLayout>
 </LinearLayout>
