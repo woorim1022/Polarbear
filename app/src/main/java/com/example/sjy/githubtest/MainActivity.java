@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //메뉴 버튼 클릭
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         drawerView = (View)findViewById(R.id.drawerView);
 
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    //메뉴 클릭
     public void menuOnClick(View v) {
         switch(v.getId()){
             case R.id.drawer_weight:

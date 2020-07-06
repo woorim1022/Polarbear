@@ -23,7 +23,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
             android:src="@drawable/menu"
-            android:onClick="MenuBtnClick">
+            android:onClick="OnClick">
         </ImageView>
 
     </LinearLayout>
