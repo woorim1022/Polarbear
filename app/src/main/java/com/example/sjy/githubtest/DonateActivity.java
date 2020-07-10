@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.example.sjy.githubtest.R;
+
 import static com.example.sjy.githubtest.R.id.drawerView;
 
 public class DonateActivity extends AppCompatActivity {
