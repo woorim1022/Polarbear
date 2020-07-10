@@ -1,5 +1,7 @@
 package com.example.sjy.githubtest;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.DrawerLayout;
@@ -33,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
 
     //메뉴 클릭
     public void menuOnClick(View v) {
