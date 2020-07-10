@@ -7,6 +7,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
+
+import java.util.ArrayList;
+
 public class DonateActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
@@ -17,15 +25,9 @@ public class DonateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_donate);
 
-        drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
-        drawerView = (View)findViewById(R.id.drawerView);
 
-        ImageView openDrawer = (ImageView)findViewById(R.id.menu_button);
-        openDrawer.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                drawerLayout.openDrawer(drawerView);
-            }
-        });
+
+
     }
 
     public void menuOnClick(View v) {
