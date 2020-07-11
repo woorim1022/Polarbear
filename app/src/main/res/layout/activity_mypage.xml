@@ -7,18 +7,110 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#F0FCFC"
-    tools:context=".MypageActivity">
+    android:id="@+id/mypage_layout">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".MypageActivity">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/mypage_top"
+            tools:context=".MypageActivity">
+
+        <ImageView
+            android:id="@+id/menu_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:onClick="OnClick"
+            android:src="@drawable/menu"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView"
+            app:layout_constraintTop_toTopOf="parent"></ImageView>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="160dp"
+            android:layout_marginRight="82dp"
+            android:fontFamily="@font/maplestory"
+            android:text="마이페이지"
+            android:textColor="#000000"
+            android:textSize="25dp"
+            app:layout_constraintEnd_toStartOf="@+id/menu_button"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+        </TextView>
+    </android.support.constraint.ConstraintLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="234dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/EditText01"
+                app:layout_constraintRight_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_width="270dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="100dp"
+                android:fontFamily="@font/maplestory"
+                android:gravity="center_horizontal"
+                android:text="닉네임"
+                android:textSize="25dp"
+                android:textColor="#000000" />
+
+            <Button
+                android:id="@+id/button"
+                app:layout_constraintRight_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
+                android:background="#AEDDEF"
+                android:textColor="#000000"
+                android:fontFamily="@font/maplestory"
+                android:text="변경"
+                android:textSize="25dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/button_round"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView2"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/maplestory"
+                android:gravity="center_horizontal"
+                android:text="내가 구매한 상품 목록"
+                android:textSize="35dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="25dp"
-        android:text="마이페이지"
-        android:gravity="center"
-        android:fontFamily="@font/maplestory"
-        android:textColor="#000000">
-    </TextView>
+
+    <include
+        layout="@layout/navigation_drawer" />
+
 
 
 </android.support.v4.widget.DrawerLayout>
