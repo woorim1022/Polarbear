@@ -1,19 +1,18 @@
 package com.example.sjy.githubtest;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Layout;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.utils.ColorTemplate;
+import com.example.sjy.githubtest.R;
 
-import java.util.ArrayList;
+import static com.example.sjy.githubtest.R.id.drawerView;
 
 public class DonateActivity extends AppCompatActivity {
 
@@ -25,9 +24,15 @@ public class DonateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_donate);
 
+        drawerLayout = (DrawerLayout)findViewById(R.id.donate_layout);
+        drawerView = (View)findViewById(R.id.drawerView);
 
-
-
+        ImageView openDrawer = (ImageView)findViewById(R.id.menu_button);
+        openDrawer.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                drawerLayout.openDrawer(drawerView);
+            }
+        });
     }
 
     public void menuOnClick(View v) {

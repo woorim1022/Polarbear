@@ -36,6 +36,7 @@
             android:padding="100dp"
             tools:context=".MainActivity">
 
+
             <TextView
                 android:id="@+id/weightView"
                 android:layout_width="wrap_content"
@@ -77,6 +78,24 @@
                 android:textSize="24sp"
                 tools:layout_editor_absoluteX="179dp"
                 tools:layout_editor_absoluteY="553dp" />
+
+            <TextView
+                android:id="@+id/goalwalk"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="목표 걸음걸이 수 : "
+                android:textColor="#000000"
+                android:visibility="invisible" />
+
+
+            <TextView
+                android:id="@+id/currentwalk"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="현재 걸음걸이 수 : "
+                android:textColor="#000000"
+                android:visibility="invisible" />
+
 
         </LinearLayout>
     </LinearLayout>

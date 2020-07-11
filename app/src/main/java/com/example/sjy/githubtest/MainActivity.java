@@ -2,6 +2,8 @@ package com.example.sjy.githubtest;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //메뉴 버튼 클릭
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         drawerView = (View)findViewById(R.id.drawerView);
 
@@ -48,8 +51,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         // URL 설정.
-        String url = "https://www.daum.net";
+        String url = "http://192.168.56.1:80/try.php";
 
+    //메뉴 클릭
         // AsyncTask를 통해 HttpURLConnection 수행.
         NetworkTask networkTask = new NetworkTask(url, null);
         networkTask.execute();

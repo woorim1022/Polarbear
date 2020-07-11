@@ -12,12 +12,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name=".MypageActivity"></activity>
-        <activity android:name=".ShopActivity" ></activity>
-        <activity android:name=".RankingActivity"></activity>
-        <activity android:name=".DonateActivity"></activity>
-        <activity android:name=".GraphActivity"></activity>
-        <activity android:name=".WeightActivity"></activity>
+        <activity android:name=".MypageActivity" android:noHistory="true"></activity>
+        <activity android:name=".ShopActivity" android:noHistory="true"> </activity>
+        <activity android:name=".RankingActivity" android:noHistory="true"></activity>
+        <activity android:name=".DonateActivity" android:noHistory="true"></activity>
+        <activity android:name=".GraphActivity" android:noHistory="true"></activity>
+        <activity android:name=".WeightActivity" android:noHistory="true"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
