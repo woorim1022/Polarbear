@@ -61,9 +61,10 @@
                 android:id="@+id/shop_image1"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="8dp"
-                android:src="@drawable/polarbear">
+                android:src="@drawable/apple">
             </ImageView>
 
             <TextView
@@ -77,7 +78,7 @@
                 android:fontFamily="@font/maplestory"
                 android:textStyle="bold"
                 android:textColor="#000000"
-                android:text="엄청 맛있는 생선">
+                android:text="달콤한 사과">
             </TextView>
 
             <TextView
@@ -94,6 +95,7 @@
                 android:textSize="20dp"></TextView>
 
             <TextView
+                android:id="@+id/shop_price1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/shop_name1"
@@ -101,7 +103,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/shop_point1"
                 android:fontFamily="@font/maplestory"
-                android:text="150"
+                android:text="50"
                 android:textColor="#000000"
                 android:textSize="20dp">
             </TextView>
@@ -110,14 +112,14 @@
                 android:layout_width="90dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="30dp"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="190dp"
                 android:background="#AEDDEF"
-                android:layout_toRightOf="@id/shop_name1"
+                android:layout_toRightOf="@id/shop_image1"
                 android:fontFamily="@font/maplestory"
                 android:textColor="#000000"
                 android:textSize="20dp"
                 android:text="구매 하기"
-                android:onClick="DonateClick1">
+                android:onClick="ShopClick1">
 
             </Button>
         </RelativeLayout>
@@ -129,50 +131,52 @@
             android:layout_marginTop="20dp">
 
             <ImageView
-                android:id="@+id/donate_image2"
+                android:id="@+id/shop_image2"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="8dp"
-                android:src="@drawable/polarbear">
+                android:src="@drawable/fish">
             </ImageView>
 
             <TextView
-                android:id="@+id/donate_name2"
+                android:id="@+id/shop_name2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/donate_image2"
-                android:layout_toRightOf="@+id/donate_image2"
+                android:layout_alignTop="@+id/shop_image2"
+                android:layout_toRightOf="@+id/shop_image2"
                 android:layout_marginLeft="10dp"
                 android:textSize="25dp"
                 android:fontFamily="@font/maplestory"
                 android:textStyle="bold"
                 android:textColor="#000000"
-                android:text="재미있는 장난감 ">
+                android:text="싱싱한 생선">
             </TextView>
 
             <TextView
-                android:id="@+id/donate_point2"
+                android:id="@+id/shop_point2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/donate_name2"
+                android:layout_below="@id/shop_name2"
                 android:layout_marginTop="24dp"
                 android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@+id/donate_image2"
+                android:layout_toRightOf="@+id/shop_image2"
                 android:fontFamily="@font/maplestory"
                 android:text="필요 포인트"
                 android:textColor="#000000"
                 android:textSize="20dp"></TextView>
 
             <TextView
+                android:id="@+id/shop_price2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/donate_name2"
+                android:layout_below="@id/shop_name2"
                 android:layout_marginTop="24dp"
                 android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@id/donate_point2"
+                android:layout_toRightOf="@id/shop_point2"
                 android:fontFamily="@font/maplestory"
-                android:text="150"
+                android:text="100"
                 android:textColor="#000000"
                 android:textSize="20dp">
             </TextView>
@@ -181,14 +185,14 @@
                 android:layout_width="90dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="30dp"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="190dp"
                 android:background="#AEDDEF"
-                android:layout_toRightOf="@id/donate_name2"
+                android:layout_toRightOf="@id/shop_image2"
                 android:fontFamily="@font/maplestory"
                 android:textColor="#000000"
                 android:textSize="20dp"
                 android:text="구매 하기"
-                android:onClick="DonateClick2">
+                android:onClick="ShopClick2">
 
             </Button>
         </RelativeLayout>
@@ -200,48 +204,50 @@
             android:layout_marginTop="20dp">
 
             <ImageView
-                android:id="@+id/donate_image3"
+                android:id="@+id/shop_image3"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="8dp"
-                android:src="@drawable/polarbear">
+                android:src="@drawable/meat">
             </ImageView>
 
             <TextView
-                android:id="@+id/donate_name3"
+                android:id="@+id/shop_name3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/donate_image3"
-                android:layout_toRightOf="@+id/donate_image3"
+                android:layout_alignTop="@+id/shop_image3"
+                android:layout_toRightOf="@+id/shop_image3"
                 android:layout_marginLeft="10dp"
                 android:textSize="25dp"
                 android:fontFamily="@font/maplestory"
                 android:textStyle="bold"
                 android:textColor="#000000"
-                android:text="너무 맛있는 고기">
+                android:text="맛있는 고기">
             </TextView>
 
             <TextView
-                android:id="@+id/donate_point3"
+                android:id="@+id/shop_point3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/donate_name3"
+                android:layout_below="@id/shop_name3"
                 android:layout_marginTop="24dp"
                 android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@+id/donate_image3"
+                android:layout_toRightOf="@+id/shop_image3"
                 android:fontFamily="@font/maplestory"
                 android:text="필요 포인트"
                 android:textColor="#000000"
                 android:textSize="20dp"></TextView>
 
             <TextView
+                android:id="@+id/shop_price3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/donate_name3"
+                android:layout_below="@id/shop_name3"
                 android:layout_marginTop="24dp"
                 android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@id/donate_point3"
+                android:layout_toRightOf="@id/shop_point3"
                 android:fontFamily="@font/maplestory"
                 android:text="150"
                 android:textColor="#000000"
@@ -252,9 +258,9 @@
                 android:layout_width="90dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="30dp"
-                android:layout_marginLeft="25dp"
+                android:layout_marginLeft="190dp"
                 android:background="#AEDDEF"
-                android:layout_toRightOf="@id/donate_name3"
+                android:layout_toRightOf="@id/shop_image3"
                 android:fontFamily="@font/maplestory"
                 android:textColor="#000000"
                 android:textSize="20dp"
@@ -271,50 +277,52 @@
             android:layout_marginTop="20dp">
 
             <ImageView
-                android:id="@+id/donate_image4"
+                android:id="@+id/shop_image4"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="8dp"
-                android:src="@drawable/polarbear">
+                android:src="@drawable/ice">
             </ImageView>
 
             <TextView
-                android:id="@+id/donate_name4"
+                android:id="@+id/shop_name4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/donate_image4"
-                android:layout_toRightOf="@+id/donate_image4"
+                android:layout_alignTop="@+id/shop_image4"
+                android:layout_toRightOf="@+id/shop_image4"
                 android:layout_marginLeft="10dp"
                 android:textSize="25dp"
                 android:fontFamily="@font/maplestory"
                 android:textStyle="bold"
                 android:textColor="#000000"
-                android:text="엄청 넓은 빙하   ">
+                android:text="시원한 얼음블록">
             </TextView>
 
             <TextView
-                android:id="@+id/donate_point4"
+                android:id="@+id/shop_point4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/donate_name4"
+                android:layout_below="@id/shop_name4"
                 android:layout_marginTop="24dp"
                 android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@+id/donate_image4"
+                android:layout_toRightOf="@+id/shop_image4"
                 android:fontFamily="@font/maplestory"
                 android:text="필요 포인트"
                 android:textColor="#000000"
                 android:textSize="20dp"></TextView>
 
             <TextView
+                android:id="@+id/shop_price4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/donate_name4"
+                android:layout_below="@id/shop_name4"
                 android:layout_marginTop="24dp"
                 android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@id/donate_point4"
+                android:layout_toRightOf="@id/shop_point4"
                 android:fontFamily="@font/maplestory"
-                android:text="1000"
+                android:text="200"
                 android:textColor="#000000"
                 android:textSize="20dp">
             </TextView>
@@ -323,18 +331,57 @@
                 android:layout_width="90dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="30dp"
-                android:layout_marginLeft="23dp"
+                android:layout_marginLeft="190dp"
                 android:background="#AEDDEF"
-                android:layout_toRightOf="@id/donate_name4"
+                android:layout_toRightOf="@id/shop_image4"
                 android:fontFamily="@font/maplestory"
                 android:textColor="#000000"
                 android:textSize="20dp"
                 android:text="구매 하기"
-                android:onClick="DonateClick4">
+                android:onClick="ShopClick4">
 
             </Button>
         </RelativeLayout>
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/maplestory"
+            android:textColor="#000000"
+            android:textSize="20dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="20dp"
+            android:text="보유 포인트 : ">
+        </TextView>
+
+        <TextView
+            android:id="@+id/currentpoint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/maplestory"
+            android:textColor="#000000"
+            android:textSize="20dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="5dp"
+            android:text="10000">
+        </TextView>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:fontFamily="@font/maplestory"
+            android:textColor="#000000"
+            android:textSize="18dp"
+            android:layout_marginTop="40dp"
+            android:text="사용한 포인트 만큼 북극곰의 경험치로 전환됩니다.">
+        </TextView>
 
     </LinearLayout>
 
