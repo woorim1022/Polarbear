@@ -53,6 +53,28 @@
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="30dp"
+            android:id="@+id/week_top"
+            tools:context=".RankingActivity">
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:fontFamily="@font/maplestory"
+                android:textColor="#000000"
+                android:textSize="18dp">
+            </TextView>
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:layout_alignBottom="@id/ranking_top"
@@ -67,8 +89,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="50dp"
-                    android:layout_marginTop="50dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginTop="20dp"
                     android:fontFamily="@font/maplestory"
                     android:text="순위"
                     android:textColor="#000000"
@@ -77,7 +99,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="50dp"
+                    android:layout_marginLeft="40dp"
                     android:layout_marginTop="30dp"
                     android:src="@drawable/first">
                 </ImageView>
@@ -85,7 +107,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="50dp"
+                    android:layout_marginLeft="40dp"
                     android:layout_marginTop="10dp"
                     android:src="@drawable/second">
                 </ImageView>
@@ -93,7 +115,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="50dp"
+                    android:layout_marginLeft="40dp"
                     android:layout_marginTop="10dp"
                     android:src="@drawable/third">
                 </ImageView>
@@ -101,7 +123,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="50dp"
+                    android:layout_marginLeft="40dp"
                     android:layout_marginTop="10dp"
                     android:src="@drawable/fourth">
                 </ImageView>
@@ -109,7 +131,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="50dp"
+                    android:layout_marginLeft="40dp"
                     android:layout_marginTop="10dp"
                     android:src="@drawable/fifth">
                 </ImageView>
@@ -117,7 +139,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="50dp"
+                    android:layout_marginLeft="40dp"
                     android:layout_marginTop="10dp"
                     android:src="@drawable/sixth">
                 </ImageView>
@@ -125,7 +147,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="50dp"
+                    android:layout_marginLeft="40dp"
                     android:layout_marginTop="10dp"
                     android:src="@drawable/seventh">
                 </ImageView>
@@ -133,7 +155,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="50dp"
+                    android:layout_marginLeft="40dp"
                     android:layout_marginTop="10dp"
                     android:src="@drawable/eighth">
                 </ImageView>
@@ -141,7 +163,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="50dp"
+                    android:layout_marginLeft="40dp"
                     android:layout_marginTop="10dp"
                     android:src="@drawable/ninth">
                 </ImageView>
@@ -149,7 +171,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="50dp"
+                    android:layout_marginLeft="40dp"
                     android:layout_marginTop="10dp"
                     android:src="@drawable/tenth">
                 </ImageView>
@@ -165,8 +187,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp"
-                    android:layout_marginLeft="70dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginTop="20dp"
                     android:fontFamily="@font/maplestory"
                     android:text="닉네임"
                     android:textColor="#000000"
@@ -176,10 +198,10 @@
                     android:id="@+id/rank1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginTop="30dp"
-                    android:layout_marginLeft="20dp"
                     android:fontFamily="@font/maplestory"
-                    android:text="북극곰을부탁해"
+                    android:text="닉네임은여덟글자"
                     android:textColor="#000000"
                     android:textSize="20dp"></TextView>
 
@@ -187,10 +209,10 @@
                     android:id="@+id/rank2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginTop="21dp"
-                    android:layout_marginLeft="20dp"
                     android:fontFamily="@font/maplestory"
-                    android:text="랭킹2위북극곰씨"
+                    android:text="랭킹2위"
                     android:textColor="#000000"
                     android:textSize="20dp"></TextView>
 
@@ -198,8 +220,8 @@
                     android:id="@+id/rank3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginTop="21dp"
-                    android:layout_marginLeft="20dp"
                     android:fontFamily="@font/maplestory"
                     android:text="랭킹3위"
                     android:textColor="#000000"
@@ -209,8 +231,8 @@
                     android:id="@+id/rank4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginTop="21dp"
-                    android:layout_marginLeft="20dp"
                     android:fontFamily="@font/maplestory"
                     android:text="랭킹4위"
                     android:textColor="#000000"
@@ -220,8 +242,8 @@
                     android:id="@+id/rank5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginTop="21dp"
-                    android:layout_marginLeft="20dp"
                     android:fontFamily="@font/maplestory"
                     android:text="랭킹5위"
                     android:textColor="#000000"
@@ -231,8 +253,8 @@
                     android:id="@+id/rank6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginTop="21dp"
-                    android:layout_marginLeft="20dp"
                     android:fontFamily="@font/maplestory"
                     android:text="랭킹6위"
                     android:textColor="#000000"
@@ -242,8 +264,8 @@
                     android:id="@+id/rank7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginTop="21dp"
-                    android:layout_marginLeft="20dp"
                     android:fontFamily="@font/maplestory"
                     android:text="랭킹7위"
                     android:textColor="#000000"
@@ -253,8 +275,8 @@
                     android:id="@+id/rank8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginTop="21dp"
-                    android:layout_marginLeft="20dp"
                     android:fontFamily="@font/maplestory"
                     android:text="랭킹8위"
                     android:textColor="#000000"
@@ -264,8 +286,8 @@
                     android:id="@+id/rank9"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginTop="21dp"
-                    android:layout_marginLeft="20dp"
                     android:fontFamily="@font/maplestory"
                     android:text="랭킹9위"
                     android:textColor="#000000"
@@ -275,13 +297,12 @@
                     android:id="@+id/rank10"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginTop="21dp"
-                    android:layout_marginLeft="20dp"
                     android:fontFamily="@font/maplestory"
                     android:text="랭킹10위"
                     android:textColor="#000000"
                     android:textSize="20dp"></TextView>
-
 
 
             </LinearLayout>
@@ -289,16 +310,16 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_weight="2">
+                android:layout_weight="2"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp"
-                    android:layout_marginLeft="40dp"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginTop="20dp"
                     android:fontFamily="@font/maplestory"
-                    android:text="누적 포인트"
+                    android:text="이번 주 획득 포인트"
                     android:textColor="#000000"
                     android:textSize="20dp"></TextView>
 
@@ -306,10 +327,10 @@
                     android:id="@+id/point1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
                     android:layout_marginLeft="50dp"
+                    android:layout_marginTop="30dp"
                     android:fontFamily="@font/maplestory"
-                    android:text="1000000"
+                    android:text="200"
                     android:textColor="#000000"
                     android:textSize="20dp"></TextView>
 
@@ -317,10 +338,10 @@
                     android:id="@+id/point2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="21dp"
                     android:layout_marginLeft="50dp"
+                    android:layout_marginTop="21dp"
                     android:fontFamily="@font/maplestory"
-                    android:text="9800"
+                    android:text="195"
                     android:textColor="#000000"
                     android:textSize="20dp"></TextView>
 
@@ -328,10 +349,10 @@
                     android:id="@+id/point3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="21dp"
                     android:layout_marginLeft="50dp"
+                    android:layout_marginTop="21dp"
                     android:fontFamily="@font/maplestory"
-                    android:text="6000"
+                    android:text="180"
                     android:textColor="#000000"
                     android:textSize="20dp"></TextView>
 
@@ -339,10 +360,10 @@
                     android:id="@+id/point4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="21dp"
                     android:layout_marginLeft="50dp"
+                    android:layout_marginTop="21dp"
                     android:fontFamily="@font/maplestory"
-                    android:text="3500"
+                    android:text="170"
                     android:textColor="#000000"
                     android:textSize="20dp"></TextView>
 
@@ -350,10 +371,10 @@
                     android:id="@+id/point5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="21dp"
                     android:layout_marginLeft="50dp"
+                    android:layout_marginTop="21dp"
                     android:fontFamily="@font/maplestory"
-                    android:text="2000"
+                    android:text="160"
                     android:textColor="#000000"
                     android:textSize="20dp"></TextView>
 
@@ -361,10 +382,10 @@
                     android:id="@+id/point6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="21dp"
                     android:layout_marginLeft="50dp"
+                    android:layout_marginTop="21dp"
                     android:fontFamily="@font/maplestory"
-                    android:text="1980"
+                    android:text="140"
                     android:textColor="#000000"
                     android:textSize="20dp"></TextView>
 
@@ -375,7 +396,7 @@
                     android:layout_marginLeft="50dp"
                     android:layout_marginTop="21dp"
                     android:fontFamily="@font/maplestory"
-                    android:text="1800"
+                    android:text="100"
                     android:textColor="#000000"
                     android:textSize="20dp"></TextView>
 
@@ -383,10 +404,10 @@
                     android:id="@+id/point8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="21dp"
                     android:layout_marginLeft="50dp"
+                    android:layout_marginTop="21dp"
                     android:fontFamily="@font/maplestory"
-                    android:text="1400"
+                    android:text="95"
                     android:textColor="#000000"
                     android:textSize="20dp"></TextView>
 
@@ -394,10 +415,10 @@
                     android:id="@+id/point9"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="21dp"
                     android:layout_marginLeft="50dp"
+                    android:layout_marginTop="21dp"
                     android:fontFamily="@font/maplestory"
-                    android:text="800"
+                    android:text="80"
                     android:textColor="#000000"
                     android:textSize="20dp"></TextView>
 
@@ -405,16 +426,48 @@
                     android:id="@+id/point10"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="21dp"
                     android:layout_marginLeft="50dp"
+                    android:layout_marginTop="21dp"
                     android:fontFamily="@font/maplestory"
-                    android:text="200"
+                    android:text="20"
                     android:textColor="#000000"
                     android:textSize="20dp"></TextView>
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="40dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/maplestory"
+                        android:textColor="#000000"
+                        android:textSize="20dp"
+                        android:text="내 순위 : ">
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/myrank"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/maplestory"
+                        android:textColor="#000000"
+                        android:textSize="20dp"
+                        android:layout_marginLeft="5dp"
+                        android:text="순위 밖">
+                    </TextView>
+
+                </LinearLayout>
+
+
             </LinearLayout>
 
+
         </LinearLayout>
+
+
+
     </LinearLayout>
     <include layout="@layout/navigation_drawer" />
 

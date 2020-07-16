@@ -6,11 +6,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class RankingActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private View drawerView;
+    private TextView whenDate;
+    private SimpleDateFormat mFormat = new SimpleDateFormat("yyyy/M/d");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +25,7 @@ public class RankingActivity extends AppCompatActivity {
 
         drawerLayout = (DrawerLayout)findViewById(R.id.ranking_layout);
         drawerView = (View)findViewById(R.id.drawerView);
+        whenDate = (TextView)findViewById(R.id.date);
 
         ImageView openDrawer = (ImageView)findViewById(R.id.menu_button);
         openDrawer.setOnClickListener(new View.OnClickListener() {
@@ -26,6 +33,10 @@ public class RankingActivity extends AppCompatActivity {
                 drawerLayout.openDrawer(drawerView);
             }
         });
+
+        String date = new SimpleDateFormat("yyyy년 MM월 W주차 랭킹").format(new Date());
+        whenDate.setText(date);
+
     }
 
     public void menuOnClick(View v) {
