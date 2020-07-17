@@ -1,6 +1,8 @@
 package com.example.sjy.githubtest;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,6 +28,13 @@ public class ShopActivity extends AppCompatActivity {
                 drawerLayout.openDrawer(drawerView);
             }
         });
+
+        String url = "http://polarbear1022.dothome.co.kr/shop.php";
+
+        //메뉴 클릭
+        // AsyncTask를 통해 HttpURLConnection 수행.
+        ShopActivity.NetworkTask networkTask = new ShopActivity.NetworkTask(url, null);
+        networkTask.execute();
     }
 
     public void menuOnClick(View v) {
@@ -61,6 +70,36 @@ public class ShopActivity extends AppCompatActivity {
 
         }
     }
+
+    public class NetworkTask extends AsyncTask<Void, Void, String> {
+
+        private String url;
+        private ContentValues values;
+
+        public NetworkTask(String url, ContentValues values) {
+
+            this.url = url;
+            this.values = values;
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+
+            String result; // 요청 결과를 저장할 변수.
+            RequestHttpConnection requestHttpConnection = new RequestHttpConnection();
+            result = requestHttpConnection.request(url, values); // 해당 URL로 부터 결과물을 얻어온다.
+
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            //doInBackground()로 부터 리턴된 값이 onPostExecute()의 매개변수로 넘어오므로 s를 출력한다.
+//            textView.setText(s);
+        }
+    }
+
 
 
 }
