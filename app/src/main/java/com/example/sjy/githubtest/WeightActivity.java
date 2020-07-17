@@ -75,7 +75,7 @@ public class WeightActivity extends AppCompatActivity {
                 }
             });
 
-  
+
 
             AlertDialog alertDialog = builder.create();
 

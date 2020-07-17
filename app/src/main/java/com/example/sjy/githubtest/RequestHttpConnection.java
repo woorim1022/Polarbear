@@ -24,7 +24,6 @@ public class RequestHttpConnection {
 
         if(_params == null) {
             sbParams.append("null");
-            Log.v("aaa", _url);
         }
         else{
             boolean isAnd = false;
@@ -55,21 +54,14 @@ public class RequestHttpConnection {
             urlConn.setRequestMethod("POST");
             urlConn.setRequestProperty("Accept-Charset", "UTF-8"); // Accept-Charset 설정.
             urlConn.setRequestProperty("Context_Type", "application/x-www-form-urlencoded;charset=UTF-8");
-
-            Log.v("aaa","222");
             String strParams = sbParams.toString();
-            Log.v("aaa","33");
 
             OutputStream os = urlConn.getOutputStream();
             os.write(strParams.getBytes("UTF-8"));
-            Log.v("aaa","55");
             os.flush();
-            Log.v("aaa","66");
             os.close();
-            Log.v("aaa","77");
 
             if(urlConn.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                Log.v("aaa","실패");
                 return null;
             }
 
@@ -86,11 +78,9 @@ public class RequestHttpConnection {
 
             return page;
         } catch (MalformedURLException e) { // for URL.
-            Log.v("aaa","88");
             e.printStackTrace();
 
         } catch (IOException e) { // for openConnection().
-            Log.v("aaa","99");
             e.printStackTrace();
         } finally {
             if (urlConn != null)

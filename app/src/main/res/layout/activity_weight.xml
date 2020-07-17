@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#AEDDEF"
+    android:background="#F0FCFC"
     android:orientation="vertical"
     android:id="@+id/weight_layout"
     tools:context=".WeightActivity">
@@ -23,7 +23,7 @@
             android:padding="15dp"
             android:text="무게재기"
             android:textColor="#000000"
-            android:textSize="24sp"
+            android:textSize="25dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -42,11 +42,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_margin="20dp"
                 android:fontFamily="@font/maplestory"
                 android:padding="40dp"
                 android:text="kg"
                 android:textColor="#000000"
-                android:textSize="24sp"
+                android:textSize="30dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -57,7 +58,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:background="#1F92BB"
+                android:layout_margin="20dp"
+                android:background="#AEDDEF"
                 android:fontFamily="@font/maplestory"
                 android:padding="20dp"
                 android:text="무게 재기"
@@ -68,14 +70,15 @@
 
             <TextView
                 android:id="@+id/dateView"
-                android:layout_width="260dp"
+                android:layout_width="293dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_margin="20dp"
                 android:fontFamily="@font/maplestory"
                 android:padding="40dp"
                 android:text="마지막 측정 날짜 : "
                 android:textColor="#000000"
-                android:textSize="24sp"
+                android:textSize="25dp"
                 tools:layout_editor_absoluteX="179dp"
                 tools:layout_editor_absoluteY="553dp" />
 
@@ -83,8 +86,10 @@
                 android:id="@+id/goalwalk"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="목표 걸음걸이 수 : "
+                android:fontFamily="@font/maplestory"
+                android:text="목표 걸음걸이 수 : 5000"
                 android:textColor="#000000"
+                android:textSize="20dp"
                 android:visibility="invisible" />
 
 
@@ -92,8 +97,10 @@
                 android:id="@+id/currentwalk"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/maplestory"
                 android:text="현재 걸음걸이 수 : "
                 android:textColor="#000000"
+                android:textSize="20dp"
                 android:visibility="invisible" />
 
 

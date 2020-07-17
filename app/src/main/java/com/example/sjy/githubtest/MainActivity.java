@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         // URL 설정.
-        String url = "http://192.168.56.1:80/try.php";
+        String url = "http://polarbear1022.dothome.co.kr/try.php";
 
     //메뉴 클릭
         // AsyncTask를 통해 HttpURLConnection 수행.
