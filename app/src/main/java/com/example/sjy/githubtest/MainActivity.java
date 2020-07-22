@@ -40,13 +40,20 @@ public class MainActivity extends AppCompatActivity {
 
         ImageView openDrawer = (ImageView)findViewById(R.id.menu_button);
 
-        textView = (TextView)findViewById(R.id.textView);
-
         openDrawer.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 drawerLayout.openDrawer(drawerView);
             }
         });
+
+        //조건에 맞는 배지만 노출되도록 설정 (VISIBLE)
+        ImageView badge1 = (ImageView)findViewById(R.id.badge01);
+        ImageView badge2 = (ImageView)findViewById(R.id.badge02);
+        ImageView badge3 = (ImageView)findViewById(R.id.badge03);
+
+        badge1.setVisibility(View.VISIBLE);
+        badge2.setVisibility(View.VISIBLE);
+        badge3.setVisibility(View.VISIBLE);
 
 
 
@@ -120,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             //doInBackground()로 부터 리턴된 값이 onPostExecute()의 매개변수로 넘어오므로 s를 출력한다.
-            textView.setText(s);
+            //textView.setText(s);
         }
     }
 

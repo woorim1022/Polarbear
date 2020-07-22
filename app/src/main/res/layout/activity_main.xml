@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#F0FCFC"
+    android:background="@drawable/background_main"
     android:id="@+id/drawer_layout">
 
     <LinearLayout
@@ -26,13 +26,168 @@
             android:onClick="OnClick">
         </ImageView>
 
-        <TextView
-            android:id="@+id/textView"
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:layout_marginLeft="20dp">
+
+            <ImageView
+                android:id="@+id/badge01"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/badge01">
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/badge02"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/badge02">
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/badge03"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/badge03">
+            </ImageView>
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/polarbear"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/baby_polarbear">
+
+        </ImageView>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/apple">
+                </ImageView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="x 5"
+                    android:fontFamily="@font/maplestory"
+                    android:textColor="#000000"
+                    android:textSize="18dp">
+                </TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/fish">
+                </ImageView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="x 10"
+                    android:fontFamily="@font/maplestory"
+                    android:textColor="#000000"
+                    android:textSize="18dp">
+                </TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/meat">
+                </ImageView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="x 9"
+                    android:fontFamily="@font/maplestory"
+                    android:textColor="#000000"
+                    android:textSize="18dp">
+                </TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/ice">
+                </ImageView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="x 0"
+                    android:fontFamily="@font/maplestory"
+                    android:textColor="#000000"
+                    android:textSize="18dp">
+                </TextView>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="아아아아"
-            android:visibility="visible"
-            android:textColor="@color/colorPrimaryDark"/>
+            android:layout_marginTop="50dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:text="레벨 3"
+                android:fontFamily="@font/maplestory"
+                android:textColor="#000000"
+                android:textSize="18dp">
+
+            </TextView>
+
+            <ProgressBar
+                android:id="@+id/exp_bar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_marginLeft="30dp"
+                android:layout_width="300dp"
+                android:layout_height="15dp"
+                android:progressDrawable="@drawable/progressbar" />
+
+
+        </LinearLayout>
+
     </LinearLayout>
 
 
