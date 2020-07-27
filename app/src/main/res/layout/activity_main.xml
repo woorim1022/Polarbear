@@ -60,21 +60,23 @@
         <ImageView
             android:id="@+id/polarbear"
             android:layout_width="350dp"
-            android:layout_height="wrap_content"
+            android:layout_height="300dp"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/baby_polarbear">
+            android:src="@drawable/adult_polarbear">
 
         </ImageView>
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="310dp"
+            android:layout_height="80dp"
             android:orientation="horizontal"
-            android:layout_gravity="center_horizontal">
+            android:layout_gravity="center_horizontal"
+            >
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:orientation="vertical">
 
                 <ImageView
@@ -84,6 +86,7 @@
                 </ImageView>
 
                 <TextView
+                    android:id="@+id/num_apple"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -97,7 +100,9 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginLeft="10dp"
+                android:orientation="vertical"
+                >
 
                 <ImageView
                     android:layout_width="80dp"
@@ -106,6 +111,7 @@
                 </ImageView>
 
                 <TextView
+                    android:id="@+id/num_fish"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -119,6 +125,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:orientation="vertical">
 
                 <ImageView
@@ -128,6 +135,7 @@
                 </ImageView>
 
                 <TextView
+                    android:id="@+id/num_meat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -141,6 +149,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:orientation="vertical">
 
                 <ImageView
@@ -150,6 +159,7 @@
                 </ImageView>
 
                 <TextView
+                    android:id="@+id/num_ice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -167,6 +177,7 @@
             android:layout_marginTop="50dp">
 
             <TextView
+                android:id="@+id/level"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
