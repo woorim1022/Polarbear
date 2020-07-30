@@ -1,19 +1,15 @@
 package com.example.sjy.githubtest;
 
         import android.content.ContentValues;
-        import android.util.Log;
 
-        import java.io.BufferedReader;
-        import java.io.ByteArrayOutputStream;
-        import java.io.IOException;
-        import java.io.InputStream;
-        import java.io.InputStreamReader;
-        import java.io.OutputStream;
-        import java.net.HttpURLConnection;
-        import java.net.MalformedURLException;
-        import java.net.ProtocolException;
-        import java.net.URL;
-        import java.util.Map;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Map;
 
 public class RequestHttpConnection {
 
@@ -49,7 +45,6 @@ public class RequestHttpConnection {
             urlConn = (HttpURLConnection) url.openConnection();
 
             if(urlConn != null)
-                Log.v("aaa",urlConn.toString());
 
             urlConn.setRequestMethod("POST");
             urlConn.setRequestProperty("Accept-Charset", "UTF-8"); // Accept-Charset 설정.
