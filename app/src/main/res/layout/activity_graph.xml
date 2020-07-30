@@ -38,7 +38,7 @@
 
 
                         <com.github.mikephil.charting.charts.LineChart
-                            android:id="@+id/chart"
+                            android:id="@+id/graph"
                             android:layout_width="377dp"
                             android:layout_height="586dp"
                             android:layout_gravity="center" />

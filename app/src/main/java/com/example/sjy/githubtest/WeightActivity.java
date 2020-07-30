@@ -4,11 +4,10 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.TestLooperManager;
+import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -19,11 +18,11 @@ public class WeightActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private View drawerView;
-    private TextView weightView;
+    private TextView weight;
     private Button button;
-    private TextView dateView;
-    private TextView goalwalk;
-    private TextView currentwalk;
+    private TextView measure_day;
+    private TextView step_goal;
+    private TextView step_current;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,11 +41,11 @@ public class WeightActivity extends AppCompatActivity {
         });
 
 
-        weightView = (TextView)findViewById(R.id.weightView);
+        weight = (TextView)findViewById(R.id.weight);
         button = (Button) findViewById(R.id.button);
-        dateView = (TextView)findViewById(R.id.dateView);
-        goalwalk = (TextView)findViewById(R.id.goalwalk);
-        currentwalk = (TextView)findViewById(R.id.currentwalk);
+        measure_day = (TextView)findViewById(R.id.measure_day);
+        step_goal = (TextView)findViewById(R.id.step_goal);
+        step_current = (TextView)findViewById(R.id.step_current);
 
         Intent intent = getIntent();  //메인 화면에서 넘어온 intent 받음
         String datafrommain = intent.getStringExtra("메인 액티비티에서 넘길 정보"); //pustExtra로 지정했던 데이터의 키값을 지정하면 해당하는 데이터 값이 나오게 됨
@@ -64,8 +63,8 @@ public class WeightActivity extends AppCompatActivity {
                 {
                     Toast.makeText(getApplicationContext(), "OK Click", Toast.LENGTH_SHORT).show();
 
-                    goalwalk.setVisibility(View.VISIBLE);
-                    currentwalk.setVisibility(View.VISIBLE);
+                    step_goal.setVisibility(View.VISIBLE);
+                    step_current.setVisibility(View.VISIBLE);
                 }
             });
 
@@ -169,7 +168,7 @@ public class WeightActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             //doInBackground()로 부터 리턴된 값이 onPostExecute()의 매개변수로 넘어오므로 s를 출력한다.
-            weightView.setText(s + "kg");
+            weight.setText(s + "kg");
         }
     }
 

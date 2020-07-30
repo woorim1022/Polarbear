@@ -27,7 +27,7 @@ public class GraphActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
 
-        LineChart lineChart = (LineChart) findViewById(R.id.chart);
+        LineChart graph = (LineChart) findViewById(R.id.graph);
 
         ArrayList<Entry> entries = new ArrayList<>();
         entries.add(new Entry(4f, 0));
@@ -63,8 +63,8 @@ public class GraphActivity extends AppCompatActivity {
         /*dataset.setDrawCubic(true); //선 둥글게 만들기
                 dataset.setDrawFilled(true); //그래프 밑부분 색칠*/
 
-        lineChart.setData(data);
-        lineChart.animateY(5000);
+        graph.setData(data);
+        graph.animateY(5000);
 
         drawerLayout = (DrawerLayout)findViewById(R.id.graph_layout);
         drawerView = (View)findViewById(R.id.drawerView);

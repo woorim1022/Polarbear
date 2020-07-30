@@ -1,24 +1,15 @@
 package com.example.sjy.githubtest;
 
 import android.content.ContentValues;
-import android.content.Context;
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.annotation.NonNull;
+import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import java.io.IOException;
-import java.net.*;
-
-import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,6 +19,8 @@ public class MainActivity extends AppCompatActivity {
     private static String TAG = "phptest";
 
     private TextView textView;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +47,17 @@ public class MainActivity extends AppCompatActivity {
         badge1.setVisibility(View.VISIBLE);
         badge2.setVisibility(View.VISIBLE);
         badge3.setVisibility(View.VISIBLE);
+
+
+        try {
+            Intent getintent = getIntent();
+            String userID = getintent.getStringExtra("userID");
+            Log.v("aaa", userID);
+        }catch (NullPointerException e) {
+            Intent signup = new Intent(MainActivity.this, SignupActivity.class);
+            startActivity(signup);
+        }
+
 
 
 

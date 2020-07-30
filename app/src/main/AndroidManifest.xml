@@ -13,6 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
         <activity android:name=".MypageActivity" android:noHistory="true"></activity>
+        <activity android:name=".SignupActivity" android:noHistory="true"></activity>
         <activity android:name=".ShopActivity" android:noHistory="true"> </activity>
         <activity android:name=".RankingActivity" android:noHistory="true"></activity>
         <activity android:name=".DonateActivity" android:noHistory="true"></activity>

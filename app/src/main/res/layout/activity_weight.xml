@@ -38,7 +38,7 @@
 
 
             <TextView
-                android:id="@+id/weightView"
+                android:id="@+id/weight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -69,7 +69,7 @@
                 tools:layout_editor_absoluteY="436dp" />
 
             <TextView
-                android:id="@+id/dateView"
+                android:id="@+id/measure_day"
                 android:layout_width="293dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -83,7 +83,7 @@
                 tools:layout_editor_absoluteY="553dp" />
 
             <TextView
-                android:id="@+id/goalwalk"
+                android:id="@+id/step_goal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/maplestory"
@@ -94,7 +94,7 @@
 
 
             <TextView
-                android:id="@+id/currentwalk"
+                android:id="@+id/step_current"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/maplestory"
