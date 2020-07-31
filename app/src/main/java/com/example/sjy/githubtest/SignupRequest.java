@@ -14,7 +14,7 @@ public class SignupRequest extends StringRequest {   //stringrequest : 문자열
     private Map<String,String> map;
 
     public SignupRequest(String uid, String uname, int ulevel, int uexp, Response.Listener<String> listener){
-        super(Method.POST, URL,listener,null);//위 url에 post방식으로 값을 전송
+        super(Method.POST, URL, listener,null);//위 url에 post방식으로 값을 전송
 
         map=new HashMap<>();
         map.put("uid",uid);

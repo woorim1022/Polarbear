@@ -29,7 +29,6 @@ public class WeightActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weight);
 
-
         drawerLayout = (DrawerLayout)findViewById(R.id.weight_layout);
         drawerView = (View)findViewById(R.id.drawerView);
 

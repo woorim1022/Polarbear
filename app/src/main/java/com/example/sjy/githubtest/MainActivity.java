@@ -1,6 +1,7 @@
 package com.example.sjy.githubtest;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     private View drawerView;
     private static String IP_ADDRESS = "IP주소";
     private static String TAG = "phptest";
-
+    private Context mContext;
     private TextView textView;
 
 
@@ -33,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
 
         ImageView openDrawer = (ImageView)findViewById(R.id.menu_button);
 
+        mContext = this;
+
         openDrawer.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 drawerLayout.openDrawer(drawerView);
@@ -44,30 +47,23 @@ public class MainActivity extends AppCompatActivity {
         ImageView badge2 = (ImageView)findViewById(R.id.badge02);
         ImageView badge3 = (ImageView)findViewById(R.id.badge03);
 
+
         badge1.setVisibility(View.VISIBLE);
         badge2.setVisibility(View.VISIBLE);
         badge3.setVisibility(View.VISIBLE);
 
 
-        try {
-            Intent getintent = getIntent();
-            String userID = getintent.getStringExtra("userID");
-            Log.v("aaa", userID);
-        }catch (NullPointerException e) {
+        /**Sharedpreference 클래스 이용해서 내부 저장소에 저장되어있는 userid, username 값 가져오기**/
+        String uid = PreferenceManager.getString(mContext, "userID");
+        String uname = PreferenceManager.getString(mContext, "userNAME");
+        Log.v("aaa", uid);
+        Log.v("aaa", uname);
+        /**만약 uid 값이 없으면, 회원가입을 위해 SignActivity.class 로 이동**/
+        if(uid == ""){
             Intent signup = new Intent(MainActivity.this, SignupActivity.class);
             startActivity(signup);
         }
 
-
-
-
-        // URL 설정.
-        String url = "http://polarbear1022.dothome.co.kr/try.php";
-
-    //메뉴 클릭
-        // AsyncTask를 통해 HttpURLConnection 수행.
-        NetworkTask networkTask = new NetworkTask(url, null);
-        networkTask.execute();
     }
 
     public void menuOnClick(View v) {
@@ -103,39 +99,6 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
-
-
-
-    public class NetworkTask extends AsyncTask<Void, Void, String> {
-
-        private String url;
-        private ContentValues values;
-
-        public NetworkTask(String url, ContentValues values) {
-
-            this.url = url;
-            this.values = values;
-        }
-
-        @Override
-        protected String doInBackground(Void... params) {
-
-            String result; // 요청 결과를 저장할 변수.
-            RequestHttpConnection requestHttpConnection = new RequestHttpConnection();
-            result = requestHttpConnection.request(url, values); // 해당 URL로 부터 결과물을 얻어온다.
-
-            return result;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            //doInBackground()로 부터 리턴된 값이 onPostExecute()의 매개변수로 넘어오므로 s를 출력한다.
-            //textView.setText(s);
-        }
-    }
-
-
 
 }
 
