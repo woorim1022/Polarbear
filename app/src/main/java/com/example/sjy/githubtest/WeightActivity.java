@@ -95,12 +95,6 @@ public class WeightActivity extends AppCompatActivity {
             alertDialog = builder.create();
             alertDialog.show();
 
-            String url = "http://polarbear1022.dothome.co.kr/weight.php";
-
-            //메뉴 클릭
-            // AsyncTask를 통해 HttpURLConnection 수행.
-            WeightActivity.NetworkTask networkTask = new WeightActivity.NetworkTask(url, null);
-            networkTask.execute();
 
         }
 
@@ -134,7 +128,7 @@ public class WeightActivity extends AppCompatActivity {
                 //센서에서 무게 가져오기
                 //서버에 저장
                 //화면에 무게, 날짜 출력
-                StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://polarbear1022.dothome.co.kr/weighttest.php",
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://polarbear1022.dothome.co.kr/weight.php",
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
@@ -142,7 +136,7 @@ public class WeightActivity extends AppCompatActivity {
                                 try {
                                     Log.v("rrr", response);
                                     JSONObject jsonResponse = new JSONObject(response);
-                                    Integer weightvalue = jsonResponse.getInt("weightvalue");
+                                    Integer weightvalue = jsonResponse.getInt("weight");
                                     Log.v("rrr", response+"");
                                     weight.setText("무게 : " + weightvalue + "g");
                                 } catch (JSONException e) {
@@ -204,36 +198,6 @@ public class WeightActivity extends AppCompatActivity {
 
         }
     }
-
-    public class NetworkTask extends AsyncTask<Void, Void, String> {
-
-        private String url;
-        private ContentValues values;
-
-        public NetworkTask(String url, ContentValues values) {
-
-            this.url = url;
-            this.values = values;
-        }
-
-        @Override
-        protected String doInBackground(Void... params) {
-
-            String result; // 요청 결과를 저장할 변수.
-            RequestHttpConnection requestHttpConnection = new RequestHttpConnection();
-            result = requestHttpConnection.request(url, values); // 해당 URL로 부터 결과물을 얻어온다.
-
-            return result;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            //doInBackground()로 부터 리턴된 값이 onPostExecute()의 매개변수로 넘어오므로 s를 출력한다.
-            weight.setText(s + "kg");
-        }
-    }
-
 
 
 }
