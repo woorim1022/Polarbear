@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="100dp"
+            android:paddingTop="100dp"
             tools:context=".MainActivity">
 
 
@@ -42,12 +42,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="20dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="40dp"
                 android:fontFamily="@font/maplestory"
-                android:padding="40dp"
-                android:text="kg"
+                android:text="무게 : "
                 android:textColor="#000000"
-                android:textSize="30dp"
+                android:textSize="40dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -84,24 +84,26 @@
 
             <TextView
                 android:id="@+id/step_goal"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/maplestory"
                 android:text="목표 걸음걸이 수 : 5000"
                 android:textColor="#000000"
                 android:textSize="20dp"
-                android:visibility="invisible" />
+                android:visibility="invisible"
+                android:layout_gravity="center"/>
 
 
             <TextView
                 android:id="@+id/step_current"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/maplestory"
                 android:text="현재 걸음걸이 수 : "
                 android:textColor="#000000"
                 android:textSize="20dp"
-                android:visibility="invisible" />
+                android:visibility="invisible"
+                android:layout_gravity="center"/>
 
 
         </LinearLayout>

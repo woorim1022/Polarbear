@@ -5,14 +5,26 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class WeightActivity extends AppCompatActivity {
 
@@ -23,6 +35,13 @@ public class WeightActivity extends AppCompatActivity {
     private TextView measure_day;
     private TextView step_goal;
     private TextView step_current;
+
+    private int count = 6;
+    private CountDownTimer countDownTimer;
+
+    AlertDialog.Builder builder, builder2;
+    AlertDialog alertDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,36 +68,31 @@ public class WeightActivity extends AppCompatActivity {
         Intent intent = getIntent();  //메인 화면에서 넘어온 intent 받음
         String datafrommain = intent.getStringExtra("메인 액티비티에서 넘길 정보"); //pustExtra로 지정했던 데이터의 키값을 지정하면 해당하는 데이터 값이 나오게 됨
 
-        Toast.makeText(this, datafrommain, Toast.LENGTH_SHORT).show();
 
         if(true) {   //포인트가 20이하면
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder = new AlertDialog.Builder(this);
 
-            builder.setTitle("이번주에는 아쉽게도 포인트를 많이 획득하지 못하셨군요!ㅜㅜ").setMessage("환경을 위해 이번주에는 자동차 대신 짧은 거리를 걸어보는 것이 어떨까요? 2000걸음을 걸으시면 추가 포인트가 지급됩니다.");
+            builder.setTitle("이번주에는 아쉽게도 포인트를 많이 획득하지 못하셨군요ㅠㅠ").setMessage("이번주에는 승용차를 이용하는 대신 짧은 거리를 걸어보는 것이 어떨까요? 승용차를 일주일에 하루만 덜 타면 연간 445kg의 이산화탄소를 줄일 수 있다고 해요! (5000걸음을 걸으시면 추가 포인트가 지급됩니다.)");
 
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+            builder.setPositiveButton("걸음 수 측정하기", new DialogInterface.OnClickListener(){
                 @Override
                 public void onClick(DialogInterface dialog, int id)
                 {
-                    Toast.makeText(getApplicationContext(), "OK Click", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "걸음 수 측정 시작", Toast.LENGTH_SHORT).show();
 
                     step_goal.setVisibility(View.VISIBLE);
                     step_current.setVisibility(View.VISIBLE);
                 }
             });
 
-            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+            builder.setNegativeButton("다음에", new DialogInterface.OnClickListener(){
                 @Override
                 public void onClick(DialogInterface dialog, int id)
                 {
-                    Toast.makeText(getApplicationContext(), "Cancel Click", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "걸음 수 측정 취소", Toast.LENGTH_SHORT).show();
                 }
             });
-
-
-
-            AlertDialog alertDialog = builder.create();
-
+            alertDialog = builder.create();
             alertDialog.show();
 
             String url = "http://polarbear1022.dothome.co.kr/weight.php";
@@ -90,16 +104,65 @@ public class WeightActivity extends AppCompatActivity {
 
         }
 
-        View.OnClickListener listener = new View.OnClickListener()
+        View.OnClickListener weightlistener = new View.OnClickListener()
         {
             @Override
             public void onClick(View v) {
+                builder2 = new AlertDialog.Builder(WeightActivity.this);
+                builder2.setTitle("5초 후에 음식물 쓰레기 봉투를 올려주세요");
+                builder2.setNegativeButton("취소하기", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int id)
+                    {
+                        //무게재기 취소
+                        Toast.makeText(getApplicationContext(), "무게재기 취소", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                alertDialog = builder2.create();
+                alertDialog.show();
+                countDownTimer = new CountDownTimer(5*1000, 1000) {
+                    @Override
+                    public void onTick(long l) {
+                        count --;
+                    }
+                    @Override
+                    public void onFinish() {
+                        alertDialog.dismiss();
+                    }
+                };
+                countDownTimer.start();
                 //센서에서 무게 가져오기
                 //서버에 저장
                 //화면에 무게, 날짜 출력
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://polarbear1022.dothome.co.kr/weighttest.php",
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                //결과 처리
+                                try {
+                                    Log.v("rrr", response);
+                                    JSONObject jsonResponse = new JSONObject(response);
+                                    Integer weightvalue = jsonResponse.getInt("weightvalue");
+                                    Log.v("rrr", response+"");
+                                    weight.setText("무게 : " + weightvalue + "g");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                                public void onErrorResponse(VolleyError error) {
+                            }
+                });
+                RequestQueue queue = Volley.newRequestQueue(WeightActivity.this);
+                queue.add(stringRequest);
             }
         };
-        button.setOnClickListener(listener);
+        button.setOnClickListener(weightlistener);
+
+
 
         Intent resultintent = new Intent();
         resultintent.putExtra("결과", "무게값, 포인트값 등");
@@ -170,7 +233,6 @@ public class WeightActivity extends AppCompatActivity {
             weight.setText(s + "kg");
         }
     }
-
 
 
 

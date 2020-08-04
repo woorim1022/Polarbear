@@ -9,6 +9,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         ImageView openDrawer = (ImageView)findViewById(R.id.menu_button);
 
         mContext = this;
+
 
         openDrawer.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -63,6 +65,9 @@ public class MainActivity extends AppCompatActivity {
             Intent signup = new Intent(MainActivity.this, SignupActivity.class);
             startActivity(signup);
         }
+
+        //userID로 디비에 검색해서 포인트, 경험치 정보 가져오기
+        //경험치 값 만큼 레벨 환산, 경험치 바 채우기
 
     }
 

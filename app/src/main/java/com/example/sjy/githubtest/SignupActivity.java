@@ -28,7 +28,6 @@ public class SignupActivity extends AppCompatActivity {
     private Button btn_register, validateButton;
     private AlertDialog dialog;
     private boolean validate=false;
-    private Context mContext;
 
     /** userid 와 username 을 입력받아 중복체크하고 서버에 전송, 디비에 저장하는 페이지 **/
     @Override
@@ -40,14 +39,12 @@ public class SignupActivity extends AppCompatActivity {
         et_name=findViewById(R.id.et_name);
         btn_register=findViewById(R.id.btn_register);
         validateButton=findViewById(R.id.validateButton);
-        mContext = this;
 
         //아이디 중복체크 버튼
         validateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String uid=et_id.getText().toString();
-
 
                 if(validate)
                 {
@@ -95,7 +92,6 @@ public class SignupActivity extends AppCompatActivity {
                                 dialog.show();
                             }
                         } catch (JSONException e) {
-
                             e.printStackTrace();
                         }
                     }
@@ -123,7 +119,6 @@ public class SignupActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         /**결과 처리**/
-
                         try {
                             JSONObject jasonObject=new JSONObject(response);         //response : 서버로 부터 받은 결과 (signup.php 의 $response 에 담겨있는 값)
                             boolean success=jasonObject.getBoolean("success");//signup.php의 success
@@ -131,8 +126,8 @@ public class SignupActivity extends AppCompatActivity {
                             if (success) {//회원등록 성공한 경우
 
                                 /**Sharedpeference 클래스를 이용해서 userid, username 저장, 각각 userID, userNAME 키에 저장**/
-                                PreferenceManager.setString(mContext, "userID", uid);  //sharedpreferences
-                                PreferenceManager.setString(mContext, "userNAME", uname);
+                                PreferenceManager.setString(SignupActivity.this, "userID", uid);  //sharedpreferences
+                                PreferenceManager.setString(SignupActivity.this, "userNAME", uname);
 
                                 Toast.makeText(getApplicationContext(), "회원 등록 성공", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(SignupActivity.this, MainActivity.class);
