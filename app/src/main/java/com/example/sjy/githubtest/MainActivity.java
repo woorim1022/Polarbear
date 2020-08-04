@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private static String TAG = "phptest";
     private Context mContext;
     private TextView textView;
+    private TextView username;
 
 
 
@@ -36,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
         ImageView openDrawer = (ImageView)findViewById(R.id.menu_button);
 
         mContext = this;
+
+        username = (TextView)findViewById(R.id.username);
 
 
         openDrawer.setOnClickListener(new View.OnClickListener() {
@@ -64,6 +67,10 @@ public class MainActivity extends AppCompatActivity {
         if(uid == ""){
             Intent signup = new Intent(MainActivity.this, SignupActivity.class);
             startActivity(signup);
+        }
+        else{
+            username.setVisibility(View.VISIBLE);
+            username.setText(uname + "님, 환영합니다");
         }
 
         //userID로 디비에 검색해서 포인트, 경험치 정보 가져오기
