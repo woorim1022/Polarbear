@@ -8,11 +8,18 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.sjy.githubtest.R;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import static com.example.sjy.githubtest.R.id.drawerView;
 
@@ -20,6 +27,13 @@ public class DonateActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private View drawerView;
+    private String mJsonString;
+    private TextView donate_name1;
+    private TextView donate_name2;
+    private TextView donate_name3;
+    private TextView donate_price1;
+    private TextView donate_price2;
+    private TextView donate_price3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,14 +50,22 @@ public class DonateActivity extends AppCompatActivity {
             }
         });
 
+        donate_name1 = (TextView)findViewById(R.id.donate_name1);
+        donate_name2 = (TextView)findViewById(R.id.donate_name2);
+        donate_name3 = (TextView)findViewById(R.id.donate_name3);
+        donate_price1 = (TextView)findViewById(R.id.donate_price1);
+        donate_price2 = (TextView)findViewById(R.id.donate_price2);
+        donate_price3 = (TextView)findViewById(R.id.donate_price3);
+
         String url = "http://polarbear1022.dothome.co.kr/donate.php";
 
-        //메뉴 클릭
+
         // AsyncTask를 통해 HttpURLConnection 수행.
         DonateActivity.NetworkTask networkTask = new DonateActivity.NetworkTask(url, null);
         networkTask.execute();
     }
 
+    //메뉴 클릭
     public void menuOnClick(View v) {
         switch(v.getId()){
             case R.id.drawer_weight:
@@ -95,7 +117,7 @@ public class DonateActivity extends AppCompatActivity {
             String result; // 요청 결과를 저장할 변수.
             RequestHttpConnection requestHttpConnection = new RequestHttpConnection();
             result = requestHttpConnection.request(url, values); // 해당 URL로 부터 결과물을 얻어온다.
-
+            mJsonString = result;
             return result;
         }
 
@@ -103,7 +125,53 @@ public class DonateActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             //doInBackground()로 부터 리턴된 값이 onPostExecute()의 매개변수로 넘어오므로 s를 출력한다.
-//            textView.setText(s);
+           showResult();
+        }
+
+        private void showResult(){
+
+            String TAG_JSON = "donate list";
+            String TAG_NAME = "donate_name";
+            String TAG_ID = "d_id";
+            String TAG_PRICE = "donate_price";
+
+            try {
+                JSONObject jsonObject = new JSONObject(mJsonString);
+                JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
+
+
+                    JSONObject firstItem = jsonArray.getJSONObject(0);
+
+                    String firstName = firstItem.getString(TAG_NAME);
+                    String firstId = firstItem.getString(TAG_ID);
+                    String firstPrice = firstItem.getString(TAG_PRICE);
+
+                    donate_name1.setText(firstName);
+                    donate_price1.setText(firstPrice);
+
+                    JSONObject secondItem = jsonArray.getJSONObject(1);
+
+                    String secondName = secondItem.getString(TAG_NAME);
+                String secondId = secondItem.getString(TAG_ID);
+                String secondPrice = secondItem.getString(TAG_PRICE);
+
+                donate_name2.setText(secondName);
+                donate_price2.setText(secondPrice);
+
+                JSONObject thirdItem = jsonArray.getJSONObject(2);
+
+                String thirdName = thirdItem.getString(TAG_NAME);
+                String thirdId = thirdItem.getString(TAG_ID);
+                String thirdPrice = thirdItem.getString(TAG_PRICE);
+
+                donate_name3.setText(thirdName);
+                donate_price3.setText(thirdPrice);
+
+
+            } catch (JSONException e) {
+
+                Log.d("rrr", "showResult : ", e);
+            }
         }
     }
 

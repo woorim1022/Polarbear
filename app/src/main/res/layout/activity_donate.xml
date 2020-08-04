@@ -77,7 +77,7 @@
                 android:fontFamily="@font/maplestory"
                 android:textStyle="bold"
                 android:textColor="#000000"
-                android:text="세계 자연 기금">
+                android:text="wwf">
             </TextView>
 
             <TextView
@@ -102,7 +102,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/donate_point1"
                 android:fontFamily="@font/maplestory"
-                android:text="300"
+                android:text="0"
                 android:textColor="#000000"
                 android:textSize="20dp">
             </TextView>
@@ -151,7 +151,7 @@
                 android:fontFamily="@font/maplestory"
                 android:textStyle="bold"
                 android:textColor="#000000"
-                android:text="그린피스">
+                android:text="greenpeace">
             </TextView>
 
             <TextView
@@ -176,7 +176,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/donate_point2"
                 android:fontFamily="@font/maplestory"
-                android:text="300"
+                android:text="0"
                 android:textColor="#000000"
                 android:textSize="20dp">
             </TextView>
@@ -225,7 +225,7 @@
                 android:fontFamily="@font/maplestory"
                 android:textStyle="bold"
                 android:textColor="#000000"
-                android:text="지구의 벗">
+                android:text="friends">
             </TextView>
 
             <TextView
@@ -250,7 +250,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/donate_point3"
                 android:fontFamily="@font/maplestory"
-                android:text="300"
+                android:text="0"
                 android:textColor="#000000"
                 android:textSize="20dp">
             </TextView>
