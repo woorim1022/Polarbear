@@ -72,7 +72,7 @@ public class WeightActivity extends AppCompatActivity {
         if(true) {   //포인트가 20이하면
             builder = new AlertDialog.Builder(this);
 
-            builder.setTitle("이번주에는 아쉽게도 포인트를 많이 획득하지 못하셨군요ㅠㅠ").setMessage("이번주에는 승용차를 이용하는 대신 짧은 거리를 걸어보는 것이 어떨까요? 승용차를 일주일에 하루만 덜 타면 연간 445kg의 이산화탄소를 줄일 수 있다고 해요! (5000걸음을 걸으시면 추가 포인트가 지급됩니다.)");
+            builder.setTitle("저번주에는 아쉽게도 포인트를 많이 획득하지 못하셨군요ㅠㅠ").setMessage("이번주에는 승용차를 이용하는 대신 짧은 거리는 걸어보는 것이 어떨까요? 승용차를 일주일에 하루 덜 타면 연간 445kg의 이산화탄소를 줄일 수 있다고 해요! (일요일까지 2만 걸음을 걸으시면 추가 포인트가 지급됩니다.)");
 
             builder.setPositiveButton("걸음 수 측정하기", new DialogInterface.OnClickListener(){
                 @Override
