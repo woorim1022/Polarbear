@@ -134,11 +134,15 @@ public class WeightActivity extends AppCompatActivity {
                             public void onResponse(String response) {
                                 //결과 처리
                                 try {
-                                    Log.v("rrr", response);
                                     JSONObject jsonResponse = new JSONObject(response);
                                     Integer weightvalue = jsonResponse.getInt("weight");
-                                    Log.v("rrr", response+"");
+                                    String date = jsonResponse.getString("date");
+                                    String[] splitdate = date.split("-");
+                                    String year = splitdate[0];
+                                    String month = splitdate[1];
+                                    String day = splitdate[2];
                                     weight.setText("무게 : " + weightvalue + "g");
+                                    measure_day.setText("마지막 측정 날짜 : " + year + "년 " + month + "월 " + day + "일 ");
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
