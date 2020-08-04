@@ -1,20 +1,26 @@
 package com.example.sjy.githubtest;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.content.SharedPreferences;
+import android.preference.Preference;
 
 
 public class MypageActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private View drawerView;
+    private EditText nickname;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +29,8 @@ public class MypageActivity extends AppCompatActivity {
 
         drawerLayout = (DrawerLayout)findViewById(R.id.mypage_layout);
         drawerView = (View)findViewById(R.id.drawerView);
+        nickname = (EditText)findViewById(R.id.et_nickname);
+        mContext = this;
 
         ImageView openDrawer = (ImageView)findViewById(R.id.menu_button);
 
@@ -38,6 +46,10 @@ public class MypageActivity extends AppCompatActivity {
         // AsyncTask를 통해 HttpURLConnection 수행.
         MypageActivity.NetworkTask networkTask = new MypageActivity.NetworkTask(url, null);
         networkTask.execute();
+
+        //마이페이지 닉네임 설정
+        String text = PreferenceManager.getString(mContext,"userNAME");
+        nickname.setText(text);
     }
 
     public void menuOnClick(View v) {

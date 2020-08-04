@@ -57,7 +57,7 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/EditText01"
+                android:id="@+id/et_nickname"
                 app:layout_constraintRight_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_width="270dp"
@@ -71,7 +71,7 @@
                 android:textColor="#000000" />
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/bt_modify"
                 app:layout_constraintRight_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_width="110dp"
