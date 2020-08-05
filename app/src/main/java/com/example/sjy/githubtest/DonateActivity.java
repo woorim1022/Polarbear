@@ -1,8 +1,10 @@
 package com.example.sjy.githubtest;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -14,12 +16,22 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
 import com.example.sjy.githubtest.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import static com.example.sjy.githubtest.R.id.drawerView;
 
@@ -34,35 +46,74 @@ public class DonateActivity extends AppCompatActivity {
     private TextView donate_price1;
     private TextView donate_price2;
     private TextView donate_price3;
+    private TextView currentpoint;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_donate);
 
-        drawerLayout = (DrawerLayout)findViewById(R.id.donate_layout);
-        drawerView = (View)findViewById(R.id.drawerView);
+        drawerLayout = (DrawerLayout) findViewById(R.id.donate_layout);
+        drawerView = (View) findViewById(R.id.drawerView);
+        mContext = this;
 
-        ImageView openDrawer = (ImageView)findViewById(R.id.menu_button);
+        ImageView openDrawer = (ImageView) findViewById(R.id.menu_button);
         openDrawer.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 drawerLayout.openDrawer(drawerView);
             }
         });
 
-        donate_name1 = (TextView)findViewById(R.id.donate_name1);
-        donate_name2 = (TextView)findViewById(R.id.donate_name2);
-        donate_name3 = (TextView)findViewById(R.id.donate_name3);
-        donate_price1 = (TextView)findViewById(R.id.donate_price1);
-        donate_price2 = (TextView)findViewById(R.id.donate_price2);
-        donate_price3 = (TextView)findViewById(R.id.donate_price3);
+        donate_name1 = (TextView) findViewById(R.id.donate_name1);
+        donate_name2 = (TextView) findViewById(R.id.donate_name2);
+        donate_name3 = (TextView) findViewById(R.id.donate_name3);
+        donate_price1 = (TextView) findViewById(R.id.donate_price1);
+        donate_price2 = (TextView) findViewById(R.id.donate_price2);
+        donate_price3 = (TextView) findViewById(R.id.donate_price3);
+        currentpoint = (TextView) findViewById(R.id.currentpoint);
 
         String url = "http://polarbear1022.dothome.co.kr/donate.php";
-
 
         // AsyncTask를 통해 HttpURLConnection 수행.
         DonateActivity.NetworkTask networkTask = new DonateActivity.NetworkTask(url, null);
         networkTask.execute();
+
+        //userid에 따라 userinfo 받아옴
+        String userid = PreferenceManager.getString(mContext,"userID");
+
+        Response.Listener<String> responseListener=new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                /**결과 처리**/
+                String TAG_INFO = "userinfo";
+                String TAG_NAME = "uname";
+                String TAG_LEVEL = "ulevel";
+                String TAG_POINT = "user_point";
+                String TAG_TOTAL = "user_total";
+                try {
+                    JSONObject jsonResponse=new JSONObject(response);//response : 서버로 부터 받은 결과 (uservalidate.php 의 $response 에 담겨있는 값)
+                    JSONArray jsonArray = jsonResponse.getJSONArray(TAG_INFO);
+
+                    JSONObject firstItem = jsonArray.getJSONObject(0);
+
+                    String userName = firstItem.getString(TAG_NAME);
+                    String userLevel = firstItem.getString(TAG_LEVEL);
+                    String userPoint = firstItem.getString(TAG_POINT);
+                    String userTotal = firstItem.getString(TAG_TOTAL);
+
+                    currentpoint.setText(userPoint);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        /**서버로 volley를 이용하여 요청을 함**/
+        UserRequest userRequest=new UserRequest(userid, responseListener);     //Request 클래스를 이용하여 서버 요청 정보와 결과 처리 방법을 표현
+        RequestQueue queue= Volley.newRequestQueue(DonateActivity.this);       //서버 요청자, 다른 request 클래스들의 정보대로 서버에 요청을 보내는 역할
+        queue.add(userRequest);
     }
 
     //메뉴 클릭
@@ -140,18 +191,18 @@ public class DonateActivity extends AppCompatActivity {
                 JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
 
 
-                    JSONObject firstItem = jsonArray.getJSONObject(0);
+                JSONObject firstItem = jsonArray.getJSONObject(0);
 
-                    String firstName = firstItem.getString(TAG_NAME);
-                    String firstId = firstItem.getString(TAG_ID);
-                    String firstPrice = firstItem.getString(TAG_PRICE);
+                String firstName = firstItem.getString(TAG_NAME);
+                String firstId = firstItem.getString(TAG_ID);
+                String firstPrice = firstItem.getString(TAG_PRICE);
 
-                    donate_name1.setText(firstName);
-                    donate_price1.setText(firstPrice);
+                donate_name1.setText(firstName);
+                donate_price1.setText(firstPrice);
 
-                    JSONObject secondItem = jsonArray.getJSONObject(1);
+                JSONObject secondItem = jsonArray.getJSONObject(1);
 
-                    String secondName = secondItem.getString(TAG_NAME);
+                String secondName = secondItem.getString(TAG_NAME);
                 String secondId = secondItem.getString(TAG_ID);
                 String secondPrice = secondItem.getString(TAG_PRICE);
 
