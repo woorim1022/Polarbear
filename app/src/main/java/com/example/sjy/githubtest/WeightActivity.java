@@ -1,8 +1,13 @@
 package com.example.sjy.githubtest;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -26,7 +31,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class WeightActivity extends AppCompatActivity {
+public class WeightActivity extends AppCompatActivity implements SensorEventListener {
 
     private DrawerLayout drawerLayout;
     private View drawerView;
@@ -41,6 +46,9 @@ public class WeightActivity extends AppCompatActivity {
 
     AlertDialog.Builder builder, builder2;
     AlertDialog alertDialog;
+
+    private SensorManager sensorManager;
+    private Sensor stepCountSensor;
 
 
     @Override
@@ -65,6 +73,13 @@ public class WeightActivity extends AppCompatActivity {
         step_goal = (TextView)findViewById(R.id.step_goal);
         step_current = (TextView)findViewById(R.id.step_current);
 
+        sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
+        stepCountSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+        if(stepCountSensor == null)
+            Log.v("aaa", "No step Detect Sensor");
+
+
+
         Intent intent = getIntent();  //메인 화면에서 넘어온 intent 받음
         String datafrommain = intent.getStringExtra("메인 액티비티에서 넘길 정보"); //pustExtra로 지정했던 데이터의 키값을 지정하면 해당하는 데이터 값이 나오게 됨
 
@@ -79,9 +94,10 @@ public class WeightActivity extends AppCompatActivity {
                 public void onClick(DialogInterface dialog, int id)
                 {
                     Toast.makeText(getApplicationContext(), "걸음 수 측정 시작", Toast.LENGTH_SHORT).show();
-
                     step_goal.setVisibility(View.VISIBLE);
                     step_current.setVisibility(View.VISIBLE);
+                    sensorManager.registerListener(WeightActivity.this, stepCountSensor, SensorManager.SENSOR_DELAY_NORMAL);
+
                 }
             });
 
@@ -94,8 +110,6 @@ public class WeightActivity extends AppCompatActivity {
             });
             alertDialog = builder.create();
             alertDialog.show();
-
-
         }
 
         View.OnClickListener weightlistener = new View.OnClickListener()
@@ -114,6 +128,7 @@ public class WeightActivity extends AppCompatActivity {
                 });
                 alertDialog = builder2.create();
                 alertDialog.show();
+
                 countDownTimer = new CountDownTimer(5*1000, 1000) {
                     @Override
                     public void onTick(long l) {
@@ -201,6 +216,18 @@ public class WeightActivity extends AppCompatActivity {
                 break;
 
         }
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event){
+        if(event.sensor.getType() == Sensor.TYPE_STEP_COUNTER){
+            step_current.setText("현재 걸음걸이 수 : " + (int)event.values[0]);
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
+
     }
 
 
