@@ -1,5 +1,8 @@
 package com.example.sjy.githubtest;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,8 +12,10 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +23,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RemoteViews;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +36,10 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class WeightActivity extends AppCompatActivity implements SensorEventListener {
 
@@ -44,11 +54,19 @@ public class WeightActivity extends AppCompatActivity implements SensorEventList
     private int count = 6;
     private CountDownTimer countDownTimer;
 
-    AlertDialog.Builder builder, builder2;
-    AlertDialog alertDialog;
+    AlertDialog.Builder builder, builder2, builder3;
+    AlertDialog alertDialog, alertDialog2;
 
     private SensorManager sensorManager;
     private Sensor stepCountSensor;
+
+    private int weightvalue;
+    private String prevDateStr
+            ;
+    private String recentDateStr = "";
+
+    private int weightPerDay;
+    private int point;
 
 
     @Override
@@ -80,10 +98,16 @@ public class WeightActivity extends AppCompatActivity implements SensorEventList
 
 
 
-        Intent intent = getIntent();  //메인 화면에서 넘어온 intent 받음
+        final Intent intent = getIntent();  //메인 화면에서 넘어온 intent 받음
         String datafrommain = intent.getStringExtra("메인 액티비티에서 넘길 정보"); //pustExtra로 지정했던 데이터의 키값을 지정하면 해당하는 데이터 값이 나오게 됨
 
 
+
+
+
+
+
+        /**걸음수 측정**/
         if(true) {   //포인트가 20이하면
             builder = new AlertDialog.Builder(this);
 
@@ -96,7 +120,9 @@ public class WeightActivity extends AppCompatActivity implements SensorEventList
                     Toast.makeText(getApplicationContext(), "걸음 수 측정 시작", Toast.LENGTH_SHORT).show();
                     step_goal.setVisibility(View.VISIBLE);
                     step_current.setVisibility(View.VISIBLE);
+                    //걸음걸이 센서 작동 시작
                     sensorManager.registerListener(WeightActivity.this, stepCountSensor, SensorManager.SENSOR_DELAY_NORMAL);
+
 
                 }
             });
@@ -112,68 +138,95 @@ public class WeightActivity extends AppCompatActivity implements SensorEventList
             alertDialog.show();
         }
 
+
+
+
+
+
+
+
+
+
+        /**무게재기**/
         View.OnClickListener weightlistener = new View.OnClickListener()
         {
             @Override
             public void onClick(View v) {
-                builder2 = new AlertDialog.Builder(WeightActivity.this);
-                builder2.setTitle("5초 후에 음식물 쓰레기 봉투를 올려주세요");
-                builder2.setNegativeButton("취소하기", new DialogInterface.OnClickListener(){
-                    @Override
-                    public void onClick(DialogInterface dialog, int id)
-                    {
-                        //무게재기 취소
-                        Toast.makeText(getApplicationContext(), "무게재기 취소", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                alertDialog = builder2.create();
-                alertDialog.show();
 
-                countDownTimer = new CountDownTimer(5*1000, 1000) {
-                    @Override
-                    public void onTick(long l) {
-                        count --;
-                    }
-                    @Override
-                    public void onFinish() {
-                        alertDialog.dismiss();
-                    }
-                };
-                countDownTimer.start();
-                //센서에서 무게 가져오기
-                //서버에 저장
-                //화면에 무게, 날짜 출력
-                StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://polarbear1022.dothome.co.kr/weight.php",
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                //결과 처리
-                                try {
-                                    JSONObject jsonResponse = new JSONObject(response);
-                                    Integer weightvalue = jsonResponse.getInt("weight");
-                                    String date = jsonResponse.getString("date");
-                                    String[] splitdate = date.split("-");
-                                    String year = splitdate[0];
-                                    String month = splitdate[1];
-                                    String day = splitdate[2];
-                                    weight.setText("무게 : " + weightvalue + "g");
-                                    measure_day.setText("마지막 측정 날짜 : " + year + "년 " + month + "월 " + day + "일 ");
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
 
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                                public void onErrorResponse(VolleyError error) {
-                            }
-                });
-                RequestQueue queue = Volley.newRequestQueue(WeightActivity.this);
-                queue.add(stringRequest);
+                Log.v("aaa", "prevdatestr : " + prevDateStr);
+                Log.v("aaa", "recentdatestr : " + recentDateStr);
+
+
+                /**무게를 처음 측정하는 경우**/
+                if(recentDateStr == ""){
+
+                    measureWeight();
+
+                    /**
+                     100포인트 추가하기
+                     **/
+
+                }
+                /**무게를 이전에 측정한 적이 있는 경우**/
+                else{
+                    try{
+                        SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy-MM-dd");
+                        Date today = new Date();
+                        /**마지막 측정 날짜가 오늘이면**/
+                        if(prevDateStr.equals(format1.format(today))) {
+                            Log.v("aaa", "prevdatestr(같아야함) : " + prevDateStr);
+                            Log.v("aaa", "recentdatestr(같아야함) : " + recentDateStr);
+                            //무게 측정 안함
+                            Toast.makeText(getApplicationContext(), "무게는 하루에 한 번만 측정하실 수 있습니다.", Toast.LENGTH_SHORT).show();
+                        }
+                        /**마지막 측정 날짜가 오늘이 아니면**/
+                        else{
+
+                            //무게재기
+                            measureWeight();
+
+                            Log.v("aaa", "prevdatestr(달라야함) : " + prevDateStr);
+                            Log.v("aaa", "recentdatestr(달라야함) : " + recentDateStr);
+                            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                            Date prevdate = format.parse(prevDateStr);
+                            Date presentdate = format.parse(recentDateStr);
+
+                            long calDate = presentdate.getTime() - prevdate.getTime();
+                            long calDateDays = calDate / (24*60*60*1000);
+
+                            calDateDays = Math.abs(calDateDays);
+
+                            weightPerDay = weightvalue / (int)calDateDays;
+
+                            Log.v("aaa", "weightvalue : "+weightvalue+"  weightPerDay : "+weightPerDay+"  calDateDays : "+calDateDays);
+                            if(weightPerDay > 0 && weightPerDay < 100)  point = 100;
+                            else if(weightPerDay >= 100 && weightPerDay < 200)  point = 90;
+                            else if(weightPerDay >= 200 && weightPerDay < 300)  point = 80;
+                            else if(weightPerDay >= 300 && weightPerDay < 400)  point = 70;
+                            else if(weightPerDay >= 400 && weightPerDay < 500)  point = 60;
+                            else if(weightPerDay >= 500 && weightPerDay < 600)  point = 50;
+                            else if(weightPerDay >= 600 && weightPerDay < 700)  point = 40;
+                            else if(weightPerDay >= 700 && weightPerDay < 800)  point = 30;
+                            else if(weightPerDay >= 800 && weightPerDay < 900)  point = 20;
+                            else if(weightPerDay >= 900 && weightPerDay < 1000 )    point = 10;
+                            else if(weightPerDay >= 1000)   point = 5;
+                            //현재 보유 포인트에 point 더하기
+                            Log.v("aaa", "point : "+point);
+
+                        }
+
+
+                    }
+                    catch(ParseException e) { }
+                }
             }
         };
         button.setOnClickListener(weightlistener);
+
+
+
+
 
 
 
@@ -181,6 +234,9 @@ public class WeightActivity extends AppCompatActivity implements SensorEventList
         resultintent.putExtra("결과", "무게값, 포인트값 등");
 
         setResult(0, resultintent); //자신을 실행한 액티비티에게 돌려줄 결과
+
+
+
 
     }
 
@@ -228,6 +284,81 @@ public class WeightActivity extends AppCompatActivity implements SensorEventList
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
 
+    }
+
+    public void measureWeight(){
+
+        //5초 대기 다이얼로그창
+        builder2 = new AlertDialog.Builder(WeightActivity.this);
+        builder2.setTitle("5초 후에 음식물 쓰레기 봉투를 올려주세요");
+        builder2.setNegativeButton("취소하기", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int id)
+            {
+                //무게재기 취소
+                Toast.makeText(getApplicationContext(), "무게측정 취소", Toast.LENGTH_SHORT).show();
+            }
+        });
+        alertDialog2 = builder2.create();
+        alertDialog2.show();
+        countDownTimer = new CountDownTimer(5*1000, 1000) {
+            @Override
+            public void onTick(long l) {
+                count --;
+            }
+            @Override
+            public void onFinish() {
+                alertDialog2.dismiss();
+            }
+        };
+        countDownTimer.start();
+
+        //무게 측정
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://polarbear1022.dothome.co.kr/weight.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //결과 처리
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+                            weightvalue = jsonResponse.getInt("weight");
+                            prevDateStr = recentDateStr;
+                            recentDateStr = jsonResponse.getString("date");
+                            String[] splitdate = recentDateStr.split("-");
+                            String year = splitdate[0];
+                            String month = splitdate[1];
+                            String day = splitdate[2];
+                            weight.setText("무게 : " + weightvalue + "g");
+                            measure_day.setText("마지막 측정 날짜 : " + year + "년 " + month + "월 " + day + "일 ");
+
+                            //첫 무게 측정인 경우
+                            if(prevDateStr == "") {
+                                builder3 = new AlertDialog.Builder(WeightActivity.this);
+                                builder3.setTitle("첫 무게 측정을 축하드립니다!").setMessage("첫 무게 측정 기념으로 100포인트를 지급합니다.");
+                                builder3.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        Toast.makeText(getApplicationContext(), "100포인트 획득", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                                alertDialog = builder3.create();
+                                alertDialog.show();
+                                SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy-MM-dd");
+                                Date today = new Date();
+                                prevDateStr = format1.format(today);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(WeightActivity.this);
+        queue.add(stringRequest);
     }
 
 
