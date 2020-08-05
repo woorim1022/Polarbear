@@ -13,6 +13,7 @@ import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -40,6 +41,12 @@ public class DonateActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private View drawerView;
     private String mJsonString;
+    private String userName;
+    private String userLevel;
+    private String userExp;
+    private String userPoint;
+    private String userTotal;
+    private String userId;
     private TextView donate_name1;
     private TextView donate_name2;
     private TextView donate_name3;
@@ -47,8 +54,13 @@ public class DonateActivity extends AppCompatActivity {
     private TextView donate_price2;
     private TextView donate_price3;
     private TextView currentpoint;
+    private Button donate_button1;
+    private Button donate_button2;
+    private Button donate_button3;
     private Context mContext;
 
+    //임시
+    private AlertDialog dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +84,9 @@ public class DonateActivity extends AppCompatActivity {
         donate_price2 = (TextView) findViewById(R.id.donate_price2);
         donate_price3 = (TextView) findViewById(R.id.donate_price3);
         currentpoint = (TextView) findViewById(R.id.currentpoint);
+        donate_button1 = (Button) findViewById(R.id.donate_button1);
+        donate_button2 = (Button) findViewById(R.id.donate_button2);
+        donate_button3 = (Button) findViewById(R.id.donate_button3);
 
         String url = "http://polarbear1022.dothome.co.kr/donate.php";
 
@@ -80,7 +95,7 @@ public class DonateActivity extends AppCompatActivity {
         networkTask.execute();
 
         //userid에 따라 userinfo 받아옴
-        String userid = PreferenceManager.getString(mContext,"userID");
+        String userId = PreferenceManager.getString(mContext,"userID");
 
         Response.Listener<String> responseListener=new Response.Listener<String>() {
             @Override
@@ -89,6 +104,7 @@ public class DonateActivity extends AppCompatActivity {
                 String TAG_INFO = "userinfo";
                 String TAG_NAME = "uname";
                 String TAG_LEVEL = "ulevel";
+                String TAG_EXP = "uexp";
                 String TAG_POINT = "user_point";
                 String TAG_TOTAL = "user_total";
                 try {
@@ -97,12 +113,26 @@ public class DonateActivity extends AppCompatActivity {
 
                     JSONObject firstItem = jsonArray.getJSONObject(0);
 
-                    String userName = firstItem.getString(TAG_NAME);
-                    String userLevel = firstItem.getString(TAG_LEVEL);
-                    String userPoint = firstItem.getString(TAG_POINT);
-                    String userTotal = firstItem.getString(TAG_TOTAL);
+                    userName = firstItem.getString(TAG_NAME);
+                    userLevel = firstItem.getString(TAG_LEVEL);
+                    userExp = firstItem.getString(TAG_EXP);
+                    userPoint = firstItem.getString(TAG_POINT);
+                    userTotal = firstItem.getString(TAG_TOTAL);
 
                     currentpoint.setText(userPoint);
+
+                    int point = Integer.parseInt(userPoint);
+                    if(point < 300) {
+                        donate_button1.setEnabled(false);
+                        donate_button1.setBackgroundColor(Color.parseColor("#4DAEDDEF"));
+                        donate_button1.setTextColor(Color.parseColor("#4D000000"));
+                        donate_button2.setEnabled(false);
+                        donate_button2.setBackgroundColor(Color.parseColor("#4DAEDDEF"));
+                        donate_button2.setTextColor(Color.parseColor("#4D000000"));
+                        donate_button3.setEnabled(false);
+                        donate_button3.setBackgroundColor(Color.parseColor("#4DAEDDEF"));
+                        donate_button3.setTextColor(Color.parseColor("#4D000000"));
+                    }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -111,11 +141,42 @@ public class DonateActivity extends AppCompatActivity {
         };
 
         /**서버로 volley를 이용하여 요청을 함**/
-        UserRequest userRequest=new UserRequest(userid, responseListener);     //Request 클래스를 이용하여 서버 요청 정보와 결과 처리 방법을 표현
+        UserRequest userRequest=new UserRequest(userId, responseListener);     //Request 클래스를 이용하여 서버 요청 정보와 결과 처리 방법을 표현
         RequestQueue queue= Volley.newRequestQueue(DonateActivity.this);       //서버 요청자, 다른 request 클래스들의 정보대로 서버에 요청을 보내는 역할
         queue.add(userRequest);
     }
 
+    //기부하기 버튼 클릭
+    public void DonateClick(View v) {
+        switch(v.getId()){
+            case R.id.donate_button1:
+                AlertDialog.Builder builder1=new AlertDialog.Builder( DonateActivity.this );
+                dialog=builder1.setTitle("THANK YOU!")
+                        .setMessage("세계 자연 기금에 기부하셨습니다.")
+                        .setPositiveButton("확인",null)
+                        .create();
+                dialog.show();
+
+
+                break;
+            case R.id.donate_button2:
+                AlertDialog.Builder builder2=new AlertDialog.Builder( DonateActivity.this );
+                dialog=builder2.setTitle("THANK YOU!")
+                        .setMessage("그린피스에 기부하셨습니다.")
+                        .setPositiveButton("확인",null)
+                        .create();
+                dialog.show();
+                break;
+            case R.id.donate_button3:
+                AlertDialog.Builder builder3=new AlertDialog.Builder( DonateActivity.this );
+                dialog=builder3.setTitle("THANK YOU!")
+                        .setMessage("지구의 벗에 기부하셨습니다.")
+                        .setPositiveButton("확인",null)
+                        .create();
+                dialog.show();
+                break;
+        }
+    }
     //메뉴 클릭
     public void menuOnClick(View v) {
         switch(v.getId()){
