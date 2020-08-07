@@ -61,8 +61,8 @@ public class MainActivity extends AppCompatActivity {
         /**Sharedpreference 클래스 이용해서 내부 저장소에 저장되어있는 userid, username 값 가져오기**/
         String uid = PreferenceManager.getString(mContext, "userID");
         String uname = PreferenceManager.getString(mContext, "userNAME");
-        Log.v("aaa", uid);
-        Log.v("aaa", uname);
+        Log.v("Sharedpreferences", "userID : " + uid);
+        Log.v("Sharedpreferences", "userNAME : " + uname);
         /**만약 uid 값이 없으면, 회원가입을 위해 SignActivity.class 로 이동**/
         if(uid == ""){
             Intent signup = new Intent(MainActivity.this, SignupActivity.class);

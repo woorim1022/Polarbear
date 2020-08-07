@@ -40,6 +40,8 @@ public class SignupActivity extends AppCompatActivity {
         btn_register=findViewById(R.id.btn_register);
         validateButton=findViewById(R.id.validateButton);
 
+
+
         //아이디 중복체크 버튼
         validateButton.setOnClickListener(new View.OnClickListener() {
             @Override
