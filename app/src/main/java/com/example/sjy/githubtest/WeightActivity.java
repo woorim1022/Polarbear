@@ -137,20 +137,34 @@ public class WeightActivity extends AppCompatActivity implements SensorEventList
         }
 
 
-        PreferenceManager.removeKey(WeightActivity.this, "prevDateStr");
-        PreferenceManager.removeKey(WeightActivity.this, "recentDateStr");
+//        PreferenceManager.removeKey(WeightActivity.this, "prevDateStr");
+//        PreferenceManager.removeKey(WeightActivity.this, "recentDateStr");
+
+
+        String lastmeasuredate = PreferenceManager.getString(WeightActivity.this, "recentDateStr");
+        if(!lastmeasuredate.equals("")) {
+            String[] splitdate = lastmeasuredate.split("-");
+            String year = splitdate[0];
+            String month = splitdate[1];
+            String day = splitdate[2];
+            measure_day.setText("마지막 측정 날짜 : " + year + "년 " + month + "월 " + day + "일 ");
+        }
 
 
         /**무게재기**/
         View.OnClickListener weightlistener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 prevDateStr = PreferenceManager.getString(WeightActivity.this, "prevDateStr");
                 recentDateStr = PreferenceManager.getString(WeightActivity.this, "recentDateStr");
                 Log.v("aaa", "prevdatestr(내부저장소) : " + prevDateStr);
                 Log.v("aaa", "recentdatestr(내부저장소) : " + recentDateStr);
 
+
                 //무게를 처음 측정하는 경우
+                /************************************************************************************************/
+                /************************************************************************************************/
                 if (recentDateStr.equals("")) {
 
                     Log.v("aaa", "무게첫측정");
@@ -185,6 +199,8 @@ public class WeightActivity extends AppCompatActivity implements SensorEventList
                     countDownTimer.start();
 
                     //무게 측정
+                    /************************************************************************************************/
+                    /************************************************************************************************/
                     StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://polarbear1022.dothome.co.kr/weight.php",
                             new Response.Listener<String>() {
                                 @Override
@@ -264,19 +280,27 @@ public class WeightActivity extends AppCompatActivity implements SensorEventList
                             });
                     RequestQueue queue = Volley.newRequestQueue(WeightActivity.this);
                     queue.add(stringRequest);
+                    /************************************************************************************************/
+                    /************************************************************************************************/
 
                 }
+                /************************************************************************************************/
+                /************************************************************************************************/
                 //무게를 이전에 측정한 적이 있는 경우
                 else {
                         SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
                         Date today = new Date();
                         /**마지막 측정 날짜가 오늘이면**/
+                        /************************************************************************************************/
+                        /************************************************************************************************/
                         if (recentDateStr.equals(format1.format(today))) {
                             Log.v("aaa", "prevdatestr(마지막 측정 날짜가 오늘) : " + prevDateStr);
                             Log.v("aaa", "recentdatestr(마지막 측정 날짜가 오늘) : " + recentDateStr);
                             //무게 측정 안함
                             Toast.makeText(getApplicationContext(), "무게는 하루에 한 번만 측정하실 수 있습니다.", Toast.LENGTH_SHORT).show();
                         }
+                        /************************************************************************************************/
+                        /************************************************************************************************/
                         /**마지막 측정 날짜가 오늘이 아니면**/
                         else {
                             //무게재기
@@ -308,6 +332,8 @@ public class WeightActivity extends AppCompatActivity implements SensorEventList
                             countDownTimer.start();
 
                             //무게 측정
+                            /************************************************************************************************/
+                            /************************************************************************************************/
                             StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://polarbear1022.dothome.co.kr/weight.php",
                                     new Response.Listener<String>() {
                                         @Override
@@ -405,9 +431,13 @@ public class WeightActivity extends AppCompatActivity implements SensorEventList
                                     });
                             RequestQueue queue = Volley.newRequestQueue(WeightActivity.this);
                             queue.add(stringRequest);
+                            /************************************************************************************************/
+                            /************************************************************************************************/
 
 
                         }
+                        /************************************************************************************************/
+                        /************************************************************************************************/
                 }
             }
         };
