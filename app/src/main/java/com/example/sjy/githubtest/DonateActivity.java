@@ -17,8 +17,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.sjy.githubtest.R;
 
@@ -33,6 +36,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.example.sjy.githubtest.R.id.drawerView;
 
@@ -47,13 +52,14 @@ public class DonateActivity extends AppCompatActivity {
     private String userPoint;
     private String userTotal;
     private String userId;
+    private String updatePoint;
     private TextView donate_name1;
     private TextView donate_name2;
     private TextView donate_name3;
     private TextView donate_price1;
     private TextView donate_price2;
     private TextView donate_price3;
-    private TextView currentpoint;
+    private TextView currentPoint;
     private Button donate_button1;
     private Button donate_button2;
     private Button donate_button3;
@@ -61,6 +67,7 @@ public class DonateActivity extends AppCompatActivity {
 
     //임시
     private AlertDialog dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,103 +90,61 @@ public class DonateActivity extends AppCompatActivity {
         donate_price1 = (TextView) findViewById(R.id.donate_price1);
         donate_price2 = (TextView) findViewById(R.id.donate_price2);
         donate_price3 = (TextView) findViewById(R.id.donate_price3);
-        currentpoint = (TextView) findViewById(R.id.currentpoint);
+        currentPoint = (TextView) findViewById(R.id.currentpoint);
         donate_button1 = (Button) findViewById(R.id.donate_button1);
         donate_button2 = (Button) findViewById(R.id.donate_button2);
         donate_button3 = (Button) findViewById(R.id.donate_button3);
+
+        //userid에 따라 userinfo 받아옴
+        checkUserInfo();
 
         String url = "http://polarbear1022.dothome.co.kr/donate.php";
 
         // AsyncTask를 통해 HttpURLConnection 수행.
         DonateActivity.NetworkTask networkTask = new DonateActivity.NetworkTask(url, null);
         networkTask.execute();
-
-        //userid에 따라 userinfo 받아옴
-        String userId = PreferenceManager.getString(mContext,"userID");
-
-        Response.Listener<String> responseListener=new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                /**결과 처리**/
-                String TAG_INFO = "userinfo";
-                String TAG_NAME = "uname";
-                String TAG_LEVEL = "ulevel";
-                String TAG_EXP = "uexp";
-                String TAG_POINT = "user_point";
-                String TAG_TOTAL = "user_total";
-                try {
-                    JSONObject jsonResponse=new JSONObject(response);//response : 서버로 부터 받은 결과 (uservalidate.php 의 $response 에 담겨있는 값)
-                    JSONArray jsonArray = jsonResponse.getJSONArray(TAG_INFO);
-
-                    JSONObject firstItem = jsonArray.getJSONObject(0);
-
-                    userName = firstItem.getString(TAG_NAME);
-                    userLevel = firstItem.getString(TAG_LEVEL);
-                    userExp = firstItem.getString(TAG_EXP);
-                    userPoint = firstItem.getString(TAG_POINT);
-                    userTotal = firstItem.getString(TAG_TOTAL);
-
-                    currentpoint.setText(userPoint);
-
-                    int point = Integer.parseInt(userPoint);
-                    if(point < 300) {
-                        donate_button1.setEnabled(false);
-                        donate_button1.setBackgroundColor(Color.parseColor("#4DAEDDEF"));
-                        donate_button1.setTextColor(Color.parseColor("#4D000000"));
-                        donate_button2.setEnabled(false);
-                        donate_button2.setBackgroundColor(Color.parseColor("#4DAEDDEF"));
-                        donate_button2.setTextColor(Color.parseColor("#4D000000"));
-                        donate_button3.setEnabled(false);
-                        donate_button3.setBackgroundColor(Color.parseColor("#4DAEDDEF"));
-                        donate_button3.setTextColor(Color.parseColor("#4D000000"));
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-
-        /**서버로 volley를 이용하여 요청을 함**/
-        UserRequest userRequest=new UserRequest(userId, responseListener);     //Request 클래스를 이용하여 서버 요청 정보와 결과 처리 방법을 표현
-        RequestQueue queue= Volley.newRequestQueue(DonateActivity.this);       //서버 요청자, 다른 request 클래스들의 정보대로 서버에 요청을 보내는 역할
-        queue.add(userRequest);
     }
 
     //기부하기 버튼 클릭
     public void DonateClick(View v) {
-        switch(v.getId()){
+        switch (v.getId()) {
             case R.id.donate_button1:
-                AlertDialog.Builder builder1=new AlertDialog.Builder( DonateActivity.this );
-                dialog=builder1.setTitle("THANK YOU!")
-                        .setMessage("세계 자연 기금에 기부하셨습니다.")
-                        .setPositiveButton("확인",null)
-                        .create();
+                donatePoint();
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(DonateActivity.this);
+                dialog = builder1.setTitle("THANK YOU!")
+                                .setMessage("세계 자연 기금에 기부하셨습니다.")
+                                .setPositiveButton("확인", null)
+                                .create();
                 dialog.show();
-
-
+                checkUserInfo();
                 break;
+
             case R.id.donate_button2:
-                AlertDialog.Builder builder2=new AlertDialog.Builder( DonateActivity.this );
-                dialog=builder2.setTitle("THANK YOU!")
+                donatePoint();
+                AlertDialog.Builder builder2 = new AlertDialog.Builder(DonateActivity.this);
+                dialog = builder2.setTitle("THANK YOU!")
                         .setMessage("그린피스에 기부하셨습니다.")
-                        .setPositiveButton("확인",null)
+                        .setPositiveButton("확인", null)
                         .create();
                 dialog.show();
+                checkUserInfo();
                 break;
             case R.id.donate_button3:
-                AlertDialog.Builder builder3=new AlertDialog.Builder( DonateActivity.this );
-                dialog=builder3.setTitle("THANK YOU!")
+                donatePoint();
+                AlertDialog.Builder builder3 = new AlertDialog.Builder(DonateActivity.this);
+                dialog = builder3.setTitle("THANK YOU!")
                         .setMessage("지구의 벗에 기부하셨습니다.")
-                        .setPositiveButton("확인",null)
+                        .setPositiveButton("확인", null)
                         .create();
                 dialog.show();
+                checkUserInfo();
                 break;
         }
     }
+
     //메뉴 클릭
     public void menuOnClick(View v) {
-        switch(v.getId()){
+        switch (v.getId()) {
             case R.id.drawer_weight:
                 Intent weight = new Intent(DonateActivity.this, WeightActivity.class);
                 startActivity(weight);
@@ -212,6 +177,83 @@ public class DonateActivity extends AppCompatActivity {
         }
     }
 
+    //유저 정보 갱신
+    public void checkUserInfo() {
+        userId = PreferenceManager.getString(mContext, "userID");
+
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                /**결과 처리**/
+                String TAG_INFO = "userinfo";
+                String TAG_NAME = "uname";
+                String TAG_LEVEL = "ulevel";
+                String TAG_EXP = "uexp";
+                String TAG_POINT = "user_point";
+                String TAG_TOTAL = "user_total";
+                try {
+                    JSONObject jsonResponse = new JSONObject(response);//response : 서버로 부터 받은 결과 (userinfo.php 의 $response 에 담겨있는 값)
+                    JSONArray jsonArray = jsonResponse.getJSONArray(TAG_INFO);
+
+                    JSONObject firstItem = jsonArray.getJSONObject(0);
+
+                    userName = firstItem.getString(TAG_NAME);
+                    userLevel = firstItem.getString(TAG_LEVEL);
+                    userExp = firstItem.getString(TAG_EXP);
+                    userPoint = firstItem.getString(TAG_POINT);
+                    userTotal = firstItem.getString(TAG_TOTAL);
+
+                    currentPoint.setText(userPoint);
+
+                    int point = Integer.parseInt(userPoint);
+                    if (point < 300) {
+                        donate_button1.setEnabled(false);
+                        donate_button1.setBackgroundColor(Color.parseColor("#4DAEDDEF"));
+                        donate_button1.setTextColor(Color.parseColor("#4D000000"));
+                        donate_button2.setEnabled(false);
+                        donate_button2.setBackgroundColor(Color.parseColor("#4DAEDDEF"));
+                        donate_button2.setTextColor(Color.parseColor("#4D000000"));
+                        donate_button3.setEnabled(false);
+                        donate_button3.setBackgroundColor(Color.parseColor("#4DAEDDEF"));
+                        donate_button3.setTextColor(Color.parseColor("#4D000000"));
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        /**서버로 volley를 이용하여 요청을 함**/
+        UserRequest userRequest = new UserRequest(userId, responseListener);     //Request 클래스를 이용하여 서버 요청 정보와 결과 처리 방법을 표현
+        RequestQueue queue = Volley.newRequestQueue(DonateActivity.this);       //서버 요청자, 다른 request 클래스들의 정보대로 서버에 요청을 보내는 역할
+        queue.add(userRequest);
+    }
+
+    //기부 하기 후 300포인트 차감 + 기부 횟수와 기부 포인트 추가
+    public void donatePoint(){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://polarbear1022.dothome.co.kr/donateresult.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        }){
+            protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+
+                params.put("uid", userId);
+                return params;
+            }
+        };
+        RequestQueue queue = Volley.newRequestQueue(DonateActivity.this);
+        queue.add(stringRequest);
+
+    }
+
     public class NetworkTask extends AsyncTask<Void, Void, String> {
 
         private String url;
@@ -229,7 +271,6 @@ public class DonateActivity extends AppCompatActivity {
             String result; // 요청 결과를 저장할 변수.
             RequestHttpConnection requestHttpConnection = new RequestHttpConnection();
             result = requestHttpConnection.request(url, values); // 해당 URL로 부터 결과물을 얻어온다.
-            mJsonString = result;
             return result;
         }
 
@@ -237,18 +278,13 @@ public class DonateActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             //doInBackground()로 부터 리턴된 값이 onPostExecute()의 매개변수로 넘어오므로 s를 출력한다.
-           showResult();
-        }
-
-        private void showResult(){
-
             String TAG_JSON = "donate list";
             String TAG_NAME = "donate_name";
             String TAG_ID = "d_id";
             String TAG_PRICE = "donate_price";
 
             try {
-                JSONObject jsonObject = new JSONObject(mJsonString);
+                JSONObject jsonObject = new JSONObject(s);
                 JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
 
 
@@ -286,5 +322,5 @@ public class DonateActivity extends AppCompatActivity {
             }
         }
     }
-
 }
+
