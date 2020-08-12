@@ -1,12 +1,15 @@
 package com.example.sjy.githubtest;
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -15,6 +18,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
@@ -43,6 +47,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+
 public class WeightActivity extends AppCompatActivity implements SensorEventListener {
 
     private DrawerLayout drawerLayout;
@@ -70,6 +75,11 @@ public class WeightActivity extends AppCompatActivity implements SensorEventList
     private int point;
 
     private String uid;
+
+    private StepcountService scService;
+    boolean isService = false; // 서비스 중인 확인용
+    boolean mIsBound;
+
 
 
     @Override
@@ -108,39 +118,68 @@ public class WeightActivity extends AppCompatActivity implements SensorEventList
 
 
         /**걸음수 측정**/
-        if (true) {   //포인트가 20이하면
-            builder = new AlertDialog.Builder(this);
+        //월요일이면,
+            //전주에 획득한 포인트의 총 합이 200pt 미만이면,
+                //걸음수 측정?
+                    //yes
+                        //측정시작
+                        //앱 종료해도 측정
+                        //20000보 채우면,
+                            //포인트 획득, 측정 종료
+                        //일요일이면,
+                            //측정 종료
+                    //no
+                        //아무일 x
+        if (true) {   //월요일이면,
+            if(true) {  //전주에 획득한 포인트의 총 합이 200pt 미만이면,
+                builder = new AlertDialog.Builder(this);
 
-            builder.setTitle("저번주에는 아쉽게도 포인트를 많이 획득하지 못하셨군요ㅠㅠ").setMessage("이번주에는 승용차를 이용하는 대신 짧은 거리는 걸어보는 것이 어떨까요? 승용차를 일주일에 하루 덜 타면 연간 445kg의 이산화탄소를 줄일 수 있다고 해요! (일요일까지 2만 걸음을 걸으시면 추가 포인트가 지급됩니다.)");
+                builder.setTitle("저번주에는 아쉽게도 포인트를 많이 획득하지 못하셨군요ㅠㅠ").setMessage("이번주에는 승용차를 이용하는 대신 짧은 거리는 걸어보는 것이 어떨까요? 승용차를 일주일에 하루 덜 타면 연간 445kg의 이산화탄소를 줄일 수 있다고 해요! (일요일까지 2만 걸음을 걸으시면 추가 포인트가 지급됩니다.)");
 
-            builder.setPositiveButton("걸음 수 측정하기", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int id) {
-                    Toast.makeText(getApplicationContext(), "걸음 수 측정 시작", Toast.LENGTH_SHORT).show();
-                    step_goal.setVisibility(View.VISIBLE);
-                    step_current.setVisibility(View.VISIBLE);
-                    //걸음걸이 센서 작동 시작
-                    sensorManager.registerListener(WeightActivity.this, stepCountSensor, SensorManager.SENSOR_DELAY_NORMAL);
+                /**걸음수 측정 yes**/
+                builder.setPositiveButton("걸음 수 측정하기", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        Toast.makeText(getApplicationContext(), "걸음 수 측정 시작", Toast.LENGTH_SHORT).show();
+                        step_goal.setVisibility(View.VISIBLE);
+                        step_current.setVisibility(View.VISIBLE);
+
+                        //측정시작
+                        sensorManager.registerListener(WeightActivity.this, stepCountSensor, SensorManager.SENSOR_DELAY_NORMAL);
+
+                        Log.v("service", "측정시작");
+                        setStartService();
 
 
-                }
-            });
 
-            builder.setNegativeButton("다음에", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int id) {
-                    Toast.makeText(getApplicationContext(), "걸음 수 측정 취소", Toast.LENGTH_SHORT).show();
-                }
-            });
-            alertDialog = builder.create();
-            alertDialog.show();
+
+                    }
+                });
+
+                /**걸음수 측정 no**/
+                builder.setNegativeButton("다음에", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        Toast.makeText(getApplicationContext(), "걸음 수 측정 취소", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                alertDialog = builder.create();
+                alertDialog.show();
+            }
         }
 
 
-//        PreferenceManager.removeKey(WeightActivity.this, "prevDateStr");
-//        PreferenceManager.removeKey(WeightActivity.this, "recentDateStr");
 
 
+
+
+
+
+        //내부저장소에 저장된 날짜 삭제
+        PreferenceManager.removeKey(WeightActivity.this, "prevDateStr");
+        PreferenceManager.removeKey(WeightActivity.this, "recentDateStr");
+
+        //마지막 측정 날짜 출력
         String lastmeasuredate = PreferenceManager.getString(WeightActivity.this, "recentDateStr");
         if(!lastmeasuredate.equals("")) {
             String[] splitdate = lastmeasuredate.split("-");
@@ -150,6 +189,26 @@ public class WeightActivity extends AppCompatActivity implements SensorEventList
             measure_day.setText("마지막 측정 날짜 : " + year + "년 " + month + "월 " + day + "일 ");
         }
 
+//        StringRequest Requesttoloadcell = new StringRequest(Request.Method.POST, "http://polarbear1022.dothome.co.kr/loadcelltest.php",
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                    }
+//                }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//            }
+//        }){
+//            protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
+//                Map<String, String> params = new HashMap<String, String>();
+//
+//                Log.v("bbb", "uid(내부저장소) : " + uid);
+//                params.put("uid", uid);
+//                return params;
+//            }
+//        };
+//        RequestQueue queuetoloadcell = Volley.newRequestQueue(WeightActivity.this);
+//        queuetoloadcell.add(Requesttoloadcell);
 
         /**무게재기**/
         View.OnClickListener weightlistener = new View.OnClickListener() {
@@ -161,15 +220,12 @@ public class WeightActivity extends AppCompatActivity implements SensorEventList
                 Log.v("aaa", "prevdatestr(내부저장소) : " + prevDateStr);
                 Log.v("aaa", "recentdatestr(내부저장소) : " + recentDateStr);
 
-
                 //무게를 처음 측정하는 경우
                 /************************************************************************************************/
                 /************************************************************************************************/
                 if (recentDateStr.equals("")) {
 
                     Log.v("aaa", "무게첫측정");
-
-                     final boolean firstmeasure = true;
 
                     //5초 대기 다이얼로그창
                     builder2 = new AlertDialog.Builder(WeightActivity.this);
@@ -219,7 +275,7 @@ public class WeightActivity extends AppCompatActivity implements SensorEventList
                                         measure_day.setText("마지막 측정 날짜 : " + year + "년 " + month + "월 " + day + "일 ");
 
                                         PreferenceManager.setString(WeightActivity.this, "prevDateStr", prevDateStr); //prevDateStr
-                                        PreferenceManager.setString(WeightActivity.this, "recentDateStr", "2020-08-04"); //recentDateStr
+                                        PreferenceManager.setString(WeightActivity.this, "recentDateStr", "2020-08-10"); //recentDateStr
                                         builder3 = new AlertDialog.Builder(WeightActivity.this);
                                         builder3.setTitle("첫 무게 측정을 축하드립니다!").setMessage("첫 무게 측정 기념으로 100포인트를 지급합니다.");
                                         builder3.setPositiveButton("확인", new DialogInterface.OnClickListener() {
@@ -277,7 +333,14 @@ public class WeightActivity extends AppCompatActivity implements SensorEventList
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
                                 }
-                            });
+                            }){
+                        protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
+                            Map<String, String> params = new HashMap<String, String>();
+
+                            params.put("uid", uid);
+                            return params;
+                        }
+                    };
                     RequestQueue queue = Volley.newRequestQueue(WeightActivity.this);
                     queue.add(stringRequest);
                     /************************************************************************************************/
@@ -385,6 +448,7 @@ public class WeightActivity extends AppCompatActivity implements SensorEventList
                                                     else if (weightPerDay >= 1000) point = 5;
                                                     //현재 보유 포인트에 point 더하기
                                                     Log.v("aaa", "point : " + point);
+                                                    Toast.makeText(getApplicationContext(),point +"포인트 획득", Toast.LENGTH_SHORT).show();
 
                                                     /**
                                                      * 무게값, 포인트값 디비에 저장
@@ -428,7 +492,14 @@ public class WeightActivity extends AppCompatActivity implements SensorEventList
                                         @Override
                                         public void onErrorResponse(VolleyError error) {
                                         }
-                                    });
+                                    }){
+                                protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
+                                    Map<String, String> params = new HashMap<String, String>();
+
+                                    params.put("uid", uid);
+                                    return params;
+                                }
+                            };
                             RequestQueue queue = Volley.newRequestQueue(WeightActivity.this);
                             queue.add(stringRequest);
                             /************************************************************************************************/
@@ -491,6 +562,22 @@ public class WeightActivity extends AppCompatActivity implements SensorEventList
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
             step_current.setText("현재 걸음걸이 수 : " + (int) event.values[0]);
+
+            if(!isService){
+                Log.v("service", "연결안되어있대");
+                return;
+            }
+            scService.setCurrentStep((int) event.values[0]);
+
+            if((int) event.values[0] >= 1000) {/**2만보 채웠거나 일요일이면**/
+                //20000보 채우면,
+                //포인트 획득, 측정 종료
+                //일요일이면,
+                //측정 종료
+                unbindService(conn);
+                isService = false;
+                Log.v("service", "서비스종료");
+            }
         }
     }
 
@@ -498,4 +585,29 @@ public class WeightActivity extends AppCompatActivity implements SensorEventList
     public void onAccuracyChanged(Sensor sensor, int i) {
 
     }
+
+    private ServiceConnection conn = new ServiceConnection() {
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            // 서비스와 연결되었을 때 호출되는 메서드
+            // 서비스 객체를 전역변수로 저장
+            StepcountService.MyBinder mBinder = (StepcountService.MyBinder) service;
+            scService = mBinder.getService(); // 서비스가 제공하는 메소드 호출하여
+            // 서비스쪽 객체를 전달받을수 있슴
+            isService = true;
+        }
+        public void onServiceDisconnected(ComponentName name) {
+            // 서비스와 연결이 끊겼을 때 호출되는 메서드
+            isService = false;
+        }
+    };
+
+    private void setStartService() {
+        Log.v("service", "setstratservice");
+        Intent intent = new Intent(WeightActivity.this, StepcountService.class);
+        bindService(intent, conn, Context.BIND_AUTO_CREATE);
+        Log.v("service", "bindService");
+        mIsBound = true;
+        Log.v("service", "보냈다!");
+    }
+
 }
