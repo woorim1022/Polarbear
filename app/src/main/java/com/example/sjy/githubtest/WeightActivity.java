@@ -564,7 +564,6 @@ public class WeightActivity extends AppCompatActivity implements SensorEventList
             step_current.setText("현재 걸음걸이 수 : " + (int) event.values[0]);
 
             if(!isService){
-                Log.v("service", "연결안되어있대");
                 return;
             }
             scService.setCurrentStep((int) event.values[0]);
@@ -602,12 +601,12 @@ public class WeightActivity extends AppCompatActivity implements SensorEventList
     };
 
     private void setStartService() {
-        Log.v("service", "setstratservice");
+        Log.v("service", "setstratservice()");
         Intent intent = new Intent(WeightActivity.this, StepcountService.class);
         bindService(intent, conn, Context.BIND_AUTO_CREATE);
+        startService(intent);
         Log.v("service", "bindService");
         mIsBound = true;
-        Log.v("service", "보냈다!");
     }
 
 }

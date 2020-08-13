@@ -18,6 +18,9 @@ import java.util.Random;
 public class StepcountService extends Service {
 
     IBinder mBinder = new MyBinder();
+    public static Intent serviceIntent = null;
+
+
 
     class MyBinder extends Binder {
         StepcountService getService() { // 서비스 객체를 리턴
@@ -36,23 +39,28 @@ public class StepcountService extends Service {
 
     void setCurrentStep(int currentstep){
         //알림창에 현재 걸음 수
-        Log.v("service", "" + currentstep);
+        Log.v("service", "현재 걸음 수 : " + currentstep);
 
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        startForegroundService();
+
     }
 
     public int onStartCommand(Intent intent, int flags, int startId) {
+        serviceIntent = intent;
+        startForegroundService();
+
+        Log.v("service", "onStartCommand" );
         return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Log.v("service", "onDestroy" );
     }
 
     void startForegroundService() {
