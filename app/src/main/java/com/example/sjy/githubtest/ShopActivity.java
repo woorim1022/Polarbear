@@ -272,7 +272,7 @@ public void ShopClick(View v){
     }
 
     public void shopPoint(){
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://polarbear1022.dothome.co.kr/donateresult.php",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://polarbear1022.dothome.co.kr/shopresult.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
