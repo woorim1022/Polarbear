@@ -48,7 +48,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class WeightActivity extends AppCompatActivity implements SensorEventListener {
+public class WeightActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private View drawerView;
@@ -64,9 +64,6 @@ public class WeightActivity extends AppCompatActivity implements SensorEventList
     AlertDialog.Builder builder, builder2, builder3;
     AlertDialog alertDialog, alertDialog2;
 
-    private SensorManager sensorManager;
-    private Sensor stepCountSensor;
-
     private int weightValue;
     private String prevDateStr;
     private String recentDateStr = "";
@@ -78,8 +75,7 @@ public class WeightActivity extends AppCompatActivity implements SensorEventList
 
     private StepcountService scService;
     boolean isService = false; // 서비스 중인 확인용
-    boolean mIsBound;
-
+    private Intent serviceIntent;
 
 
     @Override
@@ -104,14 +100,7 @@ public class WeightActivity extends AppCompatActivity implements SensorEventList
         step_goal = (TextView) findViewById(R.id.step_goal);
         step_current = (TextView) findViewById(R.id.step_current);
 
-        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        stepCountSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
-        if (stepCountSensor == null)
-            Log.v("aaa", "No step Detect Sensor");
-
-
         uid = PreferenceManager.getString(this, "userID");
-
 
         final Intent intent = getIntent();  //메인 화면에서 넘어온 intent 받음
         String datafrommain = intent.getStringExtra("메인 액티비티에서 넘길 정보"); //pustExtra로 지정했던 데이터의 키값을 지정하면 해당하는 데이터 값이 나오게 됨
@@ -144,14 +133,8 @@ public class WeightActivity extends AppCompatActivity implements SensorEventList
                         step_goal.setVisibility(View.VISIBLE);
                         step_current.setVisibility(View.VISIBLE);
 
-                        //측정시작
-                        sensorManager.registerListener(WeightActivity.this, stepCountSensor, SensorManager.SENSOR_DELAY_NORMAL);
-
-                        Log.v("service", "측정시작");
-                        setStartService();
-
-
-
+                        Log.v("service", "서비스 시작");
+                        setService();
 
                     }
                 });
@@ -514,13 +497,9 @@ public class WeightActivity extends AppCompatActivity implements SensorEventList
         };
         button.setOnClickListener(weightlistener);
 
-
-
         Intent resultintent = new Intent();
         resultintent.putExtra("결과", "무게값, 포인트값 등");
-
         setResult(0, resultintent); //자신을 실행한 액티비티에게 돌려줄 결과
-
 
     }
 
@@ -558,55 +537,50 @@ public class WeightActivity extends AppCompatActivity implements SensorEventList
         }
     }
 
-    @Override
-    public void onSensorChanged(SensorEvent event) {
-        if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
-            step_current.setText("현재 걸음걸이 수 : " + (int) event.values[0]);
-
-            if(!isService){
-                return;
-            }
-            scService.setCurrentStep((int) event.values[0]);
-
-            if((int) event.values[0] >= 1000) {/**2만보 채웠거나 일요일이면**/
-                //20000보 채우면,
-                //포인트 획득, 측정 종료
-                //일요일이면,
-                //측정 종료
-                unbindService(conn);
-                isService = false;
-                Log.v("service", "서비스종료");
-            }
-        }
-    }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int i) {
-
-    }
-
     private ServiceConnection conn = new ServiceConnection() {
         public void onServiceConnected(ComponentName name, IBinder service) {
             // 서비스와 연결되었을 때 호출되는 메서드
             // 서비스 객체를 전역변수로 저장
+            Toast.makeText(WeightActivity.this, "예스바인딩", Toast.LENGTH_SHORT).show();
+            Log.v("service", "예스바인딩");
             StepcountService.MyBinder mBinder = (StepcountService.MyBinder) service;
             scService = mBinder.getService(); // 서비스가 제공하는 메소드 호출하여
+            scService.setCallback(stepCallback);
             // 서비스쪽 객체를 전달받을수 있슴
             isService = true;
         }
         public void onServiceDisconnected(ComponentName name) {
             // 서비스와 연결이 끊겼을 때 호출되는 메서드
             isService = false;
+            Log.v("service", "디스바인딩");
+            Toast.makeText(WeightActivity.this, "디스바인딩", Toast.LENGTH_SHORT).show();
         }
     };
 
-    private void setStartService() {
-        Log.v("service", "setstratservice()");
-        Intent intent = new Intent(WeightActivity.this, StepcountService.class);
-        bindService(intent, conn, Context.BIND_AUTO_CREATE);
-        startService(intent);
-        Log.v("service", "bindService");
-        mIsBound = true;
+    private void setService() {
+
+        serviceIntent = new Intent(WeightActivity.this, StepcountService.class);
+        bindService(serviceIntent, conn, Context.BIND_AUTO_CREATE);
+        startService(serviceIntent);
+
+        Log.v("service", "bindService, startservice");
     }
 
+    private StepCallback stepCallback = new StepCallback() { //서비스 내부로 Set되어 스텝카운트의 변화와 Unbind의 결과를 전달하는 콜백 객체의 구현체
+        @Override
+        public void onStepCallback(int step) {
+            step_current.setText("현재 걸음걸이 수 : " + step);
+            Log.v("service", "step : " + step);
+            if(step >= 1300) {
+                unbindService(conn);
+                Log.v("service", "unbindService");
+            }
+        }
+
+        @Override
+        public void onUnbindService() {
+            isService = false;
+            Toast.makeText(WeightActivity.this, "디스바인딩", Toast.LENGTH_SHORT).show();
+        }
+    };
 }

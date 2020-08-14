@@ -6,6 +6,10 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
@@ -15,11 +19,29 @@ import android.widget.RemoteViews;
 
 import java.util.Random;
 
-public class StepcountService extends Service {
+public class StepcountService extends Service implements SensorEventListener {
 
     IBinder mBinder = new MyBinder();
     public static Intent serviceIntent = null;
+    private StepCallback callback;
 
+    public void setCallback(StepCallback callback) {
+        this.callback = callback;
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+        if (sensorEvent.sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
+            Log.e("service", "service에서 스텝" + sensorEvent.values[0]);
+            if (callback != null)
+                callback.onStepCallback((int)sensorEvent.values[0]);
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
+
+    }
 
 
     class MyBinder extends Binder {
@@ -35,21 +57,35 @@ public class StepcountService extends Service {
         return mBinder; // 서비스 객체를 리턴
     }
 
-
-
-    void setCurrentStep(int currentstep){
-        //알림창에 현재 걸음 수
-        Log.v("service", "현재 걸음 수 : " + currentstep);
-
-    }
+    private SensorManager sensorManager;
+    private Sensor stepCountSensor;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        stepCountSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+        //측정 시작
+        sensorManager.registerListener(this, stepCountSensor, SensorManager.SENSOR_DELAY_NORMAL);
 
     }
 
+
+    void setCurrentStep(int currentstep){
+//        //알림창에 현재 걸음 수
+//        Log.v("service", "현재 걸음 수 : " + currentstep);
+
+    }
+
+
+
     public int onStartCommand(Intent intent, int flags, int startId) {
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        stepCountSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+        //측정 시작
+        sensorManager.registerListener(this, stepCountSensor, SensorManager.SENSOR_DELAY_NORMAL);
+
+
         serviceIntent = intent;
         startForegroundService();
 
@@ -58,10 +94,28 @@ public class StepcountService extends Service {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.v("service", "onDestroy" );
+    public boolean onUnbind(Intent intent) {
+        unRegistManager();
+        if (callback != null)
+            callback.onUnbindService();
+        return super.onUnbind(intent);
     }
+
+
+    public void unRegistManager() { //혹시 모를 에러상황에 트라이 캐치
+        try {
+            sensorManager.unregisterListener(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+//    @Override
+//    public void onDestroy() {
+//        super.onDestroy();
+//        Log.v("service", "onDestroy" );
+//    }
 
     void startForegroundService() {
         Intent notificationIntent = new Intent(this, WeightActivity.class);
