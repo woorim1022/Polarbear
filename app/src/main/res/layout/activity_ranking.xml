@@ -201,7 +201,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="30dp"
                     android:fontFamily="@font/maplestory"
-                    android:text="닉네임은여덟글자"
+                    android:text="랭킹1위"
                     android:textColor="#000000"
                     android:textSize="20dp"></TextView>
 
@@ -330,7 +330,7 @@
                     android:layout_marginLeft="50dp"
                     android:layout_marginTop="30dp"
                     android:fontFamily="@font/maplestory"
-                    android:text="200"
+                    android:text="0"
                     android:textColor="#000000"
                     android:textSize="20dp"></TextView>
 
@@ -341,7 +341,7 @@
                     android:layout_marginLeft="50dp"
                     android:layout_marginTop="21dp"
                     android:fontFamily="@font/maplestory"
-                    android:text="195"
+                    android:text="0"
                     android:textColor="#000000"
                     android:textSize="20dp"></TextView>
 
@@ -352,7 +352,7 @@
                     android:layout_marginLeft="50dp"
                     android:layout_marginTop="21dp"
                     android:fontFamily="@font/maplestory"
-                    android:text="180"
+                    android:text="0"
                     android:textColor="#000000"
                     android:textSize="20dp"></TextView>
 
@@ -363,7 +363,7 @@
                     android:layout_marginLeft="50dp"
                     android:layout_marginTop="21dp"
                     android:fontFamily="@font/maplestory"
-                    android:text="170"
+                    android:text="0"
                     android:textColor="#000000"
                     android:textSize="20dp"></TextView>
 
@@ -374,7 +374,7 @@
                     android:layout_marginLeft="50dp"
                     android:layout_marginTop="21dp"
                     android:fontFamily="@font/maplestory"
-                    android:text="160"
+                    android:text="0"
                     android:textColor="#000000"
                     android:textSize="20dp"></TextView>
 
@@ -385,7 +385,7 @@
                     android:layout_marginLeft="50dp"
                     android:layout_marginTop="21dp"
                     android:fontFamily="@font/maplestory"
-                    android:text="140"
+                    android:text="0"
                     android:textColor="#000000"
                     android:textSize="20dp"></TextView>
 
@@ -396,7 +396,7 @@
                     android:layout_marginLeft="50dp"
                     android:layout_marginTop="21dp"
                     android:fontFamily="@font/maplestory"
-                    android:text="100"
+                    android:text="0"
                     android:textColor="#000000"
                     android:textSize="20dp"></TextView>
 
@@ -407,7 +407,7 @@
                     android:layout_marginLeft="50dp"
                     android:layout_marginTop="21dp"
                     android:fontFamily="@font/maplestory"
-                    android:text="95"
+                    android:text="0"
                     android:textColor="#000000"
                     android:textSize="20dp"></TextView>
 
@@ -418,7 +418,7 @@
                     android:layout_marginLeft="50dp"
                     android:layout_marginTop="21dp"
                     android:fontFamily="@font/maplestory"
-                    android:text="80"
+                    android:text="0"
                     android:textColor="#000000"
                     android:textSize="20dp"></TextView>
 
@@ -429,7 +429,7 @@
                     android:layout_marginLeft="50dp"
                     android:layout_marginTop="21dp"
                     android:fontFamily="@font/maplestory"
-                    android:text="20"
+                    android:text="0"
                     android:textColor="#000000"
                     android:textSize="20dp"></TextView>
 
@@ -455,7 +455,7 @@
                         android:textColor="#000000"
                         android:textSize="20dp"
                         android:layout_marginLeft="5dp"
-                        android:text="순위 밖">
+                        android:text="">
                     </TextView>
 
                 </LinearLayout>
