@@ -99,11 +99,15 @@ public class ShopActivity extends AppCompatActivity{
         shop_price2 = (TextView) findViewById(R.id.shop_price2);
         shop_price3 = (TextView) findViewById(R.id.shop_price3);
         shop_price4 = (TextView) findViewById(R.id.shop_price4);
+        shop_button1=(Button) findViewById(R.id.shop_button1);
+        shop_button2=(Button) findViewById(R.id.shop_button2);
+        shop_button3=(Button) findViewById(R.id.shop_button3);
+        shop_button4=(Button) findViewById(R.id.shop_button4);
         currentPoint = (TextView) findViewById(R.id.currentpoint);
 
         checkUserInfo();
 
-        String url = "http://polarbear1022.dothome.co.kr/donate.php";
+        String url = "http://polarbear1022.dothome.co.kr/shop.php";
 
         ShopActivity.NetworkTask networkTask = new ShopActivity.NetworkTask(url, null);
         networkTask.execute();
