@@ -120,7 +120,7 @@
                 android:textColor="#000000"
                 android:textSize="20dp"
                 android:text="구매 하기"
-                android:onClick="ShopClick1">
+                android:onClick="ShopClick">
 
             </Button>
         </RelativeLayout>
@@ -194,7 +194,7 @@
                 android:textColor="#000000"
                 android:textSize="20dp"
                 android:text="구매 하기"
-                android:onClick="ShopClick2">
+                android:onClick="ShopClick">
 
             </Button>
         </RelativeLayout>
@@ -268,7 +268,7 @@
                 android:textColor="#000000"
                 android:textSize="20dp"
                 android:text="구매 하기"
-                android:onClick="ShopClick3">
+                android:onClick="ShopClick">
 
             </Button>
         </RelativeLayout>
@@ -342,7 +342,7 @@
                 android:textColor="#000000"
                 android:textSize="20dp"
                 android:text="구매 하기"
-                android:onClick="ShopClick4">
+                android:onClick="ShopClick">
 
             </Button>
         </RelativeLayout>
