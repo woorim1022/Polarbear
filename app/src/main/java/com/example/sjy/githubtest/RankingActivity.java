@@ -88,6 +88,7 @@ public class RankingActivity extends AppCompatActivity {
         networkTask.execute();
 
         getRank();
+
     }
 
     //유저 랭킹 정보 가져오기
@@ -108,10 +109,11 @@ public class RankingActivity extends AppCompatActivity {
                     JSONObject firstItem = jsonArray.getJSONObject(0);
 
                     success = firstItem.getString(TAG_TF);
-
+                    Log.v("aaa", "성공 여부 : " + success);
                     //success 가 true 이면(순위 안에 있으면)
                     if(success.equals("true")){
                         rank = firstItem.getString(TAG_RANK);
+                        Log.v("aaa", "순위 : " + rank);
                         myrank.setText(rank+ "위");
                     }
                     //success 가 false 이면(순위 밖에 있으면)
@@ -280,10 +282,8 @@ public class RankingActivity extends AppCompatActivity {
                 rank10.setText(tenthName);
                 point10.setText(tenthPoint);
 
-
             } catch (JSONException e) {
 
-                Log.d("rrr", "showResult : ", e);
             }
         }
     }
