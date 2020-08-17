@@ -72,6 +72,7 @@ public class WeightActivity extends AppCompatActivity {
     private int point;
 
     private String uid;
+    private String uname;
 
     private StepcountService scService;
     boolean isService = false; // 서비스 중인 확인용
@@ -101,6 +102,7 @@ public class WeightActivity extends AppCompatActivity {
         step_current = (TextView) findViewById(R.id.step_current);
 
         uid = PreferenceManager.getString(this, "userID");
+        uname = PreferenceManager.getString(this, "userNAME");
 
         final Intent intent = getIntent();  //메인 화면에서 넘어온 intent 받음
         String datafrommain = intent.getStringExtra("메인 액티비티에서 넘길 정보"); //pustExtra로 지정했던 데이터의 키값을 지정하면 해당하는 데이터 값이 나오게 됨
@@ -172,26 +174,6 @@ public class WeightActivity extends AppCompatActivity {
             measure_day.setText("마지막 측정 날짜 : " + year + "년 " + month + "월 " + day + "일 ");
         }
 
-//        StringRequest Requesttoloadcell = new StringRequest(Request.Method.POST, "http://polarbear1022.dothome.co.kr/loadcelltest.php",
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                    }
-//                }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//            }
-//        }){
-//            protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
-//                Map<String, String> params = new HashMap<String, String>();
-//
-//                Log.v("bbb", "uid(내부저장소) : " + uid);
-//                params.put("uid", uid);
-//                return params;
-//            }
-//        };
-//        RequestQueue queuetoloadcell = Volley.newRequestQueue(WeightActivity.this);
-//        queuetoloadcell.add(Requesttoloadcell);
 
         /**무게재기**/
         View.OnClickListener weightlistener = new View.OnClickListener() {
@@ -204,8 +186,6 @@ public class WeightActivity extends AppCompatActivity {
                 Log.v("aaa", "recentdatestr(내부저장소) : " + recentDateStr);
 
                 //무게를 처음 측정하는 경우
-                /************************************************************************************************/
-                /************************************************************************************************/
                 if (recentDateStr.equals("")) {
 
                     Log.v("aaa", "무게첫측정");
@@ -238,8 +218,6 @@ public class WeightActivity extends AppCompatActivity {
                     countDownTimer.start();
 
                     //무게 측정
-                    /************************************************************************************************/
-                    /************************************************************************************************/
                     StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://polarbear1022.dothome.co.kr/weight.php",
                             new Response.Listener<String>() {
                                 @Override
@@ -294,6 +272,7 @@ public class WeightActivity extends AppCompatActivity {
                                                 Log.v("aaa", "point(내부저장소) : " + point);
 
                                                 params.put("uid", uid);
+                                                params.put("uname", uname);
                                                 params.put("weight", ""+weightValue);
                                                 params.put("point", ""+point);
                                                 return params;
@@ -303,9 +282,6 @@ public class WeightActivity extends AppCompatActivity {
                                         queue.add(stringRequest);
 
 
-                                        /**
-                                         * 현재 보유 포인트에 더하기
-                                         * **/
 
                                     } catch (JSONException e) {
                                         e.printStackTrace();
@@ -326,27 +302,20 @@ public class WeightActivity extends AppCompatActivity {
                     };
                     RequestQueue queue = Volley.newRequestQueue(WeightActivity.this);
                     queue.add(stringRequest);
-                    /************************************************************************************************/
-                    /************************************************************************************************/
+
 
                 }
-                /************************************************************************************************/
-                /************************************************************************************************/
                 //무게를 이전에 측정한 적이 있는 경우
                 else {
                         SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
                         Date today = new Date();
                         /**마지막 측정 날짜가 오늘이면**/
-                        /************************************************************************************************/
-                        /************************************************************************************************/
                         if (recentDateStr.equals(format1.format(today))) {
                             Log.v("aaa", "prevdatestr(마지막 측정 날짜가 오늘) : " + prevDateStr);
                             Log.v("aaa", "recentdatestr(마지막 측정 날짜가 오늘) : " + recentDateStr);
                             //무게 측정 안함
                             Toast.makeText(getApplicationContext(), "무게는 하루에 한 번만 측정하실 수 있습니다.", Toast.LENGTH_SHORT).show();
                         }
-                        /************************************************************************************************/
-                        /************************************************************************************************/
                         /**마지막 측정 날짜가 오늘이 아니면**/
                         else {
                             //무게재기
@@ -378,8 +347,6 @@ public class WeightActivity extends AppCompatActivity {
                             countDownTimer.start();
 
                             //무게 측정
-                            /************************************************************************************************/
-                            /************************************************************************************************/
                             StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://polarbear1022.dothome.co.kr/weight.php",
                                     new Response.Listener<String>() {
                                         @Override
@@ -453,6 +420,7 @@ public class WeightActivity extends AppCompatActivity {
                                                             Log.v("aaa", "point(내부저장소) : " + point);
 
                                                             params.put("uid", uid);
+                                                            params.put("uname", uname);
                                                             params.put("weight", ""+weightValue);
                                                             params.put("point", ""+point);
                                                             return params;
@@ -460,10 +428,6 @@ public class WeightActivity extends AppCompatActivity {
                                                     };
                                                     RequestQueue queue = Volley.newRequestQueue(WeightActivity.this);
                                                     queue.add(stringRequest);
-
-                                                    /**
-                                                     * 현재 보유 포인트에 더하기
-                                                     * **/
 
                                                 }catch (ParseException e){}
                                             } catch (JSONException e) {
@@ -485,13 +449,9 @@ public class WeightActivity extends AppCompatActivity {
                             };
                             RequestQueue queue = Volley.newRequestQueue(WeightActivity.this);
                             queue.add(stringRequest);
-                            /************************************************************************************************/
-                            /************************************************************************************************/
 
 
                         }
-                        /************************************************************************************************/
-                        /************************************************************************************************/
                 }
             }
         };

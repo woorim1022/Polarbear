@@ -4,6 +4,10 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_SERVICE" />
+
 
     <application
         android:allowBackup="true"
@@ -12,14 +16,15 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name=".MypageActivity" android:noHistory="true"></activity>
-        <activity android:name=".SignupActivity" android:noHistory="true"></activity>
-        <activity android:name=".ShopActivity" android:noHistory="true"> </activity>
-        <activity android:name=".RankingActivity" android:noHistory="true"></activity>
-        <activity android:name=".DonateActivity" android:noHistory="true"></activity>
-        <activity android:name=".GraphActivity" android:noHistory="true"></activity>
-        <activity android:name=".WeightActivity" android:noHistory="true"></activity>
+        android:theme="@style/Theme.AppCompat.NoActionBar"
+        android:process=":location">
+        <activity android:name=".MypageActivity" android:noHistory="true" android:process=":location"></activity>
+        <activity android:name=".SignupActivity" android:noHistory="true" android:process=":location"></activity>
+        <activity android:name=".ShopActivity" android:noHistory="true" android:process=":location"> </activity>
+        <activity android:name=".RankingActivity" android:noHistory="true" android:process=":location"></activity>
+        <activity android:name=".DonateActivity" android:noHistory="true" android:process=":location"></activity>
+        <activity android:name=".GraphActivity" android:noHistory="true" android:process=":location"></activity>
+        <activity android:name=".WeightActivity" android:noHistory="true" android:process=":location"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,7 +32,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".StepcountService"></service>
+        <service
+            android:name=".StepcountService"
+            android:enabled="true"
+            android:process=":location" >
+        </service>
+        <receiver
+            android:name=".RestartService"
+            android:enabled="true"
+            android:exported="true"
+            android:label="RestartService"
+            android:process=":location" >
+            <intent-filter>
+                <action android:name="ACTION.RESTART.StepcountService" />
+                <action android:name="android.intent.action.ACTION_BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>
