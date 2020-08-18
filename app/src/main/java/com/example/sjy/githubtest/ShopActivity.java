@@ -68,10 +68,10 @@ public class ShopActivity extends AppCompatActivity{
     private Button shop_button4;
     private Context mContext;
 
-    private int count_shop1=0;
-    private int count_shop2=0;
-    private int count_shop3=0;
-    private int count_shop4=0;
+    private int num_apple=0;
+    private int num_fish=0;
+    private int num_meat=0;
+    private int num_ice=0;
 
     private AlertDialog dialog;
 
@@ -116,7 +116,7 @@ public class ShopActivity extends AppCompatActivity{
 public void ShopClick(View v){
     switch (v.getId()) {
         case R.id.shop_button1:
-            shopPoint();
+            shopPointapple();
             AlertDialog.Builder builder1 = new AlertDialog.Builder(ShopActivity.this);
             dialog = builder1.setTitle("구입완료!")
                     .setMessage("사과를 구입했습니다.")
@@ -124,11 +124,11 @@ public void ShopClick(View v){
                     .create();
             dialog.show();
             checkUserInfo();
-            count_shop1++;
+            num_apple++;
             break;
 
         case R.id.shop_button2:
-            shopPoint();
+            shopPointfish();
             AlertDialog.Builder builder2 = new AlertDialog.Builder(ShopActivity.this);
             dialog = builder2.setTitle("구입완료!")
                     .setMessage("물고기를 구입했습니다.")
@@ -136,10 +136,10 @@ public void ShopClick(View v){
                     .create();
             dialog.show();
             checkUserInfo();
-            count_shop2++;
+            num_fish++;
             break;
         case R.id.shop_button3:
-            shopPoint();
+            shopPointmeat();
             AlertDialog.Builder builder3 = new AlertDialog.Builder(ShopActivity.this);
             dialog = builder3.setTitle("구입완료!")
                     .setMessage("고기를 구입했습니다.")
@@ -147,10 +147,10 @@ public void ShopClick(View v){
                     .create();
             dialog.show();
             checkUserInfo();
-            count_shop3++;
+            num_meat++;
             break;
         case R.id.shop_button4:
-            shopPoint();
+            shopPointice();
             AlertDialog.Builder builder4 = new AlertDialog.Builder(ShopActivity.this);
             dialog = builder4.setTitle("구입완료!")
                     .setMessage("얼음을 구입했습니다.")
@@ -158,7 +158,7 @@ public void ShopClick(View v){
                     .create();
             dialog.show();
             checkUserInfo();
-            count_shop4++;
+            num_ice++;
             break;
     }
 }
@@ -275,8 +275,74 @@ public void ShopClick(View v){
         queue.add(userRequest);
     }
 
-    public void shopPoint(){
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://polarbear1022.dothome.co.kr/shopresult.php",
+    public void shopPointapple(){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://polarbear1022.dothome.co.kr/shopresultapple.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        }){
+            protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+
+                params.put("uid", userId);
+                return params;
+            }
+        };
+        RequestQueue queue = Volley.newRequestQueue(ShopActivity.this);
+        queue.add(stringRequest);
+
+    }
+    public void shopPointfish(){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://polarbear1022.dothome.co.kr/shopresultfish.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        }){
+            protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+
+                params.put("uid", userId);
+                return params;
+            }
+        };
+        RequestQueue queue = Volley.newRequestQueue(ShopActivity.this);
+        queue.add(stringRequest);
+
+    }
+    public void shopPointmeat(){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://polarbear1022.dothome.co.kr/shopresultmeat.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        }){
+            protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+
+                params.put("uid", userId);
+                return params;
+            }
+        };
+        RequestQueue queue = Volley.newRequestQueue(ShopActivity.this);
+        queue.add(stringRequest);
+
+    }
+    public void shopPointice(){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://polarbear1022.dothome.co.kr/shopresultice.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
