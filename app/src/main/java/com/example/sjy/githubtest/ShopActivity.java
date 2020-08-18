@@ -239,7 +239,7 @@ public void ShopClick(View v){
                         shop_button4.setBackgroundColor(Color.parseColor("#4DAEDDEF"));
                         shop_button4.setTextColor(Color.parseColor("#4D000000"));
                     }
-                    else if(point>50 && point<100){
+                    else if(point>=50 && point<100){
                         shop_button2.setEnabled(false);
                         shop_button2.setBackgroundColor(Color.parseColor("#4DAEDDEF"));
                         shop_button2.setTextColor(Color.parseColor("#4D000000"));
@@ -250,7 +250,7 @@ public void ShopClick(View v){
                         shop_button4.setBackgroundColor(Color.parseColor("#4DAEDDEF"));
                         shop_button4.setTextColor(Color.parseColor("#4D000000"));
                     }
-                    else if(point>100 && point<150){
+                    else if(point>=100 && point<150){
                         shop_button3.setEnabled(false);
                         shop_button3.setBackgroundColor(Color.parseColor("#4DAEDDEF"));
                         shop_button3.setTextColor(Color.parseColor("#4D000000"));
@@ -258,7 +258,7 @@ public void ShopClick(View v){
                         shop_button4.setBackgroundColor(Color.parseColor("#4DAEDDEF"));
                         shop_button4.setTextColor(Color.parseColor("#4D000000"));
                     }
-                    else if(point>150 && point<200){
+                    else if(point>=150 && point<200){
                         shop_button4.setEnabled(false);
                         shop_button4.setBackgroundColor(Color.parseColor("#4DAEDDEF"));
                         shop_button4.setTextColor(Color.parseColor("#4D000000"));
