@@ -14,11 +14,13 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.IBinder;
+import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
@@ -47,6 +49,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import static java.lang.Integer.parseInt;
+
 
 public class WeightActivity extends AppCompatActivity {
 
@@ -74,10 +78,45 @@ public class WeightActivity extends AppCompatActivity {
     private String uid;
     private String uname;
 
-    private StepcountService scService;
-    boolean isService = false; // 서비스 중인 확인용
     private Intent serviceIntent;
 
+    private StepcountService stepService; // 서비스 클래스 객체를 선언
+    boolean isService = false; // 서비스 중인 확인용
+
+    private static int currentstep;
+
+    private StepCallback stepCallback = new StepCallback() { //서비스 내부로 Set되어 스텝카운트의 변화와 Unbind의 결과를 전달하는 콜백 객체의 구현체
+        @Override
+        public void onStepCallback(int step) {
+            currentstep = step;
+            step_current.setText("현재 걸음 수 : " + currentstep);
+            if(step >= 20000)
+                stopCount(currentstep);
+        }
+
+        @Override
+        public void onUnbindService() {
+            isService = false;
+            Toast.makeText(WeightActivity.this, "디스바인딩", Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    private ServiceConnection serviceConnection = new ServiceConnection() { //서비스 바인드를 담당하는 객체의 구현체
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            Toast.makeText( WeightActivity.this, "예스바인딩", Toast.LENGTH_SHORT).show();
+            StepcountService.MyBinder mb = (StepcountService.MyBinder) service;
+            stepService = mb.getService(); //
+            stepService.setCallback(stepCallback);
+            isService = true;
+        }
+        @Override
+        public void onServiceDisconnected(ComponentName name) { //요거는 사실상 서비스가 킬되거나 아예 죽임 당했을 때만 호출된다고 보시면 됨
+// stopService 또는 unBindService때 호출되지 않음.
+            isService = false;
+            Toast.makeText(WeightActivity.this, "디스바인딩", Toast.LENGTH_SHORT).show();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +146,18 @@ public class WeightActivity extends AppCompatActivity {
         final Intent intent = getIntent();  //메인 화면에서 넘어온 intent 받음
         String datafrommain = intent.getStringExtra("메인 액티비티에서 넘길 정보"); //pustExtra로 지정했던 데이터의 키값을 지정하면 해당하는 데이터 값이 나오게 됨
 
+        //절전 모드를 사용하지 않는 예외 앱으로 처리
+        PowerManager pm = (PowerManager) getApplicationContext().getSystemService(POWER_SERVICE);
+        boolean isWhiteListing = false;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            isWhiteListing = pm.isIgnoringBatteryOptimizations(getApplicationContext().getPackageName());
+        }
+        if (!isWhiteListing) {
+            Intent intent2 = new Intent();
+            intent2.setAction(android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+            intent2.setData(Uri.parse("package:" + getApplicationContext().getPackageName()));
+            startActivity(intent2);
+        }
 
         /**걸음수 측정**/
         //월요일이면,
@@ -134,9 +185,27 @@ public class WeightActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "걸음 수 측정 시작", Toast.LENGTH_SHORT).show();
                         step_goal.setVisibility(View.VISIBLE);
                         step_current.setVisibility(View.VISIBLE);
+                        /**
+                         *  현재 걸음 수 가져와서 화면에 표시
+                         */
+                        String stepPref = PreferenceManager.getString(WeightActivity.this, "STEPCOUNT");
 
-                        Log.v("service", "서비스 시작");
-                        setService();
+                        Log.v("aaa", stepPref);
+                        if(stepPref != "") {
+                            step_current.setText("현재 걸음 수(pref) : " + parseInt(stepPref));
+                        }
+                        else {
+                            step_current.setText("현재 걸음 수(pref) : " + 0);
+                        }
+                        //서비스 시작하기
+                        if (StepcountService.serviceIntent==null) {
+                            serviceIntent = new Intent(WeightActivity.this, StepcountService.class);
+                            startService(serviceIntent);
+                            bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+                        } else {
+                            serviceIntent = StepcountService.serviceIntent;//getInstance().getApplication();
+                            Toast.makeText(getApplicationContext(), "already", Toast.LENGTH_LONG).show();
+                        }
 
                     }
                 });
@@ -152,9 +221,6 @@ public class WeightActivity extends AppCompatActivity {
                 alertDialog.show();
             }
         }
-
-
-
 
 
 
@@ -463,6 +529,23 @@ public class WeightActivity extends AppCompatActivity {
 
     }
 
+    protected void stopCount(int currentstep) {
+         /**일요일이거나 2만보 채우면**/
+            if (serviceIntent != null) {
+                stopService(serviceIntent);
+                serviceIntent = null;
+            }
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.v("@@@", "걸음 onDestroy(weightactivity)");
+        stopService(serviceIntent);
+        super.onDestroy();
+
+    }
+
+
     public void menuOnClick(View v) {
         switch (v.getId()) {
             case R.id.drawer_weight:
@@ -497,50 +580,5 @@ public class WeightActivity extends AppCompatActivity {
         }
     }
 
-    private ServiceConnection conn = new ServiceConnection() {
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            // 서비스와 연결되었을 때 호출되는 메서드
-            // 서비스 객체를 전역변수로 저장
-            Toast.makeText(WeightActivity.this, "예스바인딩", Toast.LENGTH_SHORT).show();
-            Log.v("service", "예스바인딩");
-            StepcountService.MyBinder mBinder = (StepcountService.MyBinder) service;
-            scService = mBinder.getService(); // 서비스가 제공하는 메소드 호출하여
-            scService.setCallback(stepCallback);
-            // 서비스쪽 객체를 전달받을수 있슴
-            isService = true;
-        }
-        public void onServiceDisconnected(ComponentName name) {
-            // 서비스와 연결이 끊겼을 때 호출되는 메서드
-            isService = false;
-            Log.v("service", "디스바인딩");
-            Toast.makeText(WeightActivity.this, "디스바인딩", Toast.LENGTH_SHORT).show();
-        }
-    };
 
-    private void setService() {
-
-        serviceIntent = new Intent(WeightActivity.this, StepcountService.class);
-        bindService(serviceIntent, conn, Context.BIND_AUTO_CREATE);
-        startService(serviceIntent);
-
-        Log.v("service", "bindService, startservice");
-    }
-
-    private StepCallback stepCallback = new StepCallback() { //서비스 내부로 Set되어 스텝카운트의 변화와 Unbind의 결과를 전달하는 콜백 객체의 구현체
-        @Override
-        public void onStepCallback(int step) {
-            step_current.setText("현재 걸음걸이 수 : " + step);
-            Log.v("service", "step : " + step);
-            if(step >= 1300) {
-                unbindService(conn);
-                Log.v("service", "unbindService");
-            }
-        }
-
-        @Override
-        public void onUnbindService() {
-            isService = false;
-            Toast.makeText(WeightActivity.this, "디스바인딩", Toast.LENGTH_SHORT).show();
-        }
-    };
 }

@@ -7,6 +7,8 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
+
 
 
     <application
@@ -33,21 +35,19 @@
             </intent-filter>
         </activity>
         <service
-            android:name=".StepcountService"
-            android:enabled="true"
-            android:process=":location" >
+            android:name=".StepcountService" >
         </service>
-        <receiver
-            android:name=".RestartService"
-            android:enabled="true"
-            android:exported="true"
-            android:label="RestartService"
-            android:process=":location" >
-            <intent-filter>
-                <action android:name="ACTION.RESTART.StepcountService" />
-                <action android:name="android.intent.action.ACTION_BOOT_COMPLETED" />
-            </intent-filter>
+        <service
+            android:name=".RestartService" ></service>
+        <receiver android:name=".Receiver">
         </receiver>
+        <receiver
+            android:name=".RebootReceiver">
+        <intent-filter>
+            <action android:name="android.intent.action.BOOT_COMPLETED" />
+        </intent-filter>
+    </receiver>
+
 
     </application>
 
