@@ -92,9 +92,11 @@
                 android:orientation="vertical">
 
                 <ImageView
+                    android:id="@+id/btn_apple"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:src="@drawable/apple">
+                    android:src="@drawable/apple"
+                    android:onClick="itemOnClick">
                 </ImageView>
 
                 <TextView
@@ -102,11 +104,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="x 5"
                     android:fontFamily="@font/maplestory"
+                    android:text="x 100"
                     android:textColor="#000000"
-                    android:textSize="18dp">
-                </TextView>
+                    android:textSize="18dp"></TextView>
             </LinearLayout>
 
             <LinearLayout
@@ -117,9 +118,11 @@
                 >
 
                 <ImageView
+                    android:id="@+id/btn_fish"
                     android:layout_width="80dp"
                     android:layout_height="60dp"
-                    android:src="@drawable/fish">
+                    android:src="@drawable/fish"
+                    android:onClick="itemOnClick">
                 </ImageView>
 
                 <TextView
@@ -127,7 +130,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="x 10"
+                    android:text="x 100"
                     android:fontFamily="@font/maplestory"
                     android:textColor="#000000"
                     android:textSize="18dp">
@@ -141,9 +144,11 @@
                 android:orientation="vertical">
 
                 <ImageView
+                    android:id="@+id/btn_meat"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:src="@drawable/meat">
+                    android:src="@drawable/meat"
+                    android:onClick="itemOnClick">
                 </ImageView>
 
                 <TextView
@@ -151,7 +156,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="x 9"
+                    android:text="x 100"
                     android:fontFamily="@font/maplestory"
                     android:textColor="#000000"
                     android:textSize="18dp">
@@ -165,9 +170,11 @@
                 android:orientation="vertical">
 
                 <ImageView
+                    android:id="@+id/btn_ice"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:src="@drawable/ice">
+                    android:src="@drawable/ice"
+                    android:onClick="itemOnClick">
                 </ImageView>
 
                 <TextView
@@ -175,7 +182,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="x 0"
+                    android:text="x 100"
                     android:fontFamily="@font/maplestory"
                     android:textColor="#000000"
                     android:textSize="18dp">
@@ -190,10 +197,10 @@
 
             <TextView
                 android:id="@+id/level"
-                android:layout_width="wrap_content"
+                android:layout_width="70dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:text="레벨 3"
+                android:text="레벨 100"
                 android:fontFamily="@font/maplestory"
                 android:textColor="#000000"
                 android:textSize="18dp">
@@ -203,7 +210,7 @@
             <ProgressBar
                 android:id="@+id/exp_bar"
                 style="?android:attr/progressBarStyleHorizontal"
-                android:layout_marginLeft="30dp"
+                android:layout_marginLeft="10dp"
                 android:layout_width="300dp"
                 android:layout_height="15dp"
                 android:progressDrawable="@drawable/progressbar" />

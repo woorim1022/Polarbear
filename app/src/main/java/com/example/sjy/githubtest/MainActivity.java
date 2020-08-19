@@ -1,5 +1,6 @@
 package com.example.sjy.githubtest;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -37,14 +39,20 @@ public class MainActivity extends AppCompatActivity {
     private String userId;
     private String used_point;
     private String donate_count;
+    private String userLevel, userExp;
+    private String numApple, numFish, numMeat, numIce;
+    private int iApple, iFish, iMeat, iIce;
     private Context mContext;
-    private TextView username;
+    private TextView username, level, appleCount, fishCount, meatCount, iceCount;
     private ImageView badge1, badge2, badge3;
+    private ImageView btnApple, btnFish, btnMeat, btnIce;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        long startTime = System.currentTimeMillis();
 
         //메뉴 버튼 클릭
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
@@ -55,6 +63,15 @@ public class MainActivity extends AppCompatActivity {
         mContext = this;
 
         username = (TextView)findViewById(R.id.username);
+        level = (TextView)findViewById(R.id.level);
+        appleCount = (TextView)findViewById(R.id.num_apple);
+        fishCount = (TextView)findViewById(R.id.num_fish);
+        meatCount = (TextView)findViewById(R.id.num_meat);
+        iceCount = (TextView)findViewById(R.id.num_ice);
+        btnApple = (ImageView)findViewById(R.id.btn_apple);
+        btnFish = (ImageView)findViewById(R.id.btn_fish);
+        btnMeat = (ImageView)findViewById(R.id.btn_meat);
+        btnIce = (ImageView)findViewById(R.id.btn_ice);
 
 
         openDrawer.setOnClickListener(new View.OnClickListener() {
@@ -86,6 +103,12 @@ public class MainActivity extends AppCompatActivity {
         badge2 = (ImageView)findViewById(R.id.badge02);
         badge3 = (ImageView)findViewById(R.id.badge03);
         showBadge();
+
+        checkUserInfo();
+
+        //실행 시간 측정
+        long endTime = System.currentTimeMillis();
+        Log.d("timecheck", "onCreate:" + (endTime - startTime));
     }
 
     //뱃지 노출 설정
@@ -135,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
         queue.add(badgeRequest);
     }
 
-
+    //메뉴 클릭
     public void menuOnClick(View v) {
         switch(v.getId()){
             case R.id.drawer_weight:
@@ -170,6 +193,216 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //유저 정보 갱신
+    public void checkUserInfo() {
+        userId = PreferenceManager.getString(mContext, "userID");
+
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                /**결과 처리**/
+                String TAG_INFO = "userinfo";
+                String TAG_LEVEL = "ulevel";
+                String TAG_EXP = "uexp";
+                try {
+                    JSONObject jsonResponse = new JSONObject(response);//response : 서버로 부터 받은 결과 (userinfo.php 의 $response 에 담겨있는 값)
+                    JSONArray jsonArray = jsonResponse.getJSONArray(TAG_INFO);
+
+                    JSONObject firstItem = jsonArray.getJSONObject(0);
+
+                    userLevel = firstItem.getString(TAG_LEVEL);
+                    userExp = firstItem.getString(TAG_EXP);
+
+                    level.setText("레벨 " + userLevel);
+                    Log.d("count", "레벨 :" + userLevel);
+                    //경험치 표시 추가(userExp 사용)
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        /**서버로 volley를 이용하여 요청을 함**/
+        UserRequest userRequest = new UserRequest(userId, responseListener);     //Request 클래스를 이용하여 서버 요청 정보와 결과 처리 방법을 표현
+        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);  //서버 요청자, 다른 request 클래스들의 정보대로 서버에 요청을 보내는 역할
+        queue.add(userRequest);
+
+        //아이템 개수 불러오기
+        Response.Listener<String> itemresponseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                /**결과 처리**/
+                String TAG_INFO = "iteminfo";
+                String TAG_APPLE = "apple";
+                String TAG_FISH = "fish";
+                String TAG_MEAT = "meat";
+                String TAG_ICE = "ice";
+
+                try {
+                    JSONObject jsonResponse = new JSONObject(response);//response : 서버로 부터 받은 결과 (iteminfo.php 의 $response 에 담겨있는 값)
+                    JSONArray jsonArray = jsonResponse.getJSONArray(TAG_INFO);
+
+                    JSONObject firstItem = jsonArray.getJSONObject(0);
+
+                    numApple = firstItem.getString(TAG_APPLE);
+                    Log.d("count", "사과 :" + numApple);
+                    numFish = firstItem.getString(TAG_FISH);
+                    Log.d("count", "물고기 :" + numFish);
+                    numMeat = firstItem.getString(TAG_MEAT);
+                    Log.d("count", "고기 :" + numMeat);
+                    numIce = firstItem.getString(TAG_ICE);
+                    Log.d("count", "얼음 :" + numIce);
+
+                    iApple = Integer.parseInt(numApple);
+                    if(iApple < 1)
+                        btnApple.setEnabled(false);
+                    iFish = Integer.parseInt(numFish);
+                    if(iFish < 1)
+                        btnFish.setEnabled(false);
+                    iMeat = Integer.parseInt(numMeat);
+                    if(iMeat < 1)
+                        btnMeat.setEnabled(false);
+                    iIce = Integer.parseInt(numIce);
+                    if(iIce < 1)
+                        btnIce.setEnabled(false);
+                    appleCount.setText("x "+numApple);
+                    fishCount.setText("x "+numFish);
+                    meatCount.setText("x "+numMeat);
+                    iceCount.setText("x "+numIce);
+
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        /**서버로 volley를 이용하여 요청을 함**/
+        ItemRequest itemRequest = new ItemRequest(userId, itemresponseListener);     //Request 클래스를 이용하여 서버 요청 정보와 결과 처리 방법을 표현
+        queue.add(itemRequest);
+    }
+
+    //아이템 버튼 클릭
+    public void itemOnClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_apple:
+                modifyApple();
+                Toast.makeText(this.getApplicationContext(),"50 경험치 획득.", Toast.LENGTH_SHORT).show();
+                checkUserInfo();
+                break;
+            case R.id.btn_fish:
+                modifyFish();
+                Toast.makeText(this.getApplicationContext(),"100 경험치 획득.", Toast.LENGTH_SHORT).show();
+                checkUserInfo();
+                break;
+            case R.id.btn_meat:
+                modifyMeat();
+                Toast.makeText(this.getApplicationContext(),"150 경험치 획득.", Toast.LENGTH_SHORT).show();
+                checkUserInfo();
+                break;
+            case R.id.btn_ice:
+                modifyIce();
+                Toast.makeText(this.getApplicationContext(), "200 경험치 획득.", Toast.LENGTH_SHORT).show();
+                checkUserInfo();
+                break;
+        }
+
+        checkUserInfo();
+    }
+
+    public void modifyApple(){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://polarbear1022.dothome.co.kr/useapple.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        }){
+            protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+
+                params.put("uid", userId);
+                return params;
+            }
+        };
+        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+        queue.add(stringRequest);
+
+    }
+
+    public void modifyFish(){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://polarbear1022.dothome.co.kr/usefish.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        }){
+            protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+
+                params.put("uid", userId);
+                return params;
+            }
+        };
+        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+        queue.add(stringRequest);
+
+    }
+
+    public void modifyMeat(){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://polarbear1022.dothome.co.kr/usemeat.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        }){
+            protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+
+                params.put("uid", userId);
+                return params;
+            }
+        };
+        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+        queue.add(stringRequest);
+
+    }
+
+    public void modifyIce(){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://polarbear1022.dothome.co.kr/useice.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        }){
+            protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+
+                params.put("uid", userId);
+                return params;
+            }
+        };
+        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+        queue.add(stringRequest);
+
+    }
 }
 
 
