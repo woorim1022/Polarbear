@@ -153,7 +153,7 @@ public void ShopClick(View v){
             shopPointice();
             AlertDialog.Builder builder4 = new AlertDialog.Builder(ShopActivity.this);
             dialog = builder4.setTitle("구입완료!")
-                    .setMessage("얼음을 구입했습니다.")
+                    .setMessage("얼음블록을 구입했습니다.")
                     .setPositiveButton("확인", null)
                     .create();
             dialog.show();
