@@ -561,7 +561,7 @@ public class WeightActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         Log.v("@@@", "걸음 onDestroy(weightactivity)");
-//        stopService(serviceIntent);
+        stopService(serviceIntent);
         super.onDestroy();
 
     }
