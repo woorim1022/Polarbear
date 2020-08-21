@@ -232,8 +232,8 @@ public class WeightActivity extends AppCompatActivity {
 
 
         //내부저장소에 저장된 날짜 삭제
-        PreferenceManager.removeKey(WeightActivity.this, "prevDateStr");
-        PreferenceManager.removeKey(WeightActivity.this, "recentDateStr");
+//        PreferenceManager.removeKey(WeightActivity.this, "prevDateStr");
+//        PreferenceManager.removeKey(WeightActivity.this, "recentDateStr");
 
         //마지막 측정 날짜 출력
         String lastmeasuredate = PreferenceManager.getString(WeightActivity.this, "recentDateStr");
@@ -307,7 +307,7 @@ public class WeightActivity extends AppCompatActivity {
                                         measure_day.setText("마지막 측정 날짜 : " + year + "년 " + month + "월 " + day + "일 ");
 
                                         PreferenceManager.setString(WeightActivity.this, "prevDateStr", prevDateStr); //prevDateStr
-                                        PreferenceManager.setString(WeightActivity.this, "recentDateStr", "2020-08-10"); //recentDateStr
+                                        PreferenceManager.setString(WeightActivity.this, "recentDateStr", recentDateStr); //recentDateStr
                                         builder3 = new AlertDialog.Builder(WeightActivity.this);
                                         builder3.setTitle("첫 무게 측정을 축하드립니다!").setMessage("첫 무게 측정 기념으로 100포인트를 지급합니다.");
                                         builder3.setPositiveButton("확인", new DialogInterface.OnClickListener() {
@@ -432,7 +432,7 @@ public class WeightActivity extends AppCompatActivity {
                                                 String year = splitdate[0];
                                                 String month = splitdate[1];
                                                 String day = splitdate[2];
-                                                weight.setText("무게 : " + weightValue + "g");
+                                                weight.setText("" + weightValue + "g");
                                                 measure_day.setText("마지막 측정 날짜 : " + year + "년 " + month + "월 " + day + "일 ");
 
                                                 PreferenceManager.setString(WeightActivity.this, "prevDateStr", prevDateStr);
