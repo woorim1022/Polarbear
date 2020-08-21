@@ -75,6 +75,7 @@ public class WeightActivity extends AppCompatActivity {
     private String prevDateStr;
     private String recentDateStr = "";
     private String lastpoint;
+    private String weeklyPoint;
 
     private int weightPerDay;
     private int point;
@@ -94,7 +95,7 @@ public class WeightActivity extends AppCompatActivity {
         public void onStepCallback(int step) {
             currentstep = step;
             step_current.setText("현재 걸음 수 : " + currentstep + " 보");
-            if(step >= 2700)   //20000
+            if(step >= 20000)   //20000
                 stopCount(currentstep);
         }
 
@@ -165,62 +166,66 @@ public class WeightActivity extends AppCompatActivity {
             startActivity(intent2);
         }
 
+        weeklyPoint = PreferenceManager.getString(WeightActivity.this, "weeklyPoint");
+        Log.v("aaa", "일주일 누적 포인트 " + weeklyPoint);
         final String stepPref = PreferenceManager.getString(WeightActivity.this, "STEPCOUNT");
-        /**걸음수 측정**/
-        if (true) {   //월요일이면,
-            if(true) {  //전주에 획득한 포인트의 총 합이 200pt 미만이면,
-                builder = new AlertDialog.Builder(this);
 
-                builder.setTitle("저번주에는 아쉽게도 포인트를 많이 획득하지 못하셨군요ㅠㅠ").setMessage("이번주에는 승용차를 이용하는 대신 짧은 거리는 걸어보는 것이 어떨까요? 승용차를 일주일에 하루 덜 타면 연간 445kg의 이산화탄소를 줄일 수 있다고 해요! (일요일까지 2만 걸음을 걸으시면 추가 포인트가 지급됩니다.)");
-
-                /**걸음수 측정 yes**/
-                builder.setPositiveButton("걸음 수 측정하기", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        Toast.makeText(getApplicationContext(), "걸음 수 측정 시작", Toast.LENGTH_SHORT).show();
-                        step_goal.setVisibility(View.VISIBLE);
-                        step_current.setVisibility(View.VISIBLE);
-
-                        textView4.setText("걸음수를 측정 중입니다.");
-                        /**
-                         *  현재 걸음 수 가져와서 화면에 표시
-                         */
-
-
-                        Log.v("aaa", stepPref);
-                        if(stepPref != "") {
-                            step_current.setText("현재 걸음 수(pref) : " + parseInt(stepPref) + " 보");
-                        }
-                        else {
-                            step_current.setText("현재 걸음 수(pref) : " + 0 + " 보");
-                        }
-                        //서비스 시작하기
-                        if (StepcountService.serviceIntent==null) {
-                            serviceIntent = new Intent(WeightActivity.this, StepcountService.class);
-                            startService(serviceIntent);
-                            bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
-                        } else {
-                            serviceIntent = StepcountService.serviceIntent;//getInstance().getApplication();
-                            bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
-                            Toast.makeText(getApplicationContext(), "already", Toast.LENGTH_LONG).show();
-                        }
-
-                    }
-                });
-
-                /**걸음수 측정 no**/
-                builder.setNegativeButton("다음에", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        Toast.makeText(getApplicationContext(), "걸음 수 측정 취소", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                alertDialog = builder.create();
-                alertDialog.show();
-            }
-        }
         Calendar cal = Calendar.getInstance();
         int nWeek = cal.get(Calendar.DAY_OF_WEEK);
+
+        /**걸음수 측정**/
+        if (nWeek == 2) {   //월요일이면,
+            if(!weeklyPoint.equals("")) {
+                if (parseInt(weeklyPoint) < 200) {  //전주에 획득한 포인트의 총 합이 200pt 미만이면,
+                    builder = new AlertDialog.Builder(this);
+
+                    builder.setTitle("저번주에는 아쉽게도 포인트를 많이 획득하지 못하셨군요ㅠㅠ").setMessage("이번주에는 승용차를 이용하는 대신 짧은 거리는 걸어보는 것이 어떨까요? 승용차를 일주일에 하루 덜 타면 연간 445kg의 이산화탄소를 줄일 수 있다고 해요! (일요일까지 2만 걸음을 걸으시면 추가 포인트가 지급됩니다.)");
+
+                    /**걸음수 측정 yes**/
+                    builder.setPositiveButton("걸음 수 측정하기", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                            Toast.makeText(getApplicationContext(), "걸음 수 측정 시작", Toast.LENGTH_SHORT).show();
+                            step_goal.setVisibility(View.VISIBLE);
+                            step_current.setVisibility(View.VISIBLE);
+
+                            textView4.setText("걸음수를 측정 중입니다.");
+                            /**
+                             *  현재 걸음 수 가져와서 화면에 표시
+                             */
+                            Log.v("aaa", "현재 걸음 수" + stepPref);
+                            if (!stepPref.equals("")) {
+                                step_current.setText("현재 걸음 수(pref) : " + parseInt(stepPref) + " 보");
+                            } else {
+                                step_current.setText("현재 걸음 수(pref) : " + 0 + " 보");
+                            }
+                            //서비스 시작하기
+                            if (StepcountService.serviceIntent == null) {
+                                serviceIntent = new Intent(WeightActivity.this, StepcountService.class);
+                                startService(serviceIntent);
+                                bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+                            } else {
+                                serviceIntent = StepcountService.serviceIntent;//getInstance().getApplication();
+                                bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+                                Toast.makeText(getApplicationContext(), "already", Toast.LENGTH_LONG).show();
+                            }
+
+                        }
+                    });
+
+                    /**걸음수 측정 no**/
+                    builder.setNegativeButton("다음에", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                            Toast.makeText(getApplicationContext(), "걸음 수 측정 취소", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    alertDialog = builder.create();
+                    alertDialog.show();
+                }
+            }
+            PreferenceManager.setString(WeightActivity.this, "weeklyPoint", "" + 0);
+        }
         if(nWeek == 1) //일요일이면
             stopCount(parseInt(stepPref));
 
@@ -320,6 +325,7 @@ public class WeightActivity extends AppCompatActivity {
                                             public void onClick(DialogInterface dialog, int id) {
                                                 Toast.makeText(getApplicationContext(), "100포인트 획득", Toast.LENGTH_SHORT).show();
                                                 PreferenceManager.setString(WeightActivity.this, "lastPoint", "" + 100);
+                                                PreferenceManager.setString(WeightActivity.this, "weeklyPoint", "" + 100);
                                                 last_point.setText("마지막 획득 포인트 : 100");
                                             }
                                         });
@@ -479,6 +485,7 @@ public class WeightActivity extends AppCompatActivity {
                                                     Log.v("aaa", "point : " + point);
                                                     Toast.makeText(getApplicationContext(),point +"포인트 획득", Toast.LENGTH_SHORT).show();
                                                     PreferenceManager.setString(WeightActivity.this, "lastPoint", "" + point);
+                                                    PreferenceManager.setString(WeightActivity.this, "weeklyPoint", "" + point);
                                                     last_point.setText("마지막 획득 포인트 : " + point);
 
                                                     /**
@@ -545,37 +552,37 @@ public class WeightActivity extends AppCompatActivity {
     }
 
     protected void stopCount(int currentstep) {
-        Log.v("@@@", "stopCount굿굿굿굿굿굿굿굿굿");
+        Log.v("@@@", "stopCount");
          /**일요일이거나 2만보 채우면**/
              if (serviceIntent != null) {
                  stopService(serviceIntent);
                  serviceIntent = null;
-             if(currentstep >= 2700) {    //20000
-                 Log.v("@@@", "추가 포인트 지급");
-                 /**
-                  * 추가 포인트 지급
-                  */
-                 StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://polarbear1022.dothome.co.kr/steppoint.php",
-                         new Response.Listener<String>() {
-                             @Override
-                             public void onResponse(String response) {
-                             }
-                         }, new Response.ErrorListener() {
-                     @Override
-                     public void onErrorResponse(VolleyError error) {
-                     }
-                 }){
-                     protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
-                         Map<String, String> params = new HashMap<String, String>();
-                         params.put("uid", uid);
-                         params.put("uname", uname);
-                         params.put("point", ""+30);
-                         return params;
-                     }
-                 };
-                 RequestQueue queue = Volley.newRequestQueue(WeightActivity.this);
-                 queue.add(stringRequest);
-             }
+                 if(currentstep >= 20000) {    //20000
+                     Log.v("@@@", "추가 포인트 지급");
+                     /**
+                      * 추가 포인트 지급
+                      */
+                     StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://polarbear1022.dothome.co.kr/steppoint.php",
+                             new Response.Listener<String>() {
+                                 @Override
+                                 public void onResponse(String response) {
+                                 }
+                             }, new Response.ErrorListener() {
+                         @Override
+                         public void onErrorResponse(VolleyError error) {
+                         }
+                     }){
+                         protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
+                             Map<String, String> params = new HashMap<String, String>();
+                             params.put("uid", uid);
+                             params.put("uname", uname);
+                             params.put("point", ""+30);
+                             return params;
+                         }
+                     };
+                     RequestQueue queue = Volley.newRequestQueue(WeightActivity.this);
+                     queue.add(stringRequest);
+                 }
          }
     }
 

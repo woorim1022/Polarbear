@@ -80,6 +80,16 @@ public class StepcountService extends Service implements SensorEventListener {
             sensorManager.registerListener(this, stepDetectorSensor, SensorManager.SENSOR_DELAY_NORMAL);
 
         }
+
+
+        Calendar cal = Calendar.getInstance();
+        int nWeek = cal.get(Calendar.DAY_OF_WEEK);
+        /**
+         * 월요일이고 오늘 처음 StepcountService 에 진입한 경우
+         * **/
+        if(nWeek == 2 && true)
+            mStepDetector = 0;  //누적 걸음 수 초기화
+
     }
 
     @Override
@@ -197,8 +207,6 @@ public class StepcountService extends Service implements SensorEventListener {
     public void onSensorChanged(SensorEvent sensorEvent) {
         if (sensorEvent.sensor.getType() == Sensor.TYPE_STEP_DETECTOR) {
             if (sensorEvent.values[0] == 1.0f) {
-
-
                 mStepDetector += sensorEvent.values[0];
                 if (callback != null)
                     callback.onStepCallback(mStepDetector);
