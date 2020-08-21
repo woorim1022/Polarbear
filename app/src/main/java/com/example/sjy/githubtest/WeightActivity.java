@@ -45,6 +45,7 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -92,8 +93,8 @@ public class WeightActivity extends AppCompatActivity {
         @Override
         public void onStepCallback(int step) {
             currentstep = step;
-            step_current.setText("현재 걸음 수 : " + currentstep);
-            if(step >= 20000)
+            step_current.setText("현재 걸음 수 : " + currentstep + " 보");
+            if(step >= 2700)   //20000
                 stopCount(currentstep);
         }
 
@@ -164,19 +165,8 @@ public class WeightActivity extends AppCompatActivity {
             startActivity(intent2);
         }
 
+        final String stepPref = PreferenceManager.getString(WeightActivity.this, "STEPCOUNT");
         /**걸음수 측정**/
-        //월요일이면,
-            //전주에 획득한 포인트의 총 합이 200pt 미만이면,
-                //걸음수 측정?
-                    //yes
-                        //측정시작
-                        //앱 종료해도 측정
-                        //20000보 채우면,
-                            //포인트 획득, 측정 종료
-                        //일요일이면,
-                            //측정 종료
-                    //no
-                        //아무일 x
         if (true) {   //월요일이면,
             if(true) {  //전주에 획득한 포인트의 총 합이 200pt 미만이면,
                 builder = new AlertDialog.Builder(this);
@@ -195,14 +185,14 @@ public class WeightActivity extends AppCompatActivity {
                         /**
                          *  현재 걸음 수 가져와서 화면에 표시
                          */
-                        String stepPref = PreferenceManager.getString(WeightActivity.this, "STEPCOUNT");
+
 
                         Log.v("aaa", stepPref);
                         if(stepPref != "") {
-                            step_current.setText("현재 걸음 수(pref) : " + parseInt(stepPref));
+                            step_current.setText("현재 걸음 수(pref) : " + parseInt(stepPref) + " 보");
                         }
                         else {
-                            step_current.setText("현재 걸음 수(pref) : " + 0);
+                            step_current.setText("현재 걸음 수(pref) : " + 0 + " 보");
                         }
                         //서비스 시작하기
                         if (StepcountService.serviceIntent==null) {
@@ -229,6 +219,10 @@ public class WeightActivity extends AppCompatActivity {
                 alertDialog.show();
             }
         }
+        Calendar cal = Calendar.getInstance();
+        int nWeek = cal.get(Calendar.DAY_OF_WEEK);
+        if(nWeek == 1) //일요일이면
+            stopCount(parseInt(stepPref));
 
 
 
@@ -271,31 +265,31 @@ public class WeightActivity extends AppCompatActivity {
                     Log.v("aaa", "무게첫측정");
 
                     //5초 대기 다이얼로그창
-                    builder2 = new AlertDialog.Builder(WeightActivity.this);
-                    builder2.setTitle("5초 후에 음식물 쓰레기 봉투를 올려주세요");
-                    builder2.setNegativeButton("취소하기", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id) {
-                            /**
-                             * 무게재기 취소
-                             * **/
-                            Toast.makeText(getApplicationContext(), "무게측정 취소", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                    alertDialog2 = builder2.create();
-                    alertDialog2.show();
-                    countDownTimer = new CountDownTimer(5 * 1000, 1000) {
-                        @Override
-                        public void onTick(long l) {
-                            count--;
-                        }
-
-                        @Override
-                        public void onFinish() {
-                            alertDialog2.dismiss();
-                        }
-                    };
-                    countDownTimer.start();
+//                    builder2 = new AlertDialog.Builder(WeightActivity.this);
+//                    builder2.setTitle("5초 후에 음식물 쓰레기 봉투를 올려주세요");
+//                    builder2.setNegativeButton("취소하기", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int id) {
+//                            /**
+//                             * 무게재기 취소
+//                             * **/
+//                            Toast.makeText(getApplicationContext(), "무게측정 취소", Toast.LENGTH_SHORT).show();
+//                        }
+//                    });
+//                    alertDialog2 = builder2.create();
+//                    alertDialog2.show();
+//                    countDownTimer = new CountDownTimer(5 * 1000, 1000) {
+//                        @Override
+//                        public void onTick(long l) {
+//                            count--;
+//                        }
+//
+//                        @Override
+//                        public void onFinish() {
+//                            alertDialog2.dismiss();
+//                        }
+//                    };
+//                    countDownTimer.start();
 
                     //무게 측정
                     StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://polarbear1022.dothome.co.kr/weight.php",
@@ -312,7 +306,7 @@ public class WeightActivity extends AppCompatActivity {
                                         String year = splitdate[0];
                                         String month = splitdate[1];
                                         String day = splitdate[2];
-                                        weight.setText("" + weightValue + "g");
+                                        weight.setText("" + weightValue + " g");
                                         measure_day.setText("마지막 측정 날짜 : " + year + "년 " + month + "월 " + day + "일 ");
 
 
@@ -404,31 +398,31 @@ public class WeightActivity extends AppCompatActivity {
                         else {
                             //무게재기
                             //5초 대기 다이얼로그창
-                            builder2 = new AlertDialog.Builder(WeightActivity.this);
-                            builder2.setTitle("5초 후에 음식물 쓰레기 봉투를 올려주세요");
-                            builder2.setNegativeButton("취소하기", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int id) {
-                                    /**
-                                     * 무게재기 취소
-                                     * **/
-                                    Toast.makeText(getApplicationContext(), "무게측정 취소", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                            alertDialog2 = builder2.create();
-                            alertDialog2.show();
-                            countDownTimer = new CountDownTimer(5 * 1000, 1000) {
-                                @Override
-                                public void onTick(long l) {
-                                    count--;
-                                }
-
-                                @Override
-                                public void onFinish() {
-                                    alertDialog2.dismiss();
-                                }
-                            };
-                            countDownTimer.start();
+//                            builder2 = new AlertDialog.Builder(WeightActivity.this);
+//                            builder2.setTitle("5초 후에 음식물 쓰레기 봉투를 올려주세요");
+//                            builder2.setNegativeButton("취소하기", new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int id) {
+//                                    /**
+//                                     * 무게재기 취소
+//                                     * **/
+//                                    Toast.makeText(getApplicationContext(), "무게측정 취소", Toast.LENGTH_SHORT).show();
+//                                }
+//                            });
+//                            alertDialog2 = builder2.create();
+//                            alertDialog2.show();
+//                            countDownTimer = new CountDownTimer(5 * 1000, 1000) {
+//                                @Override
+//                                public void onTick(long l) {
+//                                    count--;
+//                                }
+//
+//                                @Override
+//                                public void onFinish() {
+//                                    alertDialog2.dismiss();
+//                                }
+//                            };
+//                            countDownTimer.start();
 
                             //무게 측정
                             StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://polarbear1022.dothome.co.kr/weight.php",
@@ -445,7 +439,7 @@ public class WeightActivity extends AppCompatActivity {
                                                 String year = splitdate[0];
                                                 String month = splitdate[1];
                                                 String day = splitdate[2];
-                                                weight.setText("" + weightValue + "g");
+                                                weight.setText("" + weightValue + " g");
                                                 measure_day.setText("마지막 측정 날짜 : " + year + "년 " + month + "월 " + day + "일 ");
 
                                                 PreferenceManager.setString(WeightActivity.this, "prevDateStr", prevDateStr);
@@ -551,11 +545,38 @@ public class WeightActivity extends AppCompatActivity {
     }
 
     protected void stopCount(int currentstep) {
+        Log.v("@@@", "stopCount굿굿굿굿굿굿굿굿굿");
          /**일요일이거나 2만보 채우면**/
-            if (serviceIntent != null) {
-                stopService(serviceIntent);
-                serviceIntent = null;
-            }
+             if (serviceIntent != null) {
+                 stopService(serviceIntent);
+                 serviceIntent = null;
+             if(currentstep >= 2700) {    //20000
+                 Log.v("@@@", "추가 포인트 지급");
+                 /**
+                  * 추가 포인트 지급
+                  */
+                 StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://polarbear1022.dothome.co.kr/steppoint.php",
+                         new Response.Listener<String>() {
+                             @Override
+                             public void onResponse(String response) {
+                             }
+                         }, new Response.ErrorListener() {
+                     @Override
+                     public void onErrorResponse(VolleyError error) {
+                     }
+                 }){
+                     protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
+                         Map<String, String> params = new HashMap<String, String>();
+                         params.put("uid", uid);
+                         params.put("uname", uname);
+                         params.put("point", ""+30);
+                         return params;
+                     }
+                 };
+                 RequestQueue queue = Volley.newRequestQueue(WeightActivity.this);
+                 queue.add(stringRequest);
+             }
+         }
     }
 
     @Override
