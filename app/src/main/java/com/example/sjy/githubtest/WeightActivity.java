@@ -204,6 +204,7 @@ public class WeightActivity extends AppCompatActivity {
                             bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
                         } else {
                             serviceIntent = StepcountService.serviceIntent;//getInstance().getApplication();
+                            bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
                             Toast.makeText(getApplicationContext(), "already", Toast.LENGTH_LONG).show();
                         }
 
