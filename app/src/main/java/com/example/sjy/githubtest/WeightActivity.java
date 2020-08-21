@@ -62,6 +62,7 @@ public class WeightActivity extends AppCompatActivity {
     private TextView measure_day;
     private TextView step_goal;
     private TextView step_current;
+    private TextView last_point;
 
     private int count = 6;
     private CountDownTimer countDownTimer;
@@ -72,6 +73,7 @@ public class WeightActivity extends AppCompatActivity {
     private int weightValue;
     private String prevDateStr;
     private String recentDateStr = "";
+    private String lastpoint;
 
     private int weightPerDay;
     private int point;
@@ -141,6 +143,7 @@ public class WeightActivity extends AppCompatActivity {
         step_goal = (TextView) findViewById(R.id.step_goal);
         step_current = (TextView) findViewById(R.id.step_current);
         textView4 = (TextView) findViewById(R.id.textView4);
+        last_point = (TextView) findViewById(R.id.last_point);
 
         uid = PreferenceManager.getString(this, "userID");
         uname = PreferenceManager.getString(this, "userNAME");
@@ -232,8 +235,9 @@ public class WeightActivity extends AppCompatActivity {
 
 
         //내부저장소에 저장된 날짜 삭제
-//        PreferenceManager.removeKey(WeightActivity.this, "prevDateStr");
-//        PreferenceManager.removeKey(WeightActivity.this, "recentDateStr");
+        PreferenceManager.removeKey(WeightActivity.this, "prevDateStr");
+        PreferenceManager.removeKey(WeightActivity.this, "recentDateStr");
+        PreferenceManager.removeKey(WeightActivity.this, "lastPoint");
 
         //마지막 측정 날짜 출력
         String lastmeasuredate = PreferenceManager.getString(WeightActivity.this, "recentDateStr");
@@ -243,6 +247,11 @@ public class WeightActivity extends AppCompatActivity {
             String month = splitdate[1];
             String day = splitdate[2];
             measure_day.setText("마지막 측정 날짜 : " + year + "년 " + month + "월 " + day + "일 ");
+        }
+
+        String lastpoint = PreferenceManager.getString(WeightActivity.this, "lastPoint");
+        if(!lastpoint.equals("")) {
+            last_point.setText("마지막 획득 포인트 : " + lastpoint);
         }
 
 
@@ -306,14 +315,18 @@ public class WeightActivity extends AppCompatActivity {
                                         weight.setText("" + weightValue + "g");
                                         measure_day.setText("마지막 측정 날짜 : " + year + "년 " + month + "월 " + day + "일 ");
 
+
                                         PreferenceManager.setString(WeightActivity.this, "prevDateStr", prevDateStr); //prevDateStr
-                                        PreferenceManager.setString(WeightActivity.this, "recentDateStr", recentDateStr); //recentDateStr
+                                        PreferenceManager.setString(WeightActivity.this, "recentDateStr", "2020-08-10"); //recentDateStr
+
                                         builder3 = new AlertDialog.Builder(WeightActivity.this);
                                         builder3.setTitle("첫 무게 측정을 축하드립니다!").setMessage("첫 무게 측정 기념으로 100포인트를 지급합니다.");
                                         builder3.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int id) {
                                                 Toast.makeText(getApplicationContext(), "100포인트 획득", Toast.LENGTH_SHORT).show();
+                                                PreferenceManager.setString(WeightActivity.this, "lastPoint", "" + 100);
+                                                last_point.setText("마지막 획득 포인트 : 100");
                                             }
                                         });
                                         alertDialog = builder3.create();
@@ -437,6 +450,7 @@ public class WeightActivity extends AppCompatActivity {
 
                                                 PreferenceManager.setString(WeightActivity.this, "prevDateStr", prevDateStr);
                                                 PreferenceManager.setString(WeightActivity.this, "recentDateStr", recentDateStr);
+                                                PreferenceManager.setString(WeightActivity.this, "lastPoint", "" + weightValue);
 
                                                 Log.v("aaa", "prevdatestr(달라야함) : " + prevDateStr);
                                                 Log.v("aaa", "recentdatestr(달라야함) : " + recentDateStr);
@@ -470,6 +484,8 @@ public class WeightActivity extends AppCompatActivity {
                                                     //현재 보유 포인트에 point 더하기
                                                     Log.v("aaa", "point : " + point);
                                                     Toast.makeText(getApplicationContext(),point +"포인트 획득", Toast.LENGTH_SHORT).show();
+                                                    PreferenceManager.setString(WeightActivity.this, "lastPoint", "" + point);
+                                                    last_point.setText("마지막 획득 포인트 : " + point);
 
                                                     /**
                                                      * 무게값, 포인트값 디비에 저장
@@ -545,7 +561,7 @@ public class WeightActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         Log.v("@@@", "걸음 onDestroy(weightactivity)");
-        stopService(serviceIntent);
+//        stopService(serviceIntent);
         super.onDestroy();
 
     }
