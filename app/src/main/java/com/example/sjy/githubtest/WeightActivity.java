@@ -58,6 +58,7 @@ public class WeightActivity extends AppCompatActivity {
     private View drawerView;
     private TextView weight;
     private Button button;
+    private TextView textView4;
     private TextView measure_day;
     private TextView step_goal;
     private TextView step_current;
@@ -139,6 +140,7 @@ public class WeightActivity extends AppCompatActivity {
         measure_day = (TextView) findViewById(R.id.measure_day);
         step_goal = (TextView) findViewById(R.id.step_goal);
         step_current = (TextView) findViewById(R.id.step_current);
+        textView4 = (TextView) findViewById(R.id.textView4);
 
         uid = PreferenceManager.getString(this, "userID");
         uname = PreferenceManager.getString(this, "userNAME");
@@ -185,6 +187,8 @@ public class WeightActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "걸음 수 측정 시작", Toast.LENGTH_SHORT).show();
                         step_goal.setVisibility(View.VISIBLE);
                         step_current.setVisibility(View.VISIBLE);
+
+                        textView4.setText("걸음수를 측정 중입니다.");
                         /**
                          *  현재 걸음 수 가져와서 화면에 표시
                          */
@@ -299,7 +303,7 @@ public class WeightActivity extends AppCompatActivity {
                                         String year = splitdate[0];
                                         String month = splitdate[1];
                                         String day = splitdate[2];
-                                        weight.setText("무게 : " + weightValue + "g");
+                                        weight.setText("" + weightValue + "g");
                                         measure_day.setText("마지막 측정 날짜 : " + year + "년 " + month + "월 " + day + "일 ");
 
                                         PreferenceManager.setString(WeightActivity.this, "prevDateStr", prevDateStr); //prevDateStr

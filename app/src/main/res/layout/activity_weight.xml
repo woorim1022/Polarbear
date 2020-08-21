@@ -29,85 +29,6 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingTop="100dp"
-            tools:context=".MainActivity">
-
-
-            <TextView
-                android:id="@+id/weight"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="40dp"
-                android:layout_marginBottom="40dp"
-                android:fontFamily="@font/maplestory"
-                android:text="무게 : "
-                android:textColor="#000000"
-                android:textSize="40dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-                android:id="@+id/button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="20dp"
-                android:background="#AEDDEF"
-                android:fontFamily="@font/maplestory"
-                android:padding="20dp"
-                android:text="무게 재기"
-                android:textColor="#000000"
-                android:textSize="24sp"
-                tools:layout_editor_absoluteX="164dp"
-                tools:layout_editor_absoluteY="436dp" />
-
-            <TextView
-                android:id="@+id/measure_day"
-                android:layout_width="293dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="20dp"
-                android:fontFamily="@font/maplestory"
-                android:padding="40dp"
-                android:text="마지막 측정 날짜 : "
-                android:textColor="#000000"
-                android:textSize="25dp"
-                tools:layout_editor_absoluteX="179dp"
-                tools:layout_editor_absoluteY="553dp" />
-
-            <TextView
-                android:id="@+id/step_goal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/maplestory"
-                android:text="목표 걸음걸이 수 : 20000"
-                android:textColor="#000000"
-                android:textSize="20dp"
-                android:visibility="invisible"
-                android:layout_gravity="center"/>
-
-
-            <TextView
-                android:id="@+id/step_current"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/maplestory"
-                android:text="현재 걸음걸이 수 : "
-                android:textColor="#000000"
-                android:textSize="20dp"
-                android:visibility="invisible"
-                android:layout_gravity="center"/>
-
-
-
-        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -126,6 +47,140 @@
             android:onClick="menuOnClick"
             android:src="@drawable/menu"></ImageView>
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="280dp"
+        android:background="#ffffff"
+        android:orientation="vertical"
+        android:paddingTop="100dp"
+        tools:context=".MainActivity">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/weight2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|left"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginBottom="40dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/maplestory"
+                android:text="무게 : "
+                android:textColor="#000000"
+                android:textSize="28sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/weight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|left"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginBottom="40dp"
+                android:fontFamily="@font/maplestory"
+                android:textColor="#000000"
+                android:textSize="40dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|right"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="#AEDDEF"
+                android:fontFamily="@font/maplestory"
+                android:gravity="left"
+                android:padding="10dp"
+                android:text="무게 재기"
+                android:textColor="#000000"
+                android:textSize="22sp"
+                tools:layout_editor_absoluteX="164dp"
+                tools:layout_editor_absoluteY="436dp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/measure_day"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="55dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="@font/maplestory"
+            android:gravity="left"
+            android:text="마지막 측정 날짜 : "
+            android:textColor="#000000"
+            android:textSize="22dp"
+            tools:layout_editor_absoluteX="179dp"
+            tools:layout_editor_absoluteY="553dp" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="530dp"
+        android:layout_marginBottom="20dp"
+        android:background="#ffffff"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/maplestory"
+            android:gravity="center_horizontal"
+            android:text="걸음수를 측정하고 있지 않습니다."
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/step_goal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|left"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="50dp"
+            android:fontFamily="@font/maplestory"
+            android:text="목표 걸음걸이 수 : 20000"
+            android:textColor="#000000"
+            android:textSize="20dp"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/step_current"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginLeft="20dp"
+            android:fontFamily="@font/maplestory"
+            android:text="현재 걸음걸이 수 : "
+            android:textColor="#000000"
+            android:textSize="20dp"
+            android:visibility="invisible" />
     </LinearLayout>
 
     <include layout="@layout/navigation_drawer" />
