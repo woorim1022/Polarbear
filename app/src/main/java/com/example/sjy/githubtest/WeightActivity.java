@@ -91,6 +91,7 @@ public class WeightActivity extends AppCompatActivity {
     private static int currentstep;
 
     private String dialogCount = "false";
+    private String counting = "false";
 
     private StepCallback stepCallback = new StepCallback() { //서비스 내부로 Set되어 스텝카운트의 변화와 Unbind의 결과를 전달하는 콜백 객체의 구현체
         @Override
@@ -170,6 +171,9 @@ public class WeightActivity extends AppCompatActivity {
 
         weeklyPoint = PreferenceManager.getString(WeightActivity.this, "weeklyPoint");
         dialogCount = PreferenceManager.getString(WeightActivity.this, "dialogCount");
+        counting = PreferenceManager.getString(WeightActivity.this, "COUNTING");
+        if(counting.equals(""))
+            counting = "false";
         if(dialogCount.equals(""))
             dialogCount = "false";
         Log.v("aaa", "dialogCount : " + dialogCount);
@@ -187,14 +191,17 @@ public class WeightActivity extends AppCompatActivity {
                 PreferenceManager.setString(WeightActivity.this, "dialogCount", "true");
                 if (!weeklyPoint.equals("")) {
                     if (parseInt(weeklyPoint) < 200) {  //전주에 획득한 포인트의 총 합이 200pt 미만이면,
-                        builder = new AlertDialog.Builder(this);
 
+                        builder = new AlertDialog.Builder(this);
                         builder.setTitle("저번주에는 아쉽게도 포인트를 많이 획득하지 못하셨군요ㅠㅠ").setMessage("이번주에는 승용차를 이용하는 대신 짧은 거리는 걸어보는 것이 어떨까요? 승용차를 일주일에 하루 덜 타면 연간 445kg의 이산화탄소를 줄일 수 있다고 해요! (일요일까지 2만 걸음을 걸으시면 추가 포인트가 지급됩니다.)");
 
                         /**걸음수 측정 yes**/
                         builder.setPositiveButton("걸음 수 측정하기", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
+
+                                PreferenceManager.setString(WeightActivity.this, "COUNTING", "true");
+
                                 Toast.makeText(getApplicationContext(), "걸음 수 측정 시작", Toast.LENGTH_SHORT).show();
                                 step_goal.setVisibility(View.VISIBLE);
                                 step_current.setVisibility(View.VISIBLE);
@@ -238,9 +245,36 @@ public class WeightActivity extends AppCompatActivity {
             }
 
         }
+        if(counting.equals("true") && nWeek != 1) {   //걸음 측정중이고(counting == true) 일요일이 아니면
+            step_goal.setVisibility(View.VISIBLE);
+            step_current.setVisibility(View.VISIBLE);
+
+            textView4.setText("걸음수를 측정 중입니다.");
+            /**
+             *  현재 걸음 수 가져와서 화면에 표시
+             */
+            Log.v("aaa", "현재 걸음 수" + stepPref);
+            if (!stepPref.equals("")) {
+                step_current.setText("현재 걸음 수(pref) : " + parseInt(stepPref) + " 보");
+            } else {
+                step_current.setText("현재 걸음 수(pref) : " + 0 + " 보");
+            }
+            //서비스 시작하기
+            if (StepcountService.serviceIntent == null) {
+                serviceIntent = new Intent(WeightActivity.this, StepcountService.class);
+                startService(serviceIntent);
+                bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+            } else {
+                serviceIntent = StepcountService.serviceIntent;//getInstance().getApplication();
+                bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+                Toast.makeText(getApplicationContext(), "already", Toast.LENGTH_LONG).show();
+            }
+
+        }
         if(nWeek == 1) {//일요일이면
             stopCount(parseInt(stepPref));
             PreferenceManager.setString(WeightActivity.this, "dialogCount", "false");
+            PreferenceManager.setString(WeightActivity.this, "COUNTING", "false");
         }
 
 
