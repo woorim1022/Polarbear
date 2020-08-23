@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,11 +42,13 @@ public class MainActivity extends AppCompatActivity {
     private String donate_count;
     private String userLevel, userExp;
     private String numApple, numFish, numMeat, numIce;
-    private int iApple, iFish, iMeat, iIce;
+    private int iApple, iFish, iMeat, iIce, iLevel, iExp, maxExp, nextExp;
     private Context mContext;
     private TextView username, level, appleCount, fishCount, meatCount, iceCount;
     private ImageView badge1, badge2, badge3;
     private ImageView btnApple, btnFish, btnMeat, btnIce;
+    private ImageView polarbear;
+    private ProgressBar expbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +75,8 @@ public class MainActivity extends AppCompatActivity {
         btnFish = (ImageView)findViewById(R.id.btn_fish);
         btnMeat = (ImageView)findViewById(R.id.btn_meat);
         btnIce = (ImageView)findViewById(R.id.btn_ice);
-
+        polarbear = (ImageView)findViewById(R.id.polarbear);
+        expbar = (ProgressBar)findViewById(R.id.exp_bar);
 
         openDrawer.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -105,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
         showBadge();
 
         checkUserInfo();
-
+        checkIteminfo();
         //실행 시간 측정
         long endTime = System.currentTimeMillis();
         Log.d("timecheck", "onCreate:" + (endTime - startTime));
@@ -210,12 +214,9 @@ public class MainActivity extends AppCompatActivity {
 
                     JSONObject firstItem = jsonArray.getJSONObject(0);
 
-                    userLevel = firstItem.getString(TAG_LEVEL);
+                    //userLevel = firstItem.getString(TAG_LEVEL);
                     userExp = firstItem.getString(TAG_EXP);
-
-                    level.setText("레벨 " + userLevel);
-                    Log.d("count", "레벨 :" + userLevel);
-                    //경험치 표시 추가(userExp 사용)
+                    returnLevel();
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -228,7 +229,63 @@ public class MainActivity extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(MainActivity.this);  //서버 요청자, 다른 request 클래스들의 정보대로 서버에 요청을 보내는 역할
         queue.add(userRequest);
 
-        //아이템 개수 불러오기
+    }
+
+    //경험치를 레벨로 표시
+    public void returnLevel() {
+        iExp = Integer.parseInt(userExp);
+
+        if(iExp < 100) {iLevel = 1; nextExp = iExp; maxExp = 100;}
+        else if(iExp >= 100 && iExp < 200) {iLevel = 2; nextExp = iExp - 100; maxExp = 100;}
+        else if(iExp >= 200 && iExp < 300) {iLevel = 3; nextExp = iExp - 200; maxExp = 100;}
+        else if(iExp >= 300 && iExp < 400) {iLevel = 4; nextExp = iExp - 300; maxExp = 100;}
+        else if(iExp >= 400 && iExp < 500) {iLevel = 5; nextExp = iExp - 400; maxExp = 100;}
+        else if(iExp >= 500 && iExp < 600) {iLevel = 6; nextExp = iExp - 500; maxExp = 100;}
+        else if(iExp >= 600 && iExp < 700) {iLevel = 7; nextExp = iExp - 600; maxExp = 100;}
+        else if(iExp >= 700 && iExp < 800) {iLevel = 8; nextExp = iExp - 700; maxExp = 100;}
+        else if(iExp >= 800 && iExp < 900) {iLevel = 9; nextExp = iExp - 800; maxExp = 100;}
+        else if(iExp >= 900 && iExp < 1100) {iLevel = 10; nextExp = iExp - 900; maxExp = 200;}
+        else if(iExp >= 1100 && iExp < 1300) {iLevel = 11; nextExp = iExp - 1100; maxExp = 200;}
+        else if(iExp >= 1300 && iExp < 1500) {iLevel = 12; nextExp = iExp - 1300; maxExp = 200;}
+        else if(iExp >= 1500 && iExp < 1700) {iLevel = 13; nextExp = iExp - 1500; maxExp = 200;}
+        else if(iExp >= 1700 && iExp < 1900) {iLevel = 14; nextExp = iExp - 1700; maxExp = 200;}
+        else if(iExp >= 1900 && iExp < 2100) {iLevel = 15; nextExp = iExp - 1900; maxExp = 200;}
+        else if(iExp >= 2100 && iExp < 2300) {iLevel = 16; nextExp = iExp - 2100; maxExp = 200;}
+        else if(iExp >= 2300 && iExp < 2500) {iLevel = 17; nextExp = iExp - 2300; maxExp = 200;}
+        else if(iExp >= 2500 && iExp < 2700) {iLevel = 18; nextExp = iExp - 2500; maxExp = 200;}
+        else if(iExp >= 2700 && iExp < 2900) {iLevel = 19; nextExp = iExp - 2700; maxExp = 200;}
+        else if(iExp >= 2900 && iExp < 3200) {iLevel = 20; nextExp = iExp - 2900; maxExp = 300;}
+        else if(iExp >= 3200 && iExp < 3500) {iLevel = 21; nextExp = iExp - 3200; maxExp = 300;}
+        else if(iExp >= 3500 && iExp < 3800) {iLevel = 22; nextExp = iExp - 3500; maxExp = 300;}
+        else if(iExp >= 3800 && iExp < 4100) {iLevel = 23; nextExp = iExp - 3800; maxExp = 300;}
+        else if(iExp >= 4100 && iExp < 4400) {iLevel = 24; nextExp = iExp - 4100; maxExp = 300;}
+        else if(iExp >= 4400 && iExp < 4700) {iLevel = 25; nextExp = iExp - 4400; maxExp = 300;}
+        else if(iExp >= 4700 && iExp < 5000) {iLevel = 26; nextExp = iExp - 4700; maxExp = 300;}
+        else if(iExp >= 5000 && iExp < 5300) {iLevel = 27; nextExp = iExp - 5000; maxExp = 300;}
+        else if(iExp >= 5300 && iExp < 5600) {iLevel = 28; nextExp = iExp - 5300; maxExp = 300;}
+        else if(iExp >= 5600 && iExp < 5900) {iLevel = 29; nextExp = iExp - 5600; maxExp = 300;}
+        else if(iExp >= 5900) {iLevel = 30; nextExp = iExp; maxExp = iExp;}
+
+        showPolarbear();
+        expbar.setMax(maxExp);
+        expbar.setProgress(nextExp);
+
+        userLevel = Integer.toString(iLevel);
+        sendLevel();
+
+        level.setText("레벨 " + userLevel);
+    }
+
+    //레벨에 따라 북극곰 이미지 표시
+    public void showPolarbear() {
+        if(iLevel < 10) polarbear.setImageResource(R.drawable.baby_polarbear);
+        else if(iLevel >= 10 && iLevel < 20) polarbear.setImageResource(R.drawable.middle_polarbear);
+        else if(iLevel >= 20) polarbear.setImageResource(R.drawable.adult_polarbear);
+    }
+
+   //아이템 개수 불러오기
+    public void checkIteminfo() {
+
         Response.Listener<String> itemresponseListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -281,35 +338,40 @@ public class MainActivity extends AppCompatActivity {
 
         /**서버로 volley를 이용하여 요청을 함**/
         ItemRequest itemRequest = new ItemRequest(userId, itemresponseListener);     //Request 클래스를 이용하여 서버 요청 정보와 결과 처리 방법을 표현
+        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
         queue.add(itemRequest);
     }
 
-    //아이템 버튼 클릭
+    //아이템 버튼 클릭(드래그앤드롭으로 수정해서 구현해야 함)
     public void itemOnClick(View v) {
         switch (v.getId()) {
             case R.id.btn_apple:
                 modifyApple();
                 Toast.makeText(this.getApplicationContext(),"50 경험치 획득.", Toast.LENGTH_SHORT).show();
                 checkUserInfo();
+                checkIteminfo();
                 break;
             case R.id.btn_fish:
                 modifyFish();
                 Toast.makeText(this.getApplicationContext(),"100 경험치 획득.", Toast.LENGTH_SHORT).show();
                 checkUserInfo();
+                checkIteminfo();
                 break;
             case R.id.btn_meat:
                 modifyMeat();
                 Toast.makeText(this.getApplicationContext(),"150 경험치 획득.", Toast.LENGTH_SHORT).show();
                 checkUserInfo();
+                checkIteminfo();
                 break;
             case R.id.btn_ice:
                 modifyIce();
                 Toast.makeText(this.getApplicationContext(), "200 경험치 획득.", Toast.LENGTH_SHORT).show();
                 checkUserInfo();
+                checkIteminfo();
                 break;
         }
-
         checkUserInfo();
+        checkIteminfo();
     }
 
     public void modifyApple(){
@@ -403,7 +465,34 @@ public class MainActivity extends AppCompatActivity {
         queue.add(stringRequest);
 
     }
+
+
+    public void sendLevel(){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://polarbear1022.dothome.co.kr/sendlevel.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        }){
+            protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+
+                params.put("uid", userId);
+                params.put("ulevel", userLevel);
+                return params;
+            }
+        };
+        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+        queue.add(stringRequest);
+
+    }
 }
+
+
 
 
 

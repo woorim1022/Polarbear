@@ -74,7 +74,7 @@
             android:layout_width="350dp"
             android:layout_height="300dp"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/adult_polarbear">
+            android:src="@drawable/baby_polarbear">
 
         </ImageView>
 
