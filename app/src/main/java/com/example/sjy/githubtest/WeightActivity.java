@@ -90,6 +90,8 @@ public class WeightActivity extends AppCompatActivity {
 
     private static int currentstep;
 
+    private String dialogCount = "false";
+
     private StepCallback stepCallback = new StepCallback() { //서비스 내부로 Set되어 스텝카운트의 변화와 Unbind의 결과를 전달하는 콜백 객체의 구현체
         @Override
         public void onStepCallback(int step) {
@@ -127,18 +129,14 @@ public class WeightActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weight);
-
         drawerLayout = (DrawerLayout) findViewById(R.id.weight_layout);
         drawerView = (View) findViewById(R.id.drawerView);
-
         ImageView openDrawer = (ImageView) findViewById(R.id.menu_button);
         openDrawer.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 drawerLayout.openDrawer(drawerView);
             }
         });
-
-
         weight = (TextView) findViewById(R.id.weight);
         button = (Button) findViewById(R.id.button);
         measure_day = (TextView) findViewById(R.id.measure_day);
@@ -147,11 +145,14 @@ public class WeightActivity extends AppCompatActivity {
         textView4 = (TextView) findViewById(R.id.textView4);
         last_point = (TextView) findViewById(R.id.last_point);
 
+
         uid = PreferenceManager.getString(this, "userID");
         uname = PreferenceManager.getString(this, "userNAME");
 
+
         final Intent intent = getIntent();  //메인 화면에서 넘어온 intent 받음
         String datafrommain = intent.getStringExtra("메인 액티비티에서 넘길 정보"); //pustExtra로 지정했던 데이터의 키값을 지정하면 해당하는 데이터 값이 나오게 됨
+
 
         //절전 모드를 사용하지 않는 예외 앱으로 처리
         PowerManager pm = (PowerManager) getApplicationContext().getSystemService(POWER_SERVICE);
@@ -166,79 +167,96 @@ public class WeightActivity extends AppCompatActivity {
             startActivity(intent2);
         }
 
+
         weeklyPoint = PreferenceManager.getString(WeightActivity.this, "weeklyPoint");
+        dialogCount = PreferenceManager.getString(WeightActivity.this, "dialogCount");
+        if(dialogCount.equals(""))
+            dialogCount = "false";
+        Log.v("aaa", "dialogCount : " + dialogCount);
         Log.v("aaa", "일주일 누적 포인트 " + weeklyPoint);
         final String stepPref = PreferenceManager.getString(WeightActivity.this, "STEPCOUNT");
+
 
         Calendar cal = Calendar.getInstance();
         int nWeek = cal.get(Calendar.DAY_OF_WEEK);
 
+
         /**걸음수 측정**/
         if (nWeek == 2) {   //월요일이면,
-            if(!weeklyPoint.equals("")) {
-                if (parseInt(weeklyPoint) < 200) {  //전주에 획득한 포인트의 총 합이 200pt 미만이면,
-                    builder = new AlertDialog.Builder(this);
+            if(dialogCount.equals("false")) {  //오늘 아직 다이얼로그를 띄우지 않았으면
+                PreferenceManager.setString(WeightActivity.this, "dialogCount", "true");
+                if (!weeklyPoint.equals("")) {
+                    if (parseInt(weeklyPoint) < 200) {  //전주에 획득한 포인트의 총 합이 200pt 미만이면,
+                        builder = new AlertDialog.Builder(this);
 
-                    builder.setTitle("저번주에는 아쉽게도 포인트를 많이 획득하지 못하셨군요ㅠㅠ").setMessage("이번주에는 승용차를 이용하는 대신 짧은 거리는 걸어보는 것이 어떨까요? 승용차를 일주일에 하루 덜 타면 연간 445kg의 이산화탄소를 줄일 수 있다고 해요! (일요일까지 2만 걸음을 걸으시면 추가 포인트가 지급됩니다.)");
+                        builder.setTitle("저번주에는 아쉽게도 포인트를 많이 획득하지 못하셨군요ㅠㅠ").setMessage("이번주에는 승용차를 이용하는 대신 짧은 거리는 걸어보는 것이 어떨까요? 승용차를 일주일에 하루 덜 타면 연간 445kg의 이산화탄소를 줄일 수 있다고 해요! (일요일까지 2만 걸음을 걸으시면 추가 포인트가 지급됩니다.)");
 
-                    /**걸음수 측정 yes**/
-                    builder.setPositiveButton("걸음 수 측정하기", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id) {
-                            Toast.makeText(getApplicationContext(), "걸음 수 측정 시작", Toast.LENGTH_SHORT).show();
-                            step_goal.setVisibility(View.VISIBLE);
-                            step_current.setVisibility(View.VISIBLE);
+                        /**걸음수 측정 yes**/
+                        builder.setPositiveButton("걸음 수 측정하기", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+                                Toast.makeText(getApplicationContext(), "걸음 수 측정 시작", Toast.LENGTH_SHORT).show();
+                                step_goal.setVisibility(View.VISIBLE);
+                                step_current.setVisibility(View.VISIBLE);
 
-                            textView4.setText("걸음수를 측정 중입니다.");
-                            /**
-                             *  현재 걸음 수 가져와서 화면에 표시
-                             */
-                            Log.v("aaa", "현재 걸음 수" + stepPref);
-                            if (!stepPref.equals("")) {
-                                step_current.setText("현재 걸음 수(pref) : " + parseInt(stepPref) + " 보");
-                            } else {
-                                step_current.setText("현재 걸음 수(pref) : " + 0 + " 보");
+                                textView4.setText("걸음수를 측정 중입니다.");
+                                /**
+                                 *  현재 걸음 수 가져와서 화면에 표시
+                                 */
+                                Log.v("aaa", "현재 걸음 수" + stepPref);
+                                if (!stepPref.equals("")) {
+                                    step_current.setText("현재 걸음 수(pref) : " + parseInt(stepPref) + " 보");
+                                } else {
+                                    step_current.setText("현재 걸음 수(pref) : " + 0 + " 보");
+                                }
+                                //서비스 시작하기
+                                if (StepcountService.serviceIntent == null) {
+                                    serviceIntent = new Intent(WeightActivity.this, StepcountService.class);
+                                    startService(serviceIntent);
+                                    bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+                                } else {
+                                    serviceIntent = StepcountService.serviceIntent;//getInstance().getApplication();
+                                    bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+                                    Toast.makeText(getApplicationContext(), "already", Toast.LENGTH_LONG).show();
+                                }
+
                             }
-                            //서비스 시작하기
-                            if (StepcountService.serviceIntent == null) {
-                                serviceIntent = new Intent(WeightActivity.this, StepcountService.class);
-                                startService(serviceIntent);
-                                bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
-                            } else {
-                                serviceIntent = StepcountService.serviceIntent;//getInstance().getApplication();
-                                bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
-                                Toast.makeText(getApplicationContext(), "already", Toast.LENGTH_LONG).show();
+                        });
+
+                        /**걸음수 측정 no**/
+                        builder.setNegativeButton("다음에", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+                                Toast.makeText(getApplicationContext(), "걸음 수 측정 취소", Toast.LENGTH_SHORT).show();
                             }
-
-                        }
-                    });
-
-                    /**걸음수 측정 no**/
-                    builder.setNegativeButton("다음에", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id) {
-                            Toast.makeText(getApplicationContext(), "걸음 수 측정 취소", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                    alertDialog = builder.create();
-                    alertDialog.show();
+                        });
+                        alertDialog = builder.create();
+                        alertDialog.show();
+                    }
                 }
+                PreferenceManager.setString(WeightActivity.this, "weeklyPoint", "" + 0);
             }
-            PreferenceManager.setString(WeightActivity.this, "weeklyPoint", "" + 0);
+
         }
-        if(nWeek == 1) //일요일이면
+        if(nWeek == 1) {//일요일이면
             stopCount(parseInt(stepPref));
+            PreferenceManager.setString(WeightActivity.this, "dialogCount", "false");
+        }
 
 
 
 
 
         //내부저장소에 저장된 날짜 삭제
-        PreferenceManager.removeKey(WeightActivity.this, "prevDateStr");
-        PreferenceManager.removeKey(WeightActivity.this, "recentDateStr");
-        PreferenceManager.removeKey(WeightActivity.this, "lastPoint");
+//        PreferenceManager.removeKey(WeightActivity.this, "prevDateStr");
+//        PreferenceManager.removeKey(WeightActivity.this, "recentDateStr");
+//        PreferenceManager.removeKey(WeightActivity.this, "lastPoint");
 
         //마지막 측정 날짜 출력
+        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+        Date today = new Date();
+
+        String todayWeight = PreferenceManager.getString(WeightActivity.this, "todayWeight");
         String lastmeasuredate = PreferenceManager.getString(WeightActivity.this, "recentDateStr");
         if(!lastmeasuredate.equals("")) {
             String[] splitdate = lastmeasuredate.split("-");
@@ -246,6 +264,9 @@ public class WeightActivity extends AppCompatActivity {
             String month = splitdate[1];
             String day = splitdate[2];
             measure_day.setText("마지막 측정 날짜 : " + year + "년 " + month + "월 " + day + "일 ");
+            if(lastmeasuredate.equals(format1.format(today))){ //마지막 측정 날짜가 오늘이면
+                weight.setText("" + todayWeight + " g");
+            }
         }
 
         String lastpoint = PreferenceManager.getString(WeightActivity.this, "lastPoint");
@@ -316,7 +337,8 @@ public class WeightActivity extends AppCompatActivity {
 
 
                                         PreferenceManager.setString(WeightActivity.this, "prevDateStr", prevDateStr); //prevDateStr
-                                        PreferenceManager.setString(WeightActivity.this, "recentDateStr", "2020-08-10"); //recentDateStr
+                                        PreferenceManager.setString(WeightActivity.this, "recentDateStr", recentDateStr); //recentDateStr
+                                        PreferenceManager.setString(WeightActivity.this, "todayWeight", ""+weightValue);
 
                                         builder3 = new AlertDialog.Builder(WeightActivity.this);
                                         builder3.setTitle("첫 무게 측정을 축하드립니다!").setMessage("첫 무게 측정 기념으로 100포인트를 지급합니다.");
@@ -324,13 +346,14 @@ public class WeightActivity extends AppCompatActivity {
                                             @Override
                                             public void onClick(DialogInterface dialog, int id) {
                                                 Toast.makeText(getApplicationContext(), "100포인트 획득", Toast.LENGTH_SHORT).show();
-                                                PreferenceManager.setString(WeightActivity.this, "lastPoint", "" + 100);
-                                                PreferenceManager.setString(WeightActivity.this, "weeklyPoint", "" + 100);
-                                                last_point.setText("마지막 획득 포인트 : 100");
+
                                             }
                                         });
                                         alertDialog = builder3.create();
                                         alertDialog.show();
+                                        PreferenceManager.setString(WeightActivity.this, "lastPoint", "" + 100);
+                                        PreferenceManager.setString(WeightActivity.this, "weeklyPoint", "" + 100);
+                                        last_point.setText("마지막 획득 포인트 : 100");
 
                                         Log.v("aaa", "weightvalue : " + weightValue);
 
@@ -450,7 +473,7 @@ public class WeightActivity extends AppCompatActivity {
 
                                                 PreferenceManager.setString(WeightActivity.this, "prevDateStr", prevDateStr);
                                                 PreferenceManager.setString(WeightActivity.this, "recentDateStr", recentDateStr);
-                                                PreferenceManager.setString(WeightActivity.this, "lastPoint", "" + weightValue);
+                                                PreferenceManager.setString(WeightActivity.this, "todayWeight", ""+weightValue);
 
                                                 Log.v("aaa", "prevdatestr(달라야함) : " + prevDateStr);
                                                 Log.v("aaa", "recentdatestr(달라야함) : " + recentDateStr);
@@ -582,6 +605,11 @@ public class WeightActivity extends AppCompatActivity {
                      };
                      RequestQueue queue = Volley.newRequestQueue(WeightActivity.this);
                      queue.add(stringRequest);
+
+                     /**
+                      * 2만 보 채운 축하메시지 띄우기
+                      * 토스트로 포인트 지급 알리기
+                      * **/
                  }
          }
     }

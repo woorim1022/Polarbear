@@ -38,6 +38,10 @@ public class StepcountService extends Service implements SensorEventListener {
 
     private String stepPref;
 
+    private int count = 0;
+
+    private String serviceCount = "false";
+
     public void setCallback(StepCallback callback) {
         Log.v("@@@", "setCallback");
         this.callback = callback;
@@ -82,15 +86,22 @@ public class StepcountService extends Service implements SensorEventListener {
         }
 
 
+        serviceCount = PreferenceManager.getString(StepcountService.this, "serviceCount");
+        if(serviceCount.equals(""))
+            serviceCount = "false";
         Calendar cal = Calendar.getInstance();
         int nWeek = cal.get(Calendar.DAY_OF_WEEK);
         /**
          * 월요일이고 오늘 처음 StepcountService 에 진입한 경우
          * **/
-        if(nWeek == 2 && true)
+        if(nWeek == 2 && serviceCount.equals("false")) {
+            PreferenceManager.setString(StepcountService.this, "serviceCount", "true");
             mStepDetector = 0;  //누적 걸음 수 초기화
+        }
 
-    }
+        if(nWeek == 1)
+            PreferenceManager.setString(StepcountService.this, "serviceCount", "false");
+}
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
