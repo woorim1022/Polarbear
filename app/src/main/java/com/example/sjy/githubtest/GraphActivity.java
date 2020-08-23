@@ -2,69 +2,145 @@ package com.example.sjy.githubtest;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static java.lang.Integer.parseInt;
 
 public class GraphActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private View drawerView;
 
+    private String uid;
+    private String uname;
+
+    ArrayList <String> date = new ArrayList();
+    ArrayList <String> weight = new ArrayList();
+    ArrayList <String> point = new ArrayList();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
 
-        LineChart graph = (LineChart) findViewById(R.id.graph);
+        final LineChart graph = (LineChart) findViewById(R.id.graph);
 
-        ArrayList<Entry> entries = new ArrayList<>();
-        entries.add(new Entry(4f, 0));
-        entries.add(new Entry(8f, 1));
-        entries.add(new Entry(6f, 2));
-        entries.add(new Entry(2f, 3));
-        entries.add(new Entry(18f, 4));
-        entries.add(new Entry(9f, 5));
-        entries.add(new Entry(16f, 6));
-        entries.add(new Entry(5f, 7));
-        entries.add(new Entry(3f, 8));
-        entries.add(new Entry(7f, 10));
-        entries.add(new Entry(9f, 11));
+        //로그인한 사용자 uid, uname 가져오기
+        uid = PreferenceManager.getString(this, "userID");
+        uname = PreferenceManager.getString(this, "userNAME");
 
-        LineDataSet dataset = new LineDataSet(entries, "# of Calls");
 
-        ArrayList<String> labels = new ArrayList<String>();
-        labels.add("January");
-        labels.add("February");
-        labels.add("March");
-        labels.add("April");
-        labels.add("May");
-        labels.add("June");
-        labels.add("July");
-        labels.add("August");
-        labels.add("September");
-        labels.add("October");
-        labels.add("November");
-        labels.add("December");
 
-        LineData data = new LineData(labels, dataset);
-        dataset.setColors(ColorTemplate.COLORFUL_COLORS); //
-        /*dataset.setDrawCubic(true); //선 둥글게 만들기
-                dataset.setDrawFilled(true); //그래프 밑부분 색칠*/
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://polarbear1022.dothome.co.kr/graph.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //결과 처리
+                        String TAG_JSON = "graph";
+                        String TAG_DATE = "date";
+                        String TAG_WEIGHT = "weight";
+                        String TAG_POINT = "point";
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
 
-        graph.setData(data);
-        graph.animateY(5000);
+                            for(int i = 0;i<jsonArray.length();i++) {
+                                JSONObject object = jsonArray.getJSONObject(i);
+
+                                date.add(object.getString(TAG_DATE));
+                                weight.add(object.getString(TAG_WEIGHT));
+                                point.add(object.getString(TAG_POINT));
+                                Log.v("bbb", " date : " + date+ " weight : " + weight+ " point : " +point);
+                            }
+
+
+
+                            ArrayList<LineDataSet> lineDataSets = new ArrayList<>();
+
+                            ArrayList<Entry> weights = new ArrayList<>();
+                            ArrayList<Entry> points = new ArrayList<>();
+                            ArrayList<String> labels = new ArrayList<>();
+
+                            for(int i=0;i < date.size();i++) {
+                                labels.add(date.get(i));
+
+                                if(weight.get(i).equals("9999"))
+                                    weights.add(new Entry(0, i));
+                                else
+                                    weights.add(new Entry(parseInt(weight.get(i)), i));
+                                points.add(new Entry(parseInt(point.get(i)), i));
+                            }
+
+                            LineDataSet dataset1 = new LineDataSet(weights, "내가 버린 음식물 쓰레기 무게");
+                            dataset1.setColor(Color.BLUE);
+
+                            LineDataSet dataset2 = new LineDataSet(points, "획득 포인트");
+                            dataset2.setColor(Color.RED);
+
+                            lineDataSets.add(dataset1);
+                            lineDataSets.add(dataset2);
+
+
+                            LineData data = new LineData(labels, lineDataSets);
+                            graph.setData(data);
+                            graph.animateY(5000);
+
+
+
+
+                        }catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                    }
+                }){
+            protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+
+                params.put("uid", uid);
+                return params;
+            }
+        };
+        RequestQueue queue = Volley.newRequestQueue(GraphActivity.this);
+        queue.add(stringRequest);
+
 
         drawerLayout = (DrawerLayout)findViewById(R.id.graph_layout);
         drawerView = (View)findViewById(R.id.drawerView);
@@ -84,6 +160,8 @@ public class GraphActivity extends AppCompatActivity {
         GraphActivity.NetworkTask networkTask = new GraphActivity.NetworkTask(url, null);
         networkTask.execute();
     }
+
+
 
     public void menuOnClick(View v) {
         switch(v.getId()){

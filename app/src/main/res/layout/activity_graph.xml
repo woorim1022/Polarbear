@@ -7,7 +7,7 @@
     android:background="#F0FCFC"
     android:orientation="vertical"
     android:id="@+id/graph_layout"
-    tools:context=".WeightActivity">
+    tools:context=".GraphActivity">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,14 +33,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:padding="100dp"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="30dp"
+                    android:paddingRight="10dp"
+                    android:paddingBottom="50dp"
                     tools:context=".MainActivity">
 
 
                         <com.github.mikephil.charting.charts.LineChart
                             android:id="@+id/graph"
-                            android:layout_width="377dp"
-                            android:layout_height="586dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
                             android:layout_gravity="center" />
 
                 </LinearLayout>
@@ -50,7 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            tools:context=".DonateActivity">
+            tools:context=".GraphActivity">
 
                 <ImageView
                     android:id="@+id/menu_button"
