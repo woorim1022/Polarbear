@@ -93,7 +93,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/mylist"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -102,175 +102,117 @@
                 android:gravity="center_horizontal"
                 android:text="내가 구매한 상품 목록"
                 android:textSize="35dp" />
-
-        </LinearLayout>
-        
-         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/button_round"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/textView2"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:fontFamily="@font/maplestory"
-                android:gravity="center_horizontal"
-                android:text="내가 구매한 상품 목록"
-                android:textSize="35dp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="195dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/mypage_image1"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="40dp"
-                    android:layout_marginRight="10dp"
-                    android:src="@drawable/apple"></ImageView>
-
-                <TextView
-                    android:id="@+id/applenum"
-                    android:layout_width="65dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="0dp"
-                    android:layout_marginTop="60dp"
-                    android:fontFamily="@font/maplestory"
-                    android:gravity="center_horizontal"
-                    android:text="200"
-                    android:textColor="#000000"
-                    android:textSize="25dp" />
-
-                <TextView
-                    android:id="@+id/apple_num"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="0dp"
-                    android:layout_marginTop="59dp"
-                    android:layout_toRightOf="@id/applenum"
-                    android:fontFamily="@font/maplestory"
-                    android:text="개"
-                    android:textColor="#000000"
-                    android:textSize="25dp"></TextView>
-
-                <ImageView
-                    android:id="@+id/mypage_image2"
-                    android:layout_width="95dp"
-                    android:layout_height="95dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="35dp"
-                    android:layout_marginRight="8dp"
-                    android:src="@drawable/fish"></ImageView>
-
-                <TextView
-                    android:id="@+id/fishnum"
-                    android:layout_width="65dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="0dp"
-                    android:layout_marginTop="60dp"
-                    android:fontFamily="@font/maplestory"
-                    android:gravity="center_horizontal"
-                    android:text="200"
-                    android:textColor="#000000"
-                    android:textSize="25dp" />
-
-                <TextView
-                    android:id="@+id/fish_num"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="0dp"
-                    android:layout_marginTop="59dp"
-                    android:layout_toRightOf="@id/applenum"
-                    android:fontFamily="@font/maplestory"
-                    android:text="개"
-                    android:textColor="#000000"
-                    android:textSize="25dp"></TextView>
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <ImageView
-                android:id="@+id/mypage_image3"
-                android:layout_width="90dp"
-                android:layout_height="90dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginRight="8dp"
-                android:src="@drawable/meat">
-                </ImageView>
-                <TextView
-                    android:id="@+id/meatnum"
-                    android:layout_width="65dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="0dp"
-                    android:layout_marginTop="35dp"
-                    android:fontFamily="@font/maplestory"
-                    android:gravity="center_horizontal"
-                    android:text="200"
-                    android:textColor="#000000"
-                    android:textSize="25dp" />
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/meat_num"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="0dp"
-                    android:layout_marginTop="36dp"
-                    android:fontFamily="@font/maplestory"
-                    android:text="개"
-                    android:textColor="#000000"
-                    android:textSize="25dp">
-                </TextView>
+                    <ImageView
+                        android:id="@+id/mypage_image1"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="40dp"
+                        android:layout_marginRight="10dp"
+                        android:src="@drawable/apple"></ImageView>
 
-                <ImageView
-                    android:id="@+id/mypage_image4"
-                    android:layout_width="90dp"
-                    android:layout_height="90dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginRight="8dp"
-                    android:src="@drawable/ice">
-                </ImageView>
-                <TextView
-                    android:id="@+id/icenum"
-                    android:layout_width="65dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="0dp"
-                    android:layout_marginTop="35dp"
-                    android:fontFamily="@font/maplestory"
-                    android:gravity="center_horizontal"
-                    android:text="200"
-                    android:textColor="#000000"
-                    android:textSize="25dp" />
+                    <TextView
+                        android:id="@+id/applenum"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="0dp"
+                        android:layout_marginTop="60dp"
+                        android:fontFamily="@font/maplestory"
+                        android:gravity="center_horizontal"
+                        android:text="null"
+                        android:textColor="#000000"
+                        android:textSize="25dp" />
 
-                <TextView
-                    android:id="@+id/ice_num"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="0dp"
-                    android:layout_marginTop="36dp"
-                    android:fontFamily="@font/maplestory"
-                    android:text="개"
-                    android:textColor="#000000"
-                    android:textSize="25dp">
-                </TextView>
+                    <ImageView
+                        android:id="@+id/mypage_image2"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="35dp"
+                        android:layout_marginRight="8dp"
+                        android:src="@drawable/fish"></ImageView>
 
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/fishnum"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="0dp"
+                        android:layout_marginTop="60dp"
+                        android:fontFamily="@font/maplestory"
+                        android:gravity="center_horizontal"
+                        android:text="null"
+                        android:textColor="#000000"
+                        android:textSize="25dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/mypage_image3"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginRight="8dp"
+                        android:src="@drawable/meat">
+                    </ImageView>
+                    <TextView
+                        android:id="@+id/meatnum"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="0dp"
+                        android:layout_marginTop="35dp"
+                        android:fontFamily="@font/maplestory"
+                        android:gravity="center_horizontal"
+                        android:text="null"
+                        android:textColor="#000000"
+                        android:textSize="25dp" />
+
+
+                    <ImageView
+                        android:id="@+id/mypage_image4"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginRight="8dp"
+                        android:src="@drawable/ice">
+                    </ImageView>
+                    <TextView
+                        android:id="@+id/icenum"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="0dp"
+                        android:layout_marginTop="35dp"
+                        android:fontFamily="@font/maplestory"
+                        android:gravity="center_horizontal"
+                        android:text="null"
+                        android:textColor="#000000"
+                        android:textSize="25dp" />
+
+
+                </LinearLayout>
+
+        </LinearLayout>
 
         </LinearLayout>
 
     </LinearLayout>
-
 
 
     <include

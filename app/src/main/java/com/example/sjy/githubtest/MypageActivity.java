@@ -28,6 +28,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,6 +43,7 @@ public class MypageActivity extends AppCompatActivity {
     private Context mContext;
     private String userId, newName;
     private String numApple, numFish, numMeat, numIce;
+    private TextView tApple, tFish, tMeat, tIce;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,10 @@ public class MypageActivity extends AppCompatActivity {
         drawerView = (View)findViewById(R.id.drawerView);
         edt_nickname = (EditText)findViewById(R.id.et_nickname);
         bt_modify = (Button)findViewById(R.id.bt_modify);
+        tApple = (TextView)findViewById(R.id.applenum);
+        tFish = (TextView)findViewById(R.id.fishnum);
+        tMeat = (TextView)findViewById(R.id.meatnum);
+        tIce = (TextView)findViewById(R.id.icenum);
         mContext = this;
 
         ImageView openDrawer = (ImageView)findViewById(R.id.menu_button);
@@ -64,14 +70,11 @@ public class MypageActivity extends AppCompatActivity {
 
         String url = "http://polarbear1022.dothome.co.kr/mypage.php";
 
-        // AsyncTask를 통해 HttpURLConnection 수행.
-        MypageActivity.NetworkTask networkTask = new MypageActivity.NetworkTask(url, null);
-        networkTask.execute();
-
         //마이페이지 닉네임 설정
-        String name = PreferenceManager.getString(mContext,"userNAME");
         userId = PreferenceManager.getString(mContext, "userId");
+        String name = PreferenceManager.getString(mContext,"userNAME");
         edt_nickname.setText(name);
+        getItemlist();
 
         bt_modify.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,60 +149,57 @@ public class MypageActivity extends AppCompatActivity {
 
     }
 
-    public class NetworkTask extends AsyncTask<Void, Void, String> {
+    public void getItemlist(){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://polarbear1022.dothome.co.kr/mypage.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        String TAG_JSON = "buyinginfo";
+                        String TAG_APPLE = "apple";
+                        String TAG_FISH = "fish";
+                        String TAG_MEAT = "meat";
+                        String TAG_ICE = "ice";
 
-        private String url;
-        private ContentValues values;
-
-        public NetworkTask(String url, ContentValues values) {
-
-            this.url = url;
-            this.values = values;
-        }
-
-        @Override
-        protected String doInBackground(Void... params) {
-
-            String result; // 요청 결과를 저장할 변수.
-            RequestHttpConnection requestHttpConnection = new RequestHttpConnection();
-            result = requestHttpConnection.request(url, values); // 해당 URL로 부터 결과물을 얻어온다.
-
-            return result;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            //doInBackground()로 부터 리턴된 값이 onPostExecute()의 매개변수로 넘어오므로 s를 출력한다.
-            String TAG_JSON = "buyinginfo";
-            String TAG_APPLE = "apple";
-            String TAG_FISH = "fish";
-            String TAG_MEAT = "meat";
-            String TAG_ICE = "ice";
-
-            try {
-                JSONObject jsonObject = new JSONObject(s);
-                JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
 
 
-                JSONObject firstItem = jsonArray.getJSONObject(0);
+                            JSONObject firstItem = jsonArray.getJSONObject(0);
 
-                numApple = firstItem.getString(TAG_APPLE);
-                Log.d("count", "사과 :" + numApple);
-                numFish = firstItem.getString(TAG_FISH);
-                Log.d("count", "물고기 :" + numFish);
-                numMeat = firstItem.getString(TAG_MEAT);
-                Log.d("count", "고기 :" + numMeat);
-                numIce = firstItem.getString(TAG_ICE);
-                Log.d("count", "얼음 :" + numIce);
+                            numApple = firstItem.getString(TAG_APPLE);
+                            Log.d("count", "사과 :" + numApple);
+                            numFish = firstItem.getString(TAG_FISH);
+                            Log.d("count", "물고기 :" + numFish);
+                            numMeat = firstItem.getString(TAG_MEAT);
+                            Log.d("count", "고기 :" + numMeat);
+                            numIce = firstItem.getString(TAG_ICE);
+                            Log.d("count", "얼음 :" + numIce);
 
-                //setText
+                            tApple.setText(numApple + " 개");
+                            tFish.setText(numFish + " 개");
+                            tMeat.setText(numMeat + " 개");
+                            tIce.setText(numIce + " 개");
 
-            } catch (JSONException e) {
+                        } catch (JSONException e) {
 
-                Log.d("rrr", "showResult : ", e);
+                            Log.d("rrr", "showResult : ", e);
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
             }
-        }
-    }
+        }){
+            protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
 
+                params.put("uid", userId);
+                return params;
+            }
+        };
+        RequestQueue queue = Volley.newRequestQueue(MypageActivity.this);
+        queue.add(stringRequest);
+
+    }
 }
