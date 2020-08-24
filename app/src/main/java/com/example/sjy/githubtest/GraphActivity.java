@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -19,6 +20,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -42,6 +44,8 @@ public class GraphActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private View drawerView;
+    private TextView totalpoint;
+    private TextView weeklypoint;
 
     private String uid;
     private String uname;
@@ -50,17 +54,60 @@ public class GraphActivity extends AppCompatActivity {
     ArrayList <String> weight = new ArrayList();
     ArrayList <String> point = new ArrayList();
 
+    private int totalPoint;
+    private int weeklyPoint;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
 
+        totalpoint = findViewById(R.id.totalpoint);
+        weeklypoint = findViewById(R.id.weeklypoint);
+
         final LineChart graph = (LineChart) findViewById(R.id.graph);
 
         //로그인한 사용자 uid, uname 가져오기
         uid = PreferenceManager.getString(this, "userID");
         uname = PreferenceManager.getString(this, "userNAME");
+        weeklyPoint = parseInt(PreferenceManager.getString(GraphActivity.this, "WEEKLYPOINT"));
+
+        StringRequest stringRequest2 = new StringRequest(Request.Method.POST, "http://polarbear1022.dothome.co.kr/totalpoint.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //결과 처리
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+                            totalPoint = jsonResponse.getInt("totalpoint");
+
+                            weeklypoint.setText("주간 누적 포인트 : " + weeklyPoint + " pt");
+                            totalpoint.setText("총 누적 포인트 : " + totalPoint + " pt");
+
+
+
+
+                        }catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                    }
+                }){
+            protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+
+                params.put("uid", uid);
+                return params;
+            }
+        };
+        RequestQueue queue2 = Volley.newRequestQueue(GraphActivity.this);
+        queue2.add(stringRequest2);
+
 
 
 
@@ -80,13 +127,28 @@ public class GraphActivity extends AppCompatActivity {
                             for(int i = 0;i<jsonArray.length();i++) {
                                 JSONObject object = jsonArray.getJSONObject(i);
 
-                                date.add(object.getString(TAG_DATE));
+                                String[] splitdate = object.getString(TAG_DATE).split("-");
+                                String year = splitdate[0];
+                                String month = splitdate[1];
+                                String day = splitdate[2];
+                                date.add(year+"년 "+month+"월 "+day+"일");
                                 weight.add(object.getString(TAG_WEIGHT));
                                 point.add(object.getString(TAG_POINT));
                                 Log.v("bbb", " date : " + date+ " weight : " + weight+ " point : " +point);
                             }
 
 
+                            YAxis leftAxis = graph.getAxisLeft();
+                            leftAxis.setTextColor(Color.parseColor("#1390C2"));
+                            leftAxis.setAxisMaxValue(5500);
+                            leftAxis.setAxisMinValue(0);
+                            leftAxis.setDrawGridLines(true);
+
+                            YAxis rightAxis = graph.getAxisRight();
+                            rightAxis.setTextColor(Color.parseColor("#D56048"));
+                            rightAxis.setAxisMaxValue(110);
+                            rightAxis.setAxisMinValue(0);
+                            rightAxis.setDrawGridLines(false);
 
                             ArrayList<LineDataSet> lineDataSets = new ArrayList<>();
 
@@ -105,18 +167,27 @@ public class GraphActivity extends AppCompatActivity {
                             }
 
                             LineDataSet dataset1 = new LineDataSet(weights, "내가 버린 음식물 쓰레기 무게");
-                            dataset1.setColor(Color.BLUE);
+                            dataset1.setColor(Color.parseColor("#1390C2"));
+                            dataset1.setAxisDependency(YAxis.AxisDependency.LEFT);
+                            dataset1.setLineWidth(2f);
+                            dataset1.setFillAlpha(65);
+                            dataset1.setHighLightColor(Color.rgb(244, 117, 117));
 
                             LineDataSet dataset2 = new LineDataSet(points, "획득 포인트");
-                            dataset2.setColor(Color.RED);
+                            dataset2.setColor(Color.parseColor("#D56048"));
+                            dataset2.setAxisDependency(YAxis.AxisDependency.RIGHT);
+                            dataset2.setLineWidth(2f);
+                            dataset2.setFillAlpha(65);
+                            dataset2.setHighLightColor(Color.rgb(244, 117, 117));
 
                             lineDataSets.add(dataset1);
                             lineDataSets.add(dataset2);
 
 
                             LineData data = new LineData(labels, lineDataSets);
+                            data.setValueTextSize(9f);
                             graph.setData(data);
-                            graph.animateY(5000);
+//                            graph.animateY(5000);
 
 
 
