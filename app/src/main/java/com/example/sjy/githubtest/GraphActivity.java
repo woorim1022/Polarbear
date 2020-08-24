@@ -166,7 +166,7 @@ public class GraphActivity extends AppCompatActivity {
                                 points.add(new Entry(parseInt(point.get(i)), i));
                             }
 
-                            LineDataSet dataset1 = new LineDataSet(weights, "내가 버린 음식물 쓰레기 무게");
+                            LineDataSet dataset1 = new LineDataSet(weights, "내가 버린 음식물 쓰레기 무게 (g)");
                             dataset1.setColor(Color.parseColor("#1390C2"));
                             dataset1.setAxisDependency(YAxis.AxisDependency.LEFT);
                             dataset1.setLineWidth(2f);
