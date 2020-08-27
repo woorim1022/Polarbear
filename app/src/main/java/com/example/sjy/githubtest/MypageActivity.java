@@ -71,7 +71,7 @@ public class MypageActivity extends AppCompatActivity {
         String url = "http://polarbear1022.dothome.co.kr/mypage.php";
 
         //마이페이지 닉네임 설정
-        userId = PreferenceManager.getString(mContext, "userId");
+        userId = PreferenceManager.getString(mContext, "userID");
         String name = PreferenceManager.getString(mContext,"userNAME");
         edt_nickname.setText(name);
         getItemlist();
@@ -80,11 +80,11 @@ public class MypageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 newName = edt_nickname.getText().toString();
-                Log.v("수정한 닉네임", "수정한 이름 : " +newName);
+                Log.v("aaa", "수정한 이름 : " +newName);
                 modifyName();
-                PreferenceManager.setString(mContext, "userId", userId);
+                PreferenceManager.setString(mContext, "userID", userId);
                 PreferenceManager.setString(mContext, "userNAME", newName);
-                Log.v("수정한 닉네임", "아이디 : " +userId);
+                Log.v("aaa", "아이디 : " +userId);
             }
         });
     }
