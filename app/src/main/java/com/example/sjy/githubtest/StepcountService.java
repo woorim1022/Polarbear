@@ -67,7 +67,10 @@ public class StepcountService extends Service implements SensorEventListener {
         Log.v("@@@", "onCreate");
         super.onCreate();
         stepPref = PreferenceManager.getString(StepcountService.this, "STEPCOUNT");
-        mStepDetector += parseInt(stepPref);
+        if(!stepPref.equals(""))
+            mStepDetector += parseInt(stepPref);
+        else
+            mStepDetector = 0;
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         stepDetectorSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
