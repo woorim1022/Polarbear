@@ -46,6 +46,9 @@ public class RestartService extends Service {
     public void onDestroy() {
         Log.v("@@@", "onDestroy(restartservice)");
         super.onDestroy();
+        stopForeground(true);
+        Log.v("@@@", "stopForeground");
+        stopSelf();
     }
 
 //    private ServiceConnection serviceConnection = new ServiceConnection() { //서비스 바인드를 담당하는 객체의 구현체
@@ -81,17 +84,19 @@ public class RestartService extends Service {
 
         Notification notification = builder.build();
         startForeground(9, notification);
-
+        Log.v("@@@", "startForeground");
         /////////////////////////////////////////////////////////////////////
         Intent in = new Intent(this, StepcountService.class);
         startService(in);
 //        bindService(in, serviceConnection, Context.BIND_AUTO_CREATE);
 
-        stopForeground(true);
-        stopSelf();
+//        stopForeground(true);
+//        Log.v("@@@", "stopForeground");
+//        stopSelf();
 
         return START_NOT_STICKY;
     }
+
 
     @Nullable
     @Override
